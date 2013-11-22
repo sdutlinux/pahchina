@@ -1,0 +1,11 @@
+<div class="span7 well">
+
+<p>你确定要删除用户<strong>{{ object.username }}</strong>吗?</p>
+
+<form action="" method="post">{% csrf_token %}
+    <div>
+        <input type="hidden" name="post" value="yes" />
+        <a href="#" onclick="location.href=document.referrer;" class="btn">不,我返回</a>&nbsp;
+        <input type="submit" value="是的,我确定." class="btn btn-danger"/>
+    </div>
+</form>

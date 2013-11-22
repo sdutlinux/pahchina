@@ -9,6 +9,8 @@ PAH中国肺动脉高压联盟--平台网站
 + python2.7
 + django==1.5
 
+*更多见`requirements.txt`文件*
+
 ## 协作方式
 
 + master为稳定分支

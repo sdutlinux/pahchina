@@ -19,3 +19,5 @@ lib
 lib64
 local_settings.py
 *~
+
+re_db.sh

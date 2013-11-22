@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+{{ object_user.username }}
+{{ object_user.email }}
+{{ object_user.is_doctor }}
+
+<a href="{% url 'update-user' object_user.id %}">edit</a>
+<a href="{% url 'delete-user' object_user.id %}">delete</a>
+</body>
+</html>

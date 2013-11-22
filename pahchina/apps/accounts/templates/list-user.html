@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<a href="{% url 'create-user' %}">添加用户</a>
+<br/>
+
+<ul>
+{% for user in user_list %}
+    <li>
+    <a href="{% url 'detail-user' user.id %}">{{ user.username }}</a>&nbsp;
+    {{ user.email }}
+    </li>
+{% endfor %}
+
+</ul>
+
+
+</body>
+</html>
