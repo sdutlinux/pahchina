@@ -27,7 +27,8 @@
         	<a href="/">网站首页</a>
         </div>
         <div class="sub">
-        	{{ user.username }}
+            <a href="">{{ user.username }}</a>
+            <a href="{% url 'logout' %}">注销</a>
         </div>
     </div>
 </div>
