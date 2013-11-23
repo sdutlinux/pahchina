@@ -3,11 +3,15 @@
 
 __author__ = 'zhwei'
 
+from django.contrib.auth.views import login
 from django.conf.urls import patterns, include, url
 
 from . import views
 
+
 urlpatterns = patterns('',
+
+    url(r'^login$', login, name='login'),
 
     url(r'^user/list$', views.ListUser.as_view(), name='list-user'),
     url(r'^user/create$', views.CreateUser.as_view(), name='create-user'),

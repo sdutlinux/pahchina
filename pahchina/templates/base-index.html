@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>{% block title %}{% endblock %}-PAH中国肺动脉高压联盟</title>
+<meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+<meta name="description" content="{% block description %}{% endblock %}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<link rel="stylesheet" href="/static/css/cutter.css">
+<script src="/static/js/jquery-1.3.2.min.js"></script>
+<script src="/static/js/cutter.js"></script>
+{% block head %}
+
+{% endblock %}
+</head>
+
+<body>
+
+<div class="topbar">
+	<div class="wrapper">
+    	<div class="logo">
+        	<a href="">网站后台</a>
+        </div>
+    	<div class="module">
+        	<a href="/">网站首页</a>
+        </div>
+        <div class="sub">
+        	{{ user.username }}
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper">
+    <div class="two">
+        <ul class="sidebar">
+            <li class="selected"></li>
+            <li><a href="{% url 'list-user' %}">管理用户</a></li>
+            <li><a href="">菜单</a></li>
+            <li><a href="">菜单</a></li>
+        </ul>
+    </div>
+    <div class="ten">
+    {% block content %}
+
+    {% endblock %}
+    </div>
+
+</div>
+
+<div class="wrapper footer">
+    <p>this is footer <a href="">Links</a></p>
+</div>
+
+
+</body>
+</html>
+

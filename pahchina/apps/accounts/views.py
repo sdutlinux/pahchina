@@ -3,9 +3,9 @@
 
 from django.views import generic
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.forms import AuthenticationForm
 
 from .models import User
-
 
 class ListUser(generic.ListView):
 
