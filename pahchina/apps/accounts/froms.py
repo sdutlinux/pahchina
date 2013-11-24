@@ -68,8 +68,6 @@ class RegisterForm(UserCreationForm):
 
 class UpdateUserForm(forms.ModelForm):
 
-
-
     class Meta:
         model = User
         fields=('username', 'email', 'avatar', 'is_active')

@@ -1,12 +1,28 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+删除用户 {{ object.username }}
+{% endblock %}
+
+{% block content %}
+
 <div class="span7 well">
 
-<p>你确定要删除用户<strong>{{ object.username }}</strong>吗?</p>
+<h2>删除用户</h2>
+<div class="alert">
+    <p><strong>注意！</strong></p>
+    <b>你确定要删除用户 <a href="" class="button bigrounded green">{{ object.username }}</a>吗?</b>
+
+</div>
 
 <form action="" method="post">{% csrf_token %}
     <div>
         <input type="hidden" name="post" value="yes" />
-        <a href="#" onclick="location.href=document.referrer;" class="btn">不,我返回</a>&nbsp;
-        <input type="submit" value="是的,我确定." class="btn btn-danger"/>
+            <br/>
+        <a href="#" onclick="location.href=document.referrer;" class="button">不,我返回</a>&nbsp;
+        <input type="submit" value="是的,我确定." class="button rosy"/>
     </div>
 </form>
 </div>
+
+{% endblock %}

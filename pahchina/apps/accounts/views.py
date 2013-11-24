@@ -12,14 +12,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
 
+from ..utils import SuperUser
+
 from .models import User
 from .froms import RegisterForm, UpdateUserForm
 
-class SuperUser(generic.View):
-
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    def dispatch(self, *args, **kwargs):
-        return super(SuperUser, self).dispatch(*args, **kwargs)
 
 
 def pah_register(request):
@@ -77,14 +74,14 @@ class ListUser(generic.ListView, SuperUser):
     template_name = 'list-user.html'
 
 
-class DetailUser(generic.DetailView):
+class DetailUser(generic.DetailView, SuperUser):
     """ 查看用户详情
     """
     model = User
     context_object_name = 'object_user'
     template_name = 'detail-user.html'
 
-class CreateUser(generic.CreateView):
+class CreateUser(generic.CreateView, SuperUser):
     """ 创建用户
     """
     model = User
@@ -92,7 +89,7 @@ class CreateUser(generic.CreateView):
     success_url = reverse_lazy('list-user')
     template_name = 'update-user.html'
 
-class UpdateUser(generic.UpdateView):
+class UpdateUser(generic.UpdateView, SuperUser):
     """ 更新用户详情
     """
     model = User
@@ -101,8 +98,9 @@ class UpdateUser(generic.UpdateView):
     template_name = 'update-user.html'
 
 
-class DeleteUser(generic.DeleteView):
+class DeleteUser(generic.DeleteView, SuperUser):
     """ 删除用户
     """
     model = User
+    success_url = reverse_lazy('list-user')
     template_name = 'user_confirm_delete.html'

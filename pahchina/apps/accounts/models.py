@@ -4,6 +4,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+import pahchina.apps.accounts
 
 class User(AbstractUser):
     """
@@ -54,9 +55,12 @@ class User(AbstractUser):
         """
         if item in self.identity_dic and item.startswith('is_'):
             # 判断非属性并且以 `is_`开头
-            if self.identity_dic[item] in self.identity:
-                return True
-            else:
+            try:
+                if self.identity_dic[item] in self.identity:
+                    return True
+                else:
+                    return False
+            except TypeError:
                 return False
         else:
             super(User, self).__getattr__(item)
@@ -88,3 +92,17 @@ class User(AbstractUser):
                 raise Exception('User is not %s'%self.identity_dic[item][3:])
         else:
             super(User, self).__delattr__(item)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
