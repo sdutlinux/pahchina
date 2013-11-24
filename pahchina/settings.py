@@ -135,7 +135,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'pahchina.apps.accounts'
+    'pahchina.apps.accounts',
+    'pahchina.apps.volunteer',
+    'pahchina.apps.activity'
 )
 
 AUTH_USER_MODEL = 'accounts.User'
