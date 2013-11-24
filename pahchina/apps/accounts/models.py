@@ -19,91 +19,72 @@ class User(AbstractUser):
     identity = models.CommaSeparatedIntegerField(verbose_name='身份类型',
                                                  max_length=10, blank=True, null=True)
 
-    def set_patient(self):
-        if '1' not in self.identity:
-            self.identity += '1,'
+    identity_dic = {
+        'is_patient':'1,',
+        'is_doctor': '2,',
+        'is_hospital': '3,',
+        'is_donor': '4,',
+        'is_volunteer': '5,',
+        'is_druggist': '6,',
+    }
 
-    def del_patient(self):
-        if '1,' in self.identity:
-            self.identity.replace('1,','')
+    def get_absolute_url(self):
+        """ 获取用户URL
+        用户后台的用户管理
+        """
+        return '/accounts/user/%s' % self.id
 
-    def is_patient(self):
-        if '1' in self.identity:
-            return True
+    def get_identity(self):
+        """ 返回具体身份名称
+        """
+        res = ''
+        if self.is_donor: res += '捐献者、'
+        if self.is_volunteer: res += '志愿者、'
+        if self.is_doctor: res += '医生、'
+        if self.is_druggist: res += '药商、'
+        if self.is_hospital: res += '医院、'
+        if self.is_patient: res += '患者、'
+        if self.is_staff: res = '分站管理员、'
+        if self.is_superuser: res = '总站管理员、'
+        return res
+
+    def __getattr__(self, item):
+        """ 用来判断身份
+        item: is_patient, is_doctor, ...
+        """
+        if item in self.identity_dic and item.startswith('is_'):
+            # 判断非属性并且以 `is_`开头
+            if self.identity_dic[item] in self.identity:
+                return True
+            else:
+                return False
         else:
-            return False
+            super(User, self).__getattr__(item)
 
-
-    def set_doctor(self):
-        if '2' not in self.identity:
-            self.identity += '2,'
-
-    def del_doctor(self):
-        if '2,' in self.identity:
-            self.identity.replace('2,','')
-
-    def is_doctor(self):
-        if '2' in self.identity:
-            return True
+    def __setattr__(self, key, value):
+        """ 用来设置用户身份
+        Usage: self.is_patient = True
+        设定的值只允许为True, 其它值抛出异常。
+        """
+        if key in self.identity_dic and key.startswith('is_'):
+            if self.identity_dic[key] not in self.identity and value is True:
+                self.identity += self.identity_dic[key]
+                self.save(update_fields=["identity"])
+            else:
+                raise Exception('Value not permit, Just allow `True`')
         else:
-            return False
+            # 不符合条件时调用父类的该方法，避免AttributeError
+            super(User, self).__setattr__(key, value)
 
-
-    def set_hospital(self):
-        if '3' not in self.identity:
-            self.identity += '3,'
-
-    def del_hospital(self):
-        if '3,' in self.identity:
-            self.identity.replace('3,','')
-
-    def is_hospital(self):
-        if '3' in self.identity:
-            return True
+    def __delattr__(self, item):
+        """ 用于删除用户身份
+        Usage: del self.is_patient, ....
+        """
+        if item in self.identity_dic:
+            if self.identity_dic[item]+',' in self.identity:
+                self.identity = self.identity.replace(self.identity_dic[item], '')
+                self.save(update_fields=["identity"])
+            else:
+                raise Exception('User is not %s'%self.identity_dic[item][3:])
         else:
-            return False
-
-
-    def set_donor(self):
-        if '4' not in self.identity:
-            self.identity += '4,'
-
-    def del_donor(self):
-        if '4,' in self.identity:
-            self.identity.replace('4,','')
-
-    def is_donor(self):
-        if '4' in self.identity:
-            return True
-        else:
-            return False
-
-
-    def set_volunteer(self):
-        if '5' not in self.identity:
-            self.identity += '5,'
-
-    def del_volunteer(self):
-        if '5,' in self.identity:
-            self.identity.replace('5,','')
-
-    def is_volunteer(self):
-        if '5' in self.identity:
-            return True
-        else:
-            return False
-
-
-    def set_druggist(self):
-        if '6' not in self.identity:
-            self.identity += '6,'
-
-    def del_druggist(self):
-        if '6,' in self.identity:
-            self.identity.replace('6,','')
-
-    def is_druggist(self):
-        if '6' in self.identity:
-            return True
-        else:
-            return False
+            super(User, self).__delattr__(item)

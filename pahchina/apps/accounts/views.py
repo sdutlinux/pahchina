@@ -17,17 +17,13 @@ from .froms import RegisterForm
 
 def pah_register(request):
 
+    form = RegisterForm
     if request.method == "POST":
             form = RegisterForm(request.POST.copy())
             if form.is_valid():
-                username = form.cleaned_data["username"]
-                email = form.cleaned_data["email"]
-                password1 = form.cleaned_data["password1"]
-                identity = form.cleaned_data['identity']
-                User.objects.create_user(username, email, password1, identity=identity)
+                form.save()
                 return HttpResponse('<script>alert("注册成功！");top.location="/"</script>')
 
-    form = RegisterForm
     return r2r('register.html', locals(), context_instance=RequestContext(request))
 
 
