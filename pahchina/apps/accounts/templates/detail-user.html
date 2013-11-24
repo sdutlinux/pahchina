@@ -9,6 +9,14 @@
 <h2>用户{{ object_user.username }}</h2>
 <table class="table bordered" border="0">
     <tr>
+        <th>头像</th>
+        <th>
+            {% if object_user.avatar %}
+                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}" width="100px;"/>
+            {% endif %}
+        </th>
+    </tr>
+    <tr>
         <th>用户名</th>
         <td>{{ object_user.username }}</td>
     </tr>

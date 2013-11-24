@@ -136,7 +136,6 @@ INSTALLED_APPS = (
     'pahchina.apps.accounts',
     'pahchina.apps.volunteer',
     'pahchina.apps.activity'
-    'DjangoUeditor', # 富文本编辑器
 )
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -169,37 +168,6 @@ LOGGING = {
         },
     }
 }
-
-# ueditor 设置
-
-UEDITOR_SETTINGS={
-        "toolbars": {           #定义多个工具栏显示的按钮，允行定义多个
-            "simple": [[ 'source', '|','bold', 'italic', 'underline']],
-
-            "common":[['source','|','undo', 'redo', '|','bold', 'italic',
-                     'underline', 'autotypeset', '|', 'forecolor',
-                     'backcolor','|', 'link', 'unlink','|','insertimage']],
-            "list": [['insertorderedlist']],
-            "img": [['insertimage']]
-        },
-        "images_upload": {
-            "allow_type": "jpg,png",                            #定义允许的上传的图片类型
-            "path": "ueditor_upload/image_upload",                 #定义默认的上传路径
-            "max_size": "5000kb"                                #定义允许上传的图片大小, 不可以设置为0
-        },
-        "files_upload": {
-            "allow_type": "zip,rar",   #定义允许的上传的文件类型
-            "path": "ueditor_upload/file_upload",                   #定义默认的上传路径
-            "max_size": "5000kb"       #定义允许上传的文件大小，不可以设置为0
-        },
-        "image_manager": {
-            "path": ""         #图片管理器的位置,如果没有指定，默认跟图片路径上传一样
-        },
-        "scrawl_upload": {
-            "path":""           #涂鸦图片默认的上传路径
-        }
-    }
-
 
 try:
     from local_settings import *

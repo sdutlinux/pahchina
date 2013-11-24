@@ -4,7 +4,7 @@
 __author__ = 'zhwei'
 
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 from .models import User
 
@@ -65,3 +65,11 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class UpdateUserForm(forms.ModelForm):
+
+
+
+    class Meta:
+        model = User
+        fields=('username', 'email', 'avatar', 'is_active')
