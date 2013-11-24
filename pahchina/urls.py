@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # include accounts
-    url(r'^accounts/', include('pahchina.apps.accounts.urls'))
+    url(r'^accounts/', include('pahchina.apps.accounts.urls')),
+    url(r'^activity/', include('pahchina.apps.activity.urls'))
 )
