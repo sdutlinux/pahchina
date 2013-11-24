@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
+from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -21,4 +23,4 @@ urlpatterns = patterns('',
     # include accounts
     url(r'^accounts/', include('pahchina.apps.accounts.urls')),
     url(r'^activity/', include('pahchina.apps.activity.urls'))
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

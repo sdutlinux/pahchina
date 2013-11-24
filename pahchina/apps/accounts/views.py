@@ -9,10 +9,17 @@ from django.shortcuts import render_to_response as r2r
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
 
 from .models import User
-from .froms import RegisterForm
+from .froms import RegisterForm, UpdateUserForm
+
+class SuperUser(generic.View):
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super(SuperUser, self).dispatch(*args, **kwargs)
 
 
 def pah_register(request):
@@ -25,7 +32,6 @@ def pah_register(request):
                 return HttpResponse('<script>alert("注册成功！");top.location="/"</script>')
 
     return r2r('register.html', locals(), context_instance=RequestContext(request))
-
 
 def pah_login(request):
     """ 网站登录
@@ -63,7 +69,7 @@ def admin_index(request):
     return r2r('admin-index.html', locals(),
                context_instance=RequestContext(request))
 
-class ListUser(generic.ListView):
+class ListUser(generic.ListView, SuperUser):
     """ 列出所有用户
     """
     model = User
@@ -82,6 +88,7 @@ class CreateUser(generic.CreateView):
     """ 创建用户
     """
     model = User
+    form_class = RegisterForm
     success_url = reverse_lazy('list-user')
     template_name = 'update-user.html'
 
@@ -89,6 +96,7 @@ class UpdateUser(generic.UpdateView):
     """ 更新用户详情
     """
     model = User
+    form_class = UpdateUserForm
     success_url = reverse_lazy('list-user')
     template_name = 'update-user.html'
 
