@@ -1,15 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_ul}}
+{% extends 'base-admin.html' %}
 
-    <input type="submit"/>
+{% block title %}
+查看用户 {{ object_user.username }}
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+
+<table class="table border">
+    {{ form.as_table }}
+</table>
+
+    <a class="button" onclick="location.href=document.referrer;">返回</a>
+    <input class="button black" type="submit" value="提交"/>
 </form>
-</body>
-</html>
+
+
+{% endblock %}

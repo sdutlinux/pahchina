@@ -11,6 +11,10 @@ PAH中国肺动脉高压联盟--平台网站
 
 *更多见`requirements.txt`文件*
 
+## 前端
+
+使用[blueprint](http://www.blueprintcss.org/)
+
 ## 协作方式
 
 + master为稳定分支

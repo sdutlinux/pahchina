@@ -1,23 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'base-admin.html' %}
 
+{% block title %}管理用户{% endblock %}
+
+{% block content %}
+
+    <h2>管理用户</h2>
 <a href="{% url 'create-user' %}">添加用户</a>
 <br/>
+<table class="table border">
+<thead>
+<tr>
+    <th>用户名</th>
+    <th>email</th>
+    <th>姓名</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+    {% for user in user_list %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}{{ user.last_name }}</td>
+        <td>
+        <a class="button small" href="{% url 'update-user' user.id %}">修改</a>
+        <a class="button red small" href="{% url 'delete-user' user.id %}">删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-<ul>
-{% for user in user_list %}
-    <li>
-    <a href="{% url 'detail-user' user.id %}">{{ user.username }}</a>&nbsp;
-    {{ user.email }}
-    </li>
-{% endfor %}
+{% endblock %}
 
-</ul>
-
-
-</body>
-</html>
