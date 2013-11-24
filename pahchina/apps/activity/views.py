@@ -1,5 +1,4 @@
 # Create your views here.
-from django.http import HttpResponse
 from django.views import generic
 from ...apps.activity.models import Activity
 from django.core.urlresolvers import reverse_lazy

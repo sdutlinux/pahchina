@@ -1,13 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-{% for activity in activity_list %}
-    <li>
-    {{ activity.name }}
-    </li>
-{% endfor %}
-</body>
-</html>
+{% extends 'base-index.html' %}
+
+{% block title %}活动通知{% endblock %}
+
+{% block content %}
+
+    <h2>活动列表</h2>
+<a href="{% url 'create-user' %}"></a>
+<br/>
+<table class="table border">
+<thead>
+<tr>
+    <th>活动名称</th>
+    <th>活动时间</th>
+    <th>活动地点</th>
+    <th>活动简述</th>
+</tr>
+</thead>
+    <tbody>
+    {% for activity in activity_list %}
+    <tr>
+        <td><a href="{% url 'show-activity' activity.id %}">{{ activity.name }}</a></td>
+        <td>{{ activity.activity_time }}</td>
+        <td>{{ activity.place }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
