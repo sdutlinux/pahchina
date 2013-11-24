@@ -1,7 +1,7 @@
 {% extends 'base-index.html' %}
 
 {% block title %}
-登录
+注册用户
 {% endblock %}
 
 {% block head %}
@@ -23,8 +23,8 @@
 
     <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
-    <a class="button" href="{% url 'register' %}">注册</a>
-    <input class="button green" type="submit" value="登录"/>
+    <input class="button green" type="submit" value="注册"/>
+    <a class="button" href="{% url 'login' %}">去登录</a>
     </form>
 
 {% endblock %}
