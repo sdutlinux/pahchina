@@ -34,3 +34,7 @@ class UpdatePatient(generic.UpdateView, SuperUser):
     form_class = UpdatePatientForm
     success_url = reverse_lazy('list-patient')
     template_name = 'update-patient.html'
+
+class Profile(generic.TemplateView):
+
+    template_name = 'profile-patient.html'

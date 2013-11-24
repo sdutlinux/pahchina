@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^register/$', views.pah_register, name='register'),
     url(r'^logout$', views.pah_logout, name='logout'),
 
+    url(r'^password/reset/$', views.PasswordReset.as_view(), name='password-reset'),
+
     url(r'^$', views.admin_index, name='admin-index'),
 
     url(r'^user/list$', views.ListUser.as_view(), name='list-user'),

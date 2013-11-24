@@ -34,19 +34,20 @@
 
 <div class="wrapper">
     <div class="top-logo">
-    <h1>网站标题</h1>
+    <h1>PAH中国肺动脉高压联盟</h1>
     </div>
 </div>
 
 <div class="topbar">
 	<div class="wrapper">
     	<div class="module self-menu">
-        	<a href="/">网站首页</a>
-        	<a href="">网站后台</a>
+        	<a href="{% url 'index' %}">网站首页</a>
+        	<a href="{% url 'admin-index' %}">网站后台</a>
+        	<a href="{% url 'about' %}">关于我们</a>
         </div>
         <div class="sub">
             {% if user.is_authenticated %}
-                <a href=""><b>{{ user.username }}</b></a>
+                <a href="{{ user.get_profile_url }}"><b>{{ user.username }}</b></a>
                 <a href="{% url 'logout' %}">注销</a>
             {% endif %} 
         </div>

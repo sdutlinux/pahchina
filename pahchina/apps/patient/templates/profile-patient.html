@@ -1,0 +1,11 @@
+{% extends 'base-index.html' %}
+
+{% block title %}个人主页{% endblock %}
+
+{% block content %}
+
+    <h1>这是患者页面</h1>
+    <h2>{{ user.username }}</h2>
+    <h3>{{ user.patient.get_sex }}</h3>
+
+{% endblock %}

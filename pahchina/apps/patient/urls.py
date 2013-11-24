@@ -11,6 +11,8 @@ from . import views
 
 urlpatterns = patterns('',
 
+    url(r'^profile/$', views.Profile.as_view(), name='profile-patient'),
+
     url(r'^list/$', views.ListPatient.as_view(), name='list-patient'),
     url(r'^detail/(?P<pk>\d+)/$', views.DetailPatient.as_view(), name='detail-patient'),
     url(r'^update/(?P<pk>\d+)/$', views.UpdatePatient.as_view(), name='update-patient'),

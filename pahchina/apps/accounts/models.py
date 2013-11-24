@@ -34,6 +34,17 @@ class User(AbstractUser):
         用户后台的用户管理
         """
         return '/accounts/user/%s' % self.id
+    def get_profile_url(self):
+        """ 返回个人主页链接
+        """
+        if self.is_donor: res = '/'
+        elif self.is_volunteer: res = '/'
+        elif self.is_doctor: res = '/'
+        elif self.is_druggist: res = '/'
+        elif self.is_hospital: res = '/'
+        elif self.is_patient: res = '/patients/profile'
+        else: res ='/'
+        return res
 
     def get_identity(self):
         """ 返回具体身份名称
