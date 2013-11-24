@@ -136,7 +136,6 @@ INSTALLED_APPS = (
     'pahchina.apps.accounts',
     'pahchina.apps.volunteer',
     'pahchina.apps.activity'
-    'DjangoUeditor', # 富文本编辑器
 )
 
 AUTH_USER_MODEL = 'accounts.User'

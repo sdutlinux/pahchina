@@ -1,0 +1,20 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+查看活动 {{ object_activity.name }}
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+
+<table class="table border">
+    {{ form.as_table }}
+</table>
+
+    <a class="button" onclick="location.href=document.referrer;">返回</a>
+    <input class="button black" type="submit" value="提交"/>
+</form>
+
+
+{% endblock %}

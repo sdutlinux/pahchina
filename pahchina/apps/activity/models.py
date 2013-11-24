@@ -15,6 +15,7 @@ class Activity(models.Model):
     describe = models.TextField(verbose_name='活动描述')
     remarks = models.TextField(verbose_name='活动备注', blank=True, null=True)
     pageview = models.IntegerField(default=0)
-    class Meta:
-        verbose_name = '活动'
-        verbose_name_plural = '活动'
+
+    #class Meta:
+    #    verbose_name = '活动'
+    #    #verbose_name_plural = '活动'

@@ -18,7 +18,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^ueditor/',include('DjangoUeditor.urls' )), # 富文本编辑器
     # include accounts
     url(r'^accounts/', include('pahchina.apps.accounts.urls')),
     url(r'^activity/', include('pahchina.apps.activity.urls'))

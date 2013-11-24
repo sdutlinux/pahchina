@@ -1,11 +1,11 @@
-{% extends 'base-index.html' %}
+{% extends 'base-admin.html' %}
 
 {% block title %}活动通知{% endblock %}
 
 {% block content %}
 
     <h2>活动列表</h2>
-<a href="{% url 'create-user' %}"></a>
+<a href="{% url 'create-actiyity' %}">添加活动</a>
 <br/>
 <table class="table border">
 <thead>
@@ -18,7 +18,7 @@
     <tbody>
     {% for activity in activity_list %}
     <tr>
-        <td><a href="{% url 'detail-activity' activity.id %}">{{ activity.name }}</a></td>
+        <td><a href="{% url 'update-actiyity' activity.id %}">{{ activity.name }}</a></td>
         <td>{{ activity.activity_time|date:'y-m-d-h' }}</td>
         <td>{{ activity.place }}</td>
     </tr>

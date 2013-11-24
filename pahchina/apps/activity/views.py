@@ -9,7 +9,7 @@ class ListActivity(generic.ListView):
 
     model = Activity
     context_object_name = 'activity_list'
-    template_name = 'list-activity.html'
+    template_name = 'list-activity-admin.html'
 
 
 class DetailActivity(generic.DetailView):
@@ -28,12 +28,12 @@ class DetailActivity(generic.DetailView):
 class CreateActivity(generic.CreateView):
     model = Activity
     success_url = reverse_lazy('list-activity')
-    template_name = 'update-activity.html'
+    template_name = 'update-activity-admin.html'
 
 class UpdateActivity(generic.UpdateView):
     model = Activity
     success_url = reverse_lazy('list-activity')
-    template_name = 'update-activity.html'
+    template_name = 'update-activity-admin.html'
 
 
 class DeleteActivity(generic.DeleteView):
