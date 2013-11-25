@@ -7,8 +7,8 @@
 {% block content %}
     <h2>患者详情页面</h2>
     <div>
-        <a href="{% url 'list-patient' %}" class="button">返回列表</a>
-        <a href="{% url 'update-patient' patient.id %}" class="button black">修改信息</a>
+        <a href="{% url 'admin-list-patient' %}" class="button">返回列表</a>
+        <a href="{% url 'admin-update-patient' patient.id %}" class="button black">修改信息</a>
     </div>
     <table class="table bordered">
     {% include 'includes/patient-info-as-table.html' %}

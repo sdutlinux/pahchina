@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.urlresolvers import reverse
 
 
 class User(AbstractUser):
@@ -32,7 +33,7 @@ class User(AbstractUser):
         """ 获取用户URL
         用户后台的用户管理
         """
-        return '/accounts/user/%s' % self.id
+        return reverse('admin-detail-user', kwargs={'pk': self.id})
 
     def get_profile_url(self):
         """ 返回个人主页链接

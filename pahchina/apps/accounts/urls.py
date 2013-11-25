@@ -12,24 +12,21 @@ from . import views
 
 urlpatterns = patterns('',
 
+    url(r'^$', views.admin_index, name='admin-index'),
+
     url(r'^login/$', views.pah_login, name='login'),
     url(r'^register/$', views.pah_register, name='register'),
     url(r'^logout$', views.pah_logout, name='logout'),
 
     url(r'^profile/update/$', views.UpdateProfile.as_view(), name='update-profile'),
 
-    #url(r'^password/reset/$', password_reset, {'template_name':'password_reset_form.html'}, name='password-reset'),
+    url(r'^user/list$', views.ListUser.as_view(), name='admin-list-user'),
+    url(r'^admin/user/create/$', views.CreateUser.as_view(), name='admin-create-user'),
+    url(r'^admin/user/(?P<pk>\d+)/$', views.DetailUser.as_view(), name='admin-detail-user'),
 
-    url(r'^$', views.admin_index, name='admin-index'),
+    url(r'^admin/user/update/(?P<pk>\d+)/$', views.UpdateUser.as_view(), name='admin-update-user'),
 
-    url(r'^user/list$', views.ListUser.as_view(), name='list-user'),
-    url(r'^user/create$', views.CreateUser.as_view(), name='create-user'),
-    url(r'^user/(?P<pk>\d+)$', views.DetailUser.as_view(), name='detail-user'),
-
-    url(r'^user/update/(?P<pk>\d+)$', views.UpdateUser.as_view(), name='update-user'),
-    url(r'^user/update/(?P<pk>\d+)/password$', views.ListUser.as_view(), name='update-user-password'),
-
-    url(r'^user/delete/(?P<pk>\d+)$', views.DeleteUser.as_view(), name='delete-user'),
+    url(r'^admin/user/delete/(?P<pk>\d+)/$', views.DeleteUser.as_view(), name='admin-delete-user'),
 )
 
 urlpatterns += patterns('',

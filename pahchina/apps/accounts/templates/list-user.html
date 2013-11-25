@@ -5,7 +5,7 @@
 {% block content %}
 
     <h2>管理用户</h2>
-<a href="{% url 'create-user' %}">添加用户</a>
+<a href="{% url 'admin-create-user' %}">添加用户</a>
 <br/>
 <table class="table border">
 <thead>
@@ -25,8 +25,8 @@
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.get_identity }}</td>
         <td>
-        <a class="button small" href="{% url 'update-user' user.id %}">修改</a>
-        <a class="button red small" href="{% url 'delete-user' user.id %}">删除</a>
+        <a class="button small" href="{% url 'admin-update-user' user.id %}">修改</a>
+        <a class="button red small" href="{% url 'admin-delete-user' user.id %}">删除</a>
         </td>
     </tr>
     {% endfor %}
