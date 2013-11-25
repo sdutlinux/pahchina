@@ -13,14 +13,13 @@
     <th>活动名称</th>
     <th>活动时间</th>
     <th>活动地点</th>
-    <th>活动简述</th>
 </tr>
 </thead>
     <tbody>
     {% for activity in activity_list %}
     <tr>
-        <td><a href="{% url 'show-activity' activity.id %}">{{ activity.name }}</a></td>
-        <td>{{ activity.activity_time }}</td>
+        <td><a href="{% url 'detail-activity' activity.id %}">{{ activity.name }}</a></td>
+        <td>{{ activity.activity_time|date:'y-m-d-h' }}</td>
         <td>{{ activity.place }}</td>
     </tr>
     {% endfor %}

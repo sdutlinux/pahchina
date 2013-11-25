@@ -18,6 +18,13 @@ class DetailActivity(generic.DetailView):
     context_object_name = 'object_activity'
     template_name = 'detail-activity.html'
 
+    #def get_object(self):
+    def get_object(self, queryset=None):
+        object = super(DetailActivity, self).get_object()
+        object.pageview += 1
+        object.save()
+        return object
+
 class CreateActivity(generic.CreateView):
     model = Activity
     success_url = reverse_lazy('list-activity')

@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'pahchina.apps.accounts',
     'pahchina.apps.volunteer',
+    'DjangoUeditor'
     'pahchina.apps.activity'
 )
 
