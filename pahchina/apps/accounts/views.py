@@ -15,7 +15,8 @@ from django.contrib.auth.forms import UserCreationForm
 from ..utils import SuperUser
 
 from .models import User
-from .froms import RegisterForm, UpdateUserForm, UpdateProfileForm
+from .froms import (RegisterForm,
+    UpdateUserForm, UpdateProfileForm, )#PasswordResetForm)
 
 
 
@@ -112,7 +113,8 @@ class PasswordReset(generic.FormView):
     """
     form_class = PasswordResetForm
     success_url = reverse_lazy('login')
-    template_name = 'password-reset.html'
+    template_name = 'registration/password_reset_form.html'
+
 
 class UpdateProfile(generic.UpdateView):
     """ 用户修改个人信息
