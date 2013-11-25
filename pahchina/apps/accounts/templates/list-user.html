@@ -13,15 +13,17 @@
     <th>用户名</th>
     <th>email</th>
     <th>姓名</th>
+    <th>身份</th>
     <th>操作</th>
 </tr>
 </thead>
     <tbody>
     {% for user in user_list %}
     <tr>
-        <td>{{ user.username }}</td>
+        <td><a href="{{ user.get_absolute_url }}">{{ user.username }}</a></td>
         <td>{{ user.email }}</td>
-        <td>{{ user.first_name }}{{ user.last_name }}</td>
+        <td>{{ user.get_full_name }}</td>
+        <td>{{ user.get_identity }}</td>
         <td>
         <a class="button small" href="{% url 'update-user' user.id %}">修改</a>
         <a class="button red small" href="{% url 'delete-user' user.id %}">删除</a>

@@ -12,7 +12,7 @@ from . import views
 urlpatterns = patterns('',
 
     url(r'^login/$', views.pah_login, name='login'),
-    url(r'^register/$', views.RegisterForm.as_view(), name='register'),
+    url(r'^register/$', views.pah_register, name='register'),
     url(r'^logout$', views.pah_logout, name='logout'),
 
 
