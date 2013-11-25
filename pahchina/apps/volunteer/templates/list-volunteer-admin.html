@@ -26,6 +26,7 @@
         <td>
         <a class="button small" href="{% url 'admin-update-volunteer' volunteer.id %}">修改</a>
         <a class="button red small" href="{% url 'admin-delete-volunteer' volunteer.id %}">删除</a>
+        <a class="button green small" href="{% url 'show-volunteer' volunteer.id %}">预览</a>
         </td>
     </tr>
     {% endfor %}

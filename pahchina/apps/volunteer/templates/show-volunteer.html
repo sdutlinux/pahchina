@@ -1,7 +1,7 @@
-{% extends 'base-admin.html' %}
+{% extends 'base-index.html' %}
 
 {% block title %}
-查看用户 {{ object_volunteer.user.username }}
+查看志愿者 {{ object_volunteer.user.username }}
 {% endblock %}
 
 {% block content %}
@@ -19,6 +19,10 @@
     <tr>
         <th>用户名</th>
         <td>{{ object_volunteer.user.username }}</td>
+    </tr>
+    <tr>
+        <th>性别</th>
+        <td>{{ object_volunteer.get_sex }}</td>
     </tr>
     <tr>
         <th>姓名</th>
@@ -63,7 +67,7 @@
     <tr>
         <th>操作</th>
         <td>
-        <a class="button" href="{% url 'update-volunteer' object_volunteer.user.id %}">修改</a>
+        <a class="button" href="{% url 'update-volunteer' object_volunteer.id %}">修改</a>
         </td>
     </tr>
 </table>

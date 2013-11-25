@@ -27,6 +27,7 @@
         <td>
         <a class="button small" href="{% url 'admin-update-activity' activity.id %}">修改</a>
         <a class="button red small" href="{% url 'admin-delete-activity' activity.id %}">删除</a>
+        <a class="button green small" href="{% url 'show-activity' activity.id %}">预览</a>
         </td>
     </tr>
     {% endfor %}

@@ -7,7 +7,7 @@ class Volunteer(models.Model):
     SEX = (
         ('M', '男'),
         ('W', '女'),
-        ('UK', '隐私')
+        ('U', '隐私')
     )
     user = models.OneToOneField(User,verbose_name='姓名')
     sex = models.CharField(max_length=1, choices=SEX, verbose_name='性别', default='UK')

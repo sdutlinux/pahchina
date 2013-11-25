@@ -4,6 +4,7 @@
 活动详情 {{ object_activity.name }}
 {% endblock %}
 
+
 {% block content %}
 
 <h2>活动-{{ object_activity.name }}</h2>
@@ -23,6 +24,13 @@
     <tr>
     <th style="text-align: center">活动地点</th>
     <td>{{ object_activity.place }}</td>
+    </tr>
+    <tr>
+    <th style="text-align: center">参加志愿者</th>
+    <td>{% for foo in object_activity.volunteer.all %}
+    {{ foo.user.username }},
+    {% endfor %}
+    </td>
     </tr>
     </table>
     <h6 style="text-align: center">活动详情</h6>
