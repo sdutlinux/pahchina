@@ -22,5 +22,6 @@ urlpatterns = patterns('',
 
     # include accounts
     url(r'^accounts/', include('pahchina.apps.accounts.urls')),
+     url(r'^volunteer/', include('pahchina.apps.volunteer.urls')),
     url(r'^activity/', include('pahchina.apps.activity.urls'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

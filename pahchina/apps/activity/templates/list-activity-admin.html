@@ -5,22 +5,29 @@
 {% block content %}
 
     <h2>活动列表</h2>
-<a href="{% url 'create-actiyity' %}">添加活动</a>
+<a href="{% url 'create-activity' %}">添加活动</a>
 <br/>
 <table class="table border">
 <thead>
 <tr>
     <th>活动名称</th>
     <th>活动时间</th>
+    <th>创建时间</th>
     <th>活动地点</th>
+    <th>活动操作</th>
 </tr>
 </thead>
     <tbody>
     {% for activity in activity_list %}
     <tr>
-        <td><a href="{% url 'update-actiyity' activity.id %}">{{ activity.name }}</a></td>
-        <td>{{ activity.activity_time|date:'y-m-d-h' }}</td>
+        <td><a href="{% url 'detail-activity' activity.id %}">{{ activity.name }}</a></td>
+        <td>{{ activity.activity_time|date:'y年m月d日h时' }}</td>
+        <td>{{ activity.create_time|date:'y年m月d日h时s秒' }}</td>
         <td>{{ activity.place }}</td>
+        <td>
+        <a class="button small" href="{% url 'update-activity' activity.id %}">修改</a>
+        <a class="button red small" href="{% url 'delete-activity' activity.id %}">删除</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
