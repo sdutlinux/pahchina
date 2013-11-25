@@ -17,9 +17,6 @@ class Volunteer(models.Model):
     phone = models.CharField(max_length=11, verbose_name='联系手机')
     address = models.CharField(max_length=50, blank=True, null=True, verbose_name='住址')
 
-    class Meta:
-        verbose_name = '志愿者'
-        verbose_name_plural = '志愿者'
 
     def __unicode__(self):
         return self.user.username

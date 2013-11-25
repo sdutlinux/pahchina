@@ -1,0 +1,72 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+查看用户 {{ object_volunteer.user.username }}
+{% endblock %}
+
+{% block content %}
+
+<h2>用户{{ object_volunteer.user.username }}</h2>
+<table class="table bordered" border="0">
+    <tr>
+        <th>头像</th>
+        <th>
+            {% if object_volunteer.user.avatar %}
+                <img src="{{ object_volunteer.user.avatar.user.url }}" alt="{{ object_volunteer.user.username }}" width="100px;"/>
+            {% endif %}
+        </th>
+    </tr>
+    <tr>
+        <th>用户名</th>
+        <td>{{ object_volunteer.user.username }}</td>
+    </tr>
+    <tr>
+        <th>姓名</th>
+        <td>{{ object_volunteer.user.first_name}}{{object_volunteer.user.last_name }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ object_volunteer.user.email }}</td>
+    </tr>
+    <tr>
+        <th>身份</th>
+        <td>{{ object_volunteer.user.get_identity }}</td>
+    </tr>
+    <tr>
+        <th>上次登录</th>
+        <td>{{ object_volunteer.user.last_login | date:"Y年m月d日h点" }}</td>
+    </tr>
+    <tr>
+        <th>加入日期</th>
+        <td>{{ object_volunteer.user.date_joined | date:"Y年m月d日h点" }}</td>
+    </tr>
+    <tr>
+        <th>活跃度</th>
+        <td>{{ bject_volunteer.liveness }}</td>
+    </tr>
+    <tr>
+        <th>联系电话</th>
+        <td>{{ object_volunteer.phone }}</td>
+    </tr>
+    <tr>
+        <th>家庭住址</th>
+        <td>{{ object_volunteer.place }}</td>
+    </tr>
+    <tr>
+        <th>个人专长</th>
+        <td>{{ object_volunteer.specialty }}</td>
+    </tr>
+    <tr>
+        <th>个人意愿</th>
+        <td>{{ object_volunteer.aspiration }}</td>
+    </tr>
+    <tr>
+        <th>操作</th>
+        <td>
+        <a class="button" href="{% url 'update-volunteer' object_volunteer.user.id %}">修改</a>
+        <a class="button red" href="{% url 'delete-volunteer' object_volunteer.user.id %}">删除</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

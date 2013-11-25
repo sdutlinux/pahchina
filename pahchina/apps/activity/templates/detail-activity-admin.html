@@ -1,0 +1,31 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+活动详情 {{ object_activity.name }}
+{% endblock %}
+
+{% block content %}
+
+<h2>活动-{{ object_activity.name }}</h2>
+    <table class="table bordered" border="0">
+    <tr>
+    <th style="text-align: center">活动名称</th>
+    <td>{{ object_activity.name }}</td>
+    </tr>
+    <tr>
+    <th style="text-align: center">活动创建时间</th>
+    <td>{{ object_activity.create_time }}</td>
+    </tr>
+    <tr>
+    <th style="text-align: center">活动时间</th>
+    <td>{{ object_activity.activity_time }}</td>
+    </tr>
+    <tr>
+    <th style="text-align: center">活动地点</th>
+    <td>{{ object_activity.place }}</td>
+    </tr>
+    </table>
+    <h6 style="text-align: center">活动详情</h6>
+    <div><pre>{{ object_activity.describe }}</pre></div>
+
+{% endblock %}
