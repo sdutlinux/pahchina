@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.db.models.signals import post_save
+from django.core.urlresolvers import reverse
 
 from ..accounts.models import User
 from ..volunteer.models import Volunteer
@@ -40,7 +41,8 @@ class Patient(models.Model):
         else: return '隐私'
 
     def get_url(self):
-        return '/patients/detail/%s/'%self.id
+
+        return reverse('admin-detail-patient', kwargs={'pk': self.id})
 
     def __unicode__(self):
 

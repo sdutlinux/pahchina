@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 
 from ..utils import SuperUser
 
@@ -21,7 +21,9 @@ from .froms import (RegisterForm,
 
 
 def pah_register(request):
-
+    """ 网站注册
+    注册后同步创建其他身份
+    """
     form = RegisterForm
     if request.method == "POST":
             form = RegisterForm(request.POST.copy())
@@ -70,7 +72,7 @@ def admin_index(request):
                context_instance=RequestContext(request))
 
 class ListUser(generic.ListView, SuperUser):
-    """ 列出所有用户
+    """ 管理员列出所有用户
     """
     model = User
     context_object_name = 'user_list'
@@ -78,42 +80,35 @@ class ListUser(generic.ListView, SuperUser):
 
 
 class DetailUser(generic.DetailView, SuperUser):
-    """ 查看用户详情
+    """ 管理员查看用户详情
     """
     model = User
     context_object_name = 'object_user'
     template_name = 'detail-user.html'
 
 class CreateUser(generic.CreateView, SuperUser):
-    """ 创建用户
+    """ 管理员创建用户
     """
     model = User
     form_class = RegisterForm
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
 
 class UpdateUser(generic.UpdateView, SuperUser):
-    """ 更新用户详情
+    """ 管理员更新用户详情
     """
     model = User
     form_class = UpdateUserForm
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
 
 
 class DeleteUser(generic.DeleteView, SuperUser):
-    """ 删除用户
+    """ 管理员删除用户
     """
     model = User
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'user_confirm_delete.html'
-
-class PasswordReset(generic.FormView):
-    """ 用户通过Email重置密码
-    """
-    form_class = PasswordResetForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/password_reset_form.html'
 
 
 class UpdateProfile(generic.UpdateView):
@@ -126,3 +121,21 @@ class UpdateProfile(generic.UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+class UpdatePassword(generic.FormView):
+    """ 用户或管理员更新个人密码
+    """
+
+    form_class = PasswordChangeForm
+    template_name = 'update-user-profile.html'
+
+    def get_success_url(self):
+        return self.request.user.get_profile_url()
+
+    def get_form_kwargs(self):
+        kwargs = super(UpdatePassword, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(UpdatePassword, self).form_valid(form)

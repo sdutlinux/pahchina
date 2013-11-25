@@ -9,7 +9,7 @@ class Volunteer(models.Model):
         ('W', '女'),
         ('UK', '隐私')
     )
-    user = models.OneToOneField(User, on_delete=True, verbose_name='姓名')
+    user = models.OneToOneField(User,verbose_name='姓名')
     sex = models.CharField(max_length=1, choices=SEX, verbose_name='性别', default='UK')
     specialty = models.CharField(max_length=100, blank=True, null=True, verbose_name='个人专长') #专长
     aspiration = models.CharField(max_length=50, blank=True, null=True, verbose_name='个人意愿')

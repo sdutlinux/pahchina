@@ -14,3 +14,13 @@ class UpdatePatientForm(forms.ModelForm):
         fields = ('sex', 'id_no', 'hometown', 'local',
                   'onset_date', 'onset_causes', 'checklist',
                   'disease_quality', 'mood','onset_process')
+
+
+#class UpdatePasswordForm(forms.ModelForm):
+#
+#    old_password = forms.CharField(label=_("Old password"),
+#                               widget=forms.PasswordInput)
+#
+#    class Meta:
+#        model = Patient
+#        fields = ('password')

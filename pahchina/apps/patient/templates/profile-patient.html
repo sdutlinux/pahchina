@@ -12,7 +12,9 @@
 
         <tr>
             <th></th>
-            <td><a class="button black" href="{% url 'update-profile' %}">点击修改以上个人信息</a></td>
+            <td><a class="button black" href="{% url 'update-profile' %}">点击修改以上个人信息</a>
+                <a href="{% url 'update-password' %}" class="button">修改登录密码</a>
+            </td>
         </tr>
 
         {% include 'includes/patient-info-as-table.html' %}

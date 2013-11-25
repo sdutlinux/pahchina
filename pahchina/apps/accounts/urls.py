@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^logout$', views.pah_logout, name='logout'),
 
     url(r'^profile/update/$', views.UpdateProfile.as_view(), name='update-profile'),
+    #url(r'^password/update/$', views.change_password, name='update-password'),
+    url(r'^password/update/$', views.UpdatePassword.as_view(), name='update-password'),
 
     url(r'^user/list$', views.ListUser.as_view(), name='admin-list-user'),
     url(r'^admin/user/create/$', views.CreateUser.as_view(), name='admin-create-user'),

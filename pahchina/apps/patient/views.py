@@ -17,38 +17,43 @@ from .forms import UpdatePatientForm
 from ..utils import SuperUser
 
 class DetailPatient(generic.DeleteView):
-
+    """ 管理员查看患者信息
+    """
     model = Patient
     context_object_name = 'patient'
     template_name = 'detail-patient.html'
 
 class ListPatient(generic.ListView, SuperUser):
-
+    """ 管理员查看患者列表
+    """
     model = Patient
     context_object_name = 'patient_list'
     template_name = 'list-patient.html'
 
 class UpdatePatient(generic.UpdateView, SuperUser):
-
+    """ 管理员更新患者信息
+    """
     model = Patient
     form_class = UpdatePatientForm
-    success_url = reverse_lazy('list-patient')
     template_name = 'update-patient.html'
 
-class Profile(generic.TemplateView):
+    def get_success_url(self):
+        return reverse('admin-detail-patient', kwargs=self.kwargs)
 
+class Profile(generic.DetailView):
+    """ 患者用来查看个人信息
+    """
     template_name = 'profile-patient.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data(**kwargs)
+    def get_object(self, queryset=None):
         try:
-            context['patient'] = self.request.user.patient
+            return self.request.user.patient
         except:
             raise Http404
-        return context
 
 class UpdateProfile(generic.UpdateView):
-
+    """ 患者更新个人信息
+    """
     form_class = UpdatePatientForm
     success_url = reverse_lazy('profile-patient')
     template_name = 'update-user-profile.html'

@@ -41,9 +41,10 @@
             <li><a href="{% url 'admin-list-user' %}">管理用户</a></li>
             <li><a href="{% url 'admin-list-patient' %}">管理患者</a></li>
             <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
-             <li class="selected"><a>活动管理</a></li>
+            <li class="selected"><a>活动管理</a></li>
             <li><a href="{% url 'admin-list-activity' %}">活动管理</a></li>
-            <li><a href="">菜单</a></li>
+            <li class="selected"><a>个人信息</a></li>
+            <li><a href="{% url 'update-password' %}">修改密码</a></li>
         </ul>
     </div>
     <div class="ten">
