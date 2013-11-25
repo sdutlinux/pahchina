@@ -1,0 +1,24 @@
+        <tr>
+            <th>用户名</th>
+            <td><a href="{{ object_user.get_absolute_url }}">{{ object_user.username }}</a></td>
+        </tr>
+        <tr>
+            <th>照片</th>
+            <td>
+                {% if object_user.avatar %}
+                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}"/>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <td>{{ object_user.get_full_name }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ object_user.email }}</td>
+        </tr>
+        <tr>
+            <th>身份</th>
+            <td>{{ object_user.get_identity }}</td>
+        </tr>

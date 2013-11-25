@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views import generic
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render_to_response as r2r
@@ -38,3 +38,20 @@ class UpdatePatient(generic.UpdateView, SuperUser):
 class Profile(generic.TemplateView):
 
     template_name = 'profile-patient.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Profile, self).get_context_data(**kwargs)
+        try:
+            context['patient'] = self.request.user.patient
+        except:
+            raise Http404
+        return context
+
+class UpdateProfile(generic.UpdateView):
+
+    form_class = UpdatePatientForm
+    success_url = reverse_lazy('profile-patient')
+    template_name = 'update-user-profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user.patient

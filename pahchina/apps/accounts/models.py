@@ -4,7 +4,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-import pahchina.apps.accounts
 
 class User(AbstractUser):
     """
@@ -34,6 +33,7 @@ class User(AbstractUser):
         用户后台的用户管理
         """
         return '/accounts/user/%s' % self.id
+
     def get_profile_url(self):
         """ 返回个人主页链接
         """
@@ -59,6 +59,12 @@ class User(AbstractUser):
         if self.is_staff: res = '分站管理员、'
         if self.is_superuser: res = '总站管理员、'
         return res
+
+    def get_full_name(self):
+        """ 符合中文姓名风格
+        """
+        full_name = '%s%s' % (self.last_name, self.first_name)
+        return full_name.strip()
 
     def __getattr__(self, item):
         """ 用来判断身份
