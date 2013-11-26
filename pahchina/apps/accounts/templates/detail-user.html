@@ -8,30 +8,7 @@
 
 <h2>用户{{ object_user.username }}</h2>
 <table class="table bordered" border="0">
-    <tr>
-        <th>头像</th>
-        <th>
-            {% if object_user.avatar %}
-                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}" width="100px;"/>
-            {% endif %}
-        </th>
-    </tr>
-    <tr>
-        <th>用户名</th>
-        <td>{{ object_user.username }}</td>
-    </tr>
-    <tr>
-        <th>姓名</th>
-        <td>{{ object_user.first_name}}{{object_user.last_name }}</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>{{ object_user.email }}</td>
-    </tr>
-    <tr>
-        <th>身份</th>
-        <td>{{ object_user.get_identity }}</td>
-    </tr>
+    {% include 'includes/user-info-as-table.html' %}
     <tr>
         <th>上次登录</th>
         <td>{{ object_user.last_login | date:"Y年m月d日h点" }}</td>
@@ -43,8 +20,8 @@
     <tr>
         <th>操作</th>
         <td>
-        <a class="button" href="{% url 'update-user' object_user.id %}">修改</a>
-        <a class="button red" href="{% url 'delete-user' object_user.id %}">删除</a>
+        <a class="button" href="{% url 'admin-update-user' object_user.id %}">修改</a>
+        <a class="button red" href="{% url 'admin-delete-user' object_user.id %}">删除</a>
         </td>
     </tr>
 </table>

@@ -1,0 +1,26 @@
+{% extends 'base-index.html' %}
+
+{% block title %}个人主页{% endblock %}
+
+{% block content %}
+
+    <h1>我的个人页面</h1>
+    <table class="table bordered">
+        {% with patient.user as object_user %}
+        {% include 'includes/user-info-as-table.html' %}
+        {% endwith %}
+
+        <tr>
+            <th></th>
+            <td><a class="button black" href="{% url 'update-profile' %}">点击修改以上个人信息</a></td>
+        </tr>
+
+        {% include 'includes/patient-info-as-table.html' %}
+
+        <tr>
+            <th></th>
+            <td><a href="{% url 'update-patient-profile' %}" class="button black">点击修改以上患者信息</a></td>
+        </tr>
+    </table>
+
+{% endblock %}

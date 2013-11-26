@@ -9,10 +9,13 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+from .apps.index import views
+
 
 urlpatterns = patterns('',
     # Examples:
-    #url(r'^$', '', name='index'),
+    url(r'^$', views.Index.as_view(), name='index'),
+    url(r'^about/$', views.About.as_view(), name='about'),
 
     # url(r'^pahchina/', include('pahchina.foo.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:

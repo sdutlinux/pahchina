@@ -139,7 +139,8 @@ INSTALLED_APPS = (
     'pahchina.apps.accounts',
     'pahchina.apps.patient',
     'pahchina.apps.volunteer',
-    'pahchina.apps.activity'
+    'pahchina.apps.activity',
+    'pahchina.apps.index',
 )
 
 AUTH_USER_MODEL = 'accounts.User'

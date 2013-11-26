@@ -7,7 +7,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render_to_response as r2r
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
@@ -15,7 +15,8 @@ from django.contrib.auth.forms import UserCreationForm
 from ..utils import SuperUser
 
 from .models import User
-from .froms import RegisterForm, UpdateUserForm
+from .froms import (RegisterForm,
+    UpdateUserForm, UpdateProfileForm, )#PasswordResetForm)
 
 
 
@@ -43,6 +44,8 @@ def pah_login(request):
                 login(request, user)
                 if user.is_superuser:
                     return HttpResponseRedirect(reverse('admin-index'))
+                elif user.is_patient:
+                    return HttpResponseRedirect(reverse('profile-patient'))
                 else:
                     return HttpResponse('请定义页面')
             else:
@@ -104,3 +107,22 @@ class DeleteUser(generic.DeleteView, SuperUser):
     model = User
     success_url = reverse_lazy('list-user')
     template_name = 'user_confirm_delete.html'
+
+class PasswordReset(generic.FormView):
+    """ 用户通过Email重置密码
+    """
+    form_class = PasswordResetForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/password_reset_form.html'
+
+
+class UpdateProfile(generic.UpdateView):
+    """ 用户修改个人信息
+    """
+    form_class = UpdateProfileForm
+    success_url = reverse_lazy('profile-patient')
+    template_name = 'update-user-profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+

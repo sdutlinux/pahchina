@@ -1,8 +1,6 @@
 {% extends 'base-admin.html' %}
 
-{% block title %}
-查看用户 {{ object_user.username }}
-{% endblock %}
+{% block title %}管理用户{% endblock %}
 
 {% block head %}
     <style>
@@ -28,7 +26,7 @@
 {% endblock %}
 
 {% block content %}
-
+<h2>用户管理</h2>
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 
 <table class="table border">

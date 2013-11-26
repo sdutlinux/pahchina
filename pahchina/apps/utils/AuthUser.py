@@ -17,3 +17,7 @@ class SuperUser(View):
         return super(SuperUser, self).dispatch(*args, **kwargs)
 
 
+class CurrentUser(View):
+
+    def dispatch(self, *args, **kwargs):
+        return super(CurrentUser, self).dispatch(*args, **kwargs)

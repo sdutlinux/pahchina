@@ -22,8 +22,8 @@
         <td>{{ patient.get_sex }}</td>
         <td>{{ patient.local }}</td>
         <td>
-        <a class="button small" href="{% url 'update-patient' patient.id %}">修改</a>
-        <a class="button red small" href="{% url 'delete-user' patient.user.id %}">删除</a>
+        <a class="button small" href="{% url 'admin-detail-patient' patient.id %}">修改</a>
+        <a class="button red small" href="{% url 'admin-delete-user' patient.user.id %}">删除</a>
         </td>
     </tr>
     {% endfor %}

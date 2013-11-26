@@ -8,9 +8,9 @@
 <meta name="description" content="{% block description %}{% endblock %}"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<link rel="stylesheet" href="/static/css/cutter.css">
-<script src="/static/js/jquery-1.3.2.min.js"></script>
-<script src="/static/js/cutter.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/cutter.css">
+<script src="{{ STATIC_URL }}js/jquery-1.3.2.min.js"></script>
+<script src="{{ STATIC_URL }}js/cutter.js"></script>
 {% block head %}
 
 {% endblock %}
@@ -38,9 +38,9 @@
     <div class="two">
         <ul class="sidebar">
             <li class="selected"><a>用户管理</a></li>
-            <li><a href="{% url 'list-user' %}">管理用户</a></li>
-            <li><a href="{% url 'list-patient' %}">管理患者</a></li>
-            <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
+            <li><a href="{% url 'admin-list-user' %}">管理用户</a></li>
+            <li><a href="{% url 'admin-list-patient' %}">管理患者</a></li>
+            <li><a href="{% url 'list-volunteer' %}">志愿者管理</a></li>
              <li class="selected"><a>活动管理</a></li>
             <li><a href="{% url 'admin-list-activity' %}">活动管理</a></li>
             <li><a href="">菜单</a></li>

@@ -1,0 +1,44 @@
+        <tr>
+            <th>性别</th>
+            <td>{{ patient.get_sex }}</td>
+        </tr>
+        <tr>
+            <th>身份证号码</th>
+            <td>{{ patient.id_no }}</td>
+        </tr>
+        <tr>
+            <th>户籍地</th>
+            <td>{{ patient.hometown }}</td>
+        </tr>
+        <tr>
+            <th>居住地</th>
+            <td>{{ patient.local }}</td>
+        </tr>
+        <tr>
+            <th>发病日期</th>
+            <td>{{ patient.onset_date }}</td>
+        </tr>
+        <tr>
+            <th>发病原因</th>
+            <td>{{ patient.onset_causes }}</td>
+        </tr>
+        <tr>
+            <th>检查单据</th>
+            <td>
+                {% if patient.checklist %}
+                    <img src="{{ patient.checklist.url }}" alt="{{ patient.user.username }}的检查单据"/>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>病性</th>
+            <td>{{ patient.disease_quality }}</td>
+        </tr>
+        <tr>
+            <th>心情</th>
+            <td>{{ patient.mood }}</td>
+        </tr>
+        <tr>
+            <th>发病过程</th>
+            <td>{{ patient.onset_process }}</td>
+        </tr>
