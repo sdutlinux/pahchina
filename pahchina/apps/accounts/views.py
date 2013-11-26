@@ -89,7 +89,7 @@ class CreateUser(generic.CreateView, SuperUser):
     """
     model = User
     form_class = RegisterForm
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
 
 class UpdateUser(generic.UpdateView, SuperUser):
@@ -97,7 +97,7 @@ class UpdateUser(generic.UpdateView, SuperUser):
     """
     model = User
     form_class = UpdateUserForm
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
 
 
@@ -105,7 +105,7 @@ class DeleteUser(generic.DeleteView, SuperUser):
     """ 删除用户
     """
     model = User
-    success_url = reverse_lazy('list-user')
+    success_url = reverse_lazy('admin-list-user')
     template_name = 'user_confirm_delete.html'
 
 class PasswordReset(generic.FormView):

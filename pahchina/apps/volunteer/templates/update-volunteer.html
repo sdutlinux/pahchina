@@ -1,17 +1,7 @@
-{% extends 'base-admin.html' %}
+{% extends 'base-index.html' %}
 
 {% block title %}
-查看活动 {{ object_activity.name }}
-{% endblock %}
-
-{% block head %}
-    <style>
-    #id_volunteer {
-        width: 190px;
-        height: 150px;
-        font-size: medium;
-    }
-    </style>
+查看志愿者 {{ object_volunteer.name }}
 {% endblock %}
 
 {% block content %}
