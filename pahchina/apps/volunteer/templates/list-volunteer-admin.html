@@ -1,11 +1,11 @@
 {% extends 'base-admin.html' %}
 
-{% block title %}活动通知{% endblock %}
+{% block title %}管理志愿者{% endblock %}
 
 {% block content %}
 
-    <h2>活动列表</h2>
-<br/>
+    <h2>管理志愿者</h2>
+
 <table class="table border">
 <thead>
 <tr>
@@ -19,13 +19,13 @@
     <tbody>
     {% for volunteer in volunteer_list %}
     <tr>
-        <td><a href="{% url 'detail-volunteer' volunteer.id %}">{{ volunteer.user.username }}</a></td>
-        <td>{{ volunteer.sex }}</td>
+        <td><a href="{% url 'admin-detail-volunteer' volunteer.id %}">{{ volunteer.user.username }}</a></td>
+        <td>{{ volunteer.get_sex }}</td>
         <td>{{ volunteer.liveness }}</td>
         <td>{{ volunteer.phone }}</td>
         <td>
-        <a class="button small" href="{% url 'update-volunteer' volunteer.id %}">修改</a>
-        <a class="button red small" href="{% url 'delete-volunteer' volunteer.id %}">删除</a>
+        <a class="button small" href="{% url 'admin-update-volunteer' volunteer.id %}">修改</a>
+        <a class="button red small" href="{% url 'admin-delete-volunteer' volunteer.id %}">删除</a>
         </td>
     </tr>
     {% endfor %}

@@ -6,9 +6,10 @@ from django.conf.urls import patterns, include, url
 from . import views
 
 urlpatterns = patterns('',
-                       url(r'^activity/list$', views.ListActivity.as_view(), name='list-activity'),
-                       url(r'^activity/(?P<pk>\d+)$', views.DetailActivity.as_view(), name='detail-activity'),
-                       url(r'^activity/create$', views.CreateActivity.as_view(), name='create-activity'),
-                       url(r'^activity/update/(?P<pk>\d+)$', views.UpdateActivity.as_view(), name='update-activity'),
-                       url(r'^activity/delete/(?P<pk>\d+)$', views.DeleteActivity.as_view(), name='delete-activity')
+                       url(r'^admin/list$', views.ListActivity.as_view(), name='admin-list-activity'),
+                       url(r'^admin/(?P<pk>\d+)$', views.DetailActivity.as_view(), name='admin-detail-activity'),
+                       url(r'^show/(?P<pk>\d+)$', views.ShowActivity.as_view(), name='show-activity'),
+                       url(r'^admin/create$', views.CreateActivity.as_view(), name='admin-create-activity'),
+                       url(r'^admin/update/(?P<pk>\d+)$', views.UpdateActivity.as_view(), name='admin-update-activity'),
+                       url(r'^admin/delete/(?P<pk>\d+)$', views.DeleteActivity.as_view(), name='admin-delete-activity')
                        )

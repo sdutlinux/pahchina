@@ -26,6 +26,12 @@ class DetailActivity(generic.DetailView, SuperUser):
         object.save()
         return object
 
+class ShowActivity(generic.DetailView, SuperUser):
+
+    model = Activity
+    context_object_name = 'object_activity'
+    template_name = 'show-activity.html'
+
 class CreateActivity(generic.CreateView, SuperUser):
     model = Activity
     success_url = reverse_lazy('list-activity')

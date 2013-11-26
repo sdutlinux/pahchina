@@ -1,0 +1,18 @@
+{% extends 'base-index.html' %}
+
+{% block title %}
+活动详情 {{ object_activity.name }}
+{% endblock %}
+
+{% block content %}
+
+<h2 style="text-align: center">活动-{{ object_activity.name }}</h2>
+    <p style="text-align: center">活动时间:{{ object_activity.activity_time }}</p>
+    <p style="text-align: center">活动地点:{{ object_activity.place }}</p>
+    <h2 style="text-align: center"><strong>活动详情</strong></h2>
+    <p>{{ object_activity.describe }}</p>
+{#    <div>#}
+{#    {{ object_activity.describe }}#}
+{#    </div>#}
+
+{% endblock %}
