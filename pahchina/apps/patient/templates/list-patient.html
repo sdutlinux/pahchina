@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2>管理患者</h2>
-<table class="table border">
+<table class="table table-hover">
 <thead>
 <tr>
     <th>用户名</th>
@@ -22,8 +22,8 @@
         <td>{{ patient.get_sex }}</td>
         <td>{{ patient.local }}</td>
         <td>
-        <a class="button small" href="{% url 'admin-detail-patient' patient.id %}">修改</a>
-        <a class="button red small" href="{% url 'admin-delete-user' patient.user.id %}">删除</a>
+        <a href="{% url 'admin-detail-patient' patient.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete-user' patient.user.id %}"><i class="icon-remove"></i></a>
         </td>
     </tr>
     {% endfor %}

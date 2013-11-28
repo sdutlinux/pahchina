@@ -6,16 +6,6 @@
 
 {% block head %}
     <style>
-    input[type="password"] {
-        background: #fff;
-        border: 1px solid #ccc;
-        box-shadow: 0 1px 1px #ccc inset;
-        font-size: 14px;
-        line-height: 20px;
-        outline: medium none;
-        padding: 4px 9px;
-        margin: 1px;
-    }
     .helptext {
         font-style: italic;
     }
@@ -32,13 +22,15 @@
 {% endblock %}
 
 {% block content %}
+    <div class="hero-unit">
     <form action="" method="post">{% csrf_token %}
 
     {{ form.as_p }}
     <div class="clear"></div>
-     <input class="button green" type="submit" value="注册"/>
-     <a class="button" href="{% url 'login' %}">去登录</a>
+     <input class="btn btn-info" type="submit" value="注册"/>
+     <a class="btn btn-primary" href="{% url 'login' %}">去登录</a>
 
     </form>
+    </div>
 
 {% endblock %}

@@ -1,65 +1,112 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=7" />
-<title>{% block title %}{% endblock %}-PAH后台管理</title>
-<meta name="keywords" content="{% block keywords %}{% endblock %}"/>
-<meta name="description" content="{% block description %}{% endblock %}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}-PAH后台管理</title>
+    <meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<link rel="stylesheet" href="{{ STATIC_URL }}css/cutter.css">
-<script src="{{ STATIC_URL }}js/jquery-1.3.2.min.js"></script>
-<script src="{{ STATIC_URL }}js/cutter.js"></script>
-{% block head %}
 
-{% endblock %}
-</head>
+    <!-- Le styles -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    </style>
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+    {% block head %}
+
+    {% endblock %}
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5shiv.js"></script>
+    <![endif]-->
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/static/ico/favicon.png">
+  </head>
 
 <body>
 
-<div class="topbar">
-	<div class="wrapper">
-    	<div class="logo">
-        	<a href="{% url 'admin-index' %}">网站后台</a>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">PAH后台管理</a>
+          <div class="nav-collapse collapse">
+            <div class="btn-group pull-right">
+              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {{ user.username }}
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- dropdown menu links -->
+                  <li><a href="{% url 'logout' %}">注销</a></li>
+              </ul>
+            </div>
+            <ul class="nav">
+              {% block nav %}
+              {% endblock %}
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
-    	<div class="module">
-        	<a href="/">网站首页</a>
-        </div>
-        <div class="sub">
-            <a href="">{{ user.username }}</a>
-            <a href="{% url 'logout' %}">注销</a>
-        </div>
+      </div>
     </div>
-</div>
 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="well sidebar-nav">
+                    <ul class="nav nav-list">
+                       <li><a href="/"><i class="icon-align-justify"></i>网站后台</a></li>
+                        <li class="nav-header">用户管理</li>
+                        <li><a href="{% url 'admin-list-user' %}">管理用户</a></li>
+                        <li><a href="{% url 'admin-list-patient' %}">管理患者</a></li>
+                        <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
+                        <li class="nav-header">活动管理</li>
+                        <li><a href="{% url 'admin-list-activity' %}">活动管理</a></li>
+                        <li class="nav-header">个人信息</li>
+                        <li><a href="{% url 'update-password' %}">修改密码</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span9">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div> <!-- /container -->
 
-<div class="wrapper">
-    <div class="two">
-        <ul class="sidebar">
-            <li class="selected"><a>用户管理</a></li>
-            <li><a href="{% url 'admin-list-user' %}">管理用户</a></li>
-            <li><a href="{% url 'admin-list-patient' %}">管理患者</a></li>
-            <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
-            <li class="selected"><a>活动管理</a></li>
-            <li><a href="{% url 'admin-list-activity' %}">活动管理</a></li>
-            <li class="selected"><a>个人信息</a></li>
-            <li><a href="{% url 'update-password' %}">修改密码</a></li>
-        </ul>
-    </div>
-    <div class="ten">
-    {% block content %}
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    {% block foot %}
 
     {% endblock %}
-    </div>
 
-</div>
-
-<div class="wrapper footer">
-    <p>this is footer <a href="">Links</a></p>
-</div>
-
-
-</body>
+  </body>
 </html>
-
