@@ -1,26 +1,25 @@
 {% extends 'base-admin.html' %}
 
 {% block title %}
-删除用户 {{ object.username }}
+删除{{ object.model_name }} {{ object.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="span7 well">
 
-<h2>删除用户</h2>
-<div class="alert">
+<h3>删除{{ object.model_name }}</h3>
     <p><strong>注意！</strong></p>
-    <b>你确定要删除用户 <a href="" class="button bigrounded green">{{ object.username }}</a>吗?</b>
 
-</div>
+    <p>你确定要删除 {{ object.model_name }}&nbsp;
+        <a href="" class="button bigrounded green">{{ object.name }}</a>&nbsp;吗?</p>
 
 <form action="" method="post">{% csrf_token %}
     <div>
         <input type="hidden" name="post" value="yes" />
             <br/>
         <a href="#" onclick="location.href=document.referrer;" class="btn btn-primary">不,我返回</a>&nbsp;
-        <input type="submit" value="是的,我确定." class="btn btn-danger"/>
+        <input type="submit" value="是的,我确定!" class="btn btn-danger"/>
     </div>
 </form>
 </div>

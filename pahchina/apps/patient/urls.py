@@ -19,4 +19,18 @@ urlpatterns = patterns('',
     url(r'^admin/detail/(?P<pk>\d+)/$', views.DetailPatient.as_view(), name='admin-detail-patient'),
     url(r'^admin/update/(?P<pk>\d+)/$', views.UpdatePatient.as_view(), name='admin-update-patient'),
 
+
+    url(r'^admin/drug/list/$', views.ListDrug.as_view(), name='admin-list-drug'),
+    url(r'^admin/drug/create/$', views.CreateDrug.as_view(), name='admin-create-drug'),
+    url(r'^admin/drug/update/(?P<pk>\d+)/$', views.UpdateDrug.as_view(), name='admin-update-drug'),
+    url(r'^admin/drug/delete/(?P<pk>\d+)/$', views.DeleteDrug.as_view(), name='admin-delete-drug'),
+
+    url(r'^admin/dosage/detail/patient/(?P<pk>\d+)/$', views.DeleteDrug.as_view(),
+        name='admin-detail-patient-dosage'),
+
+    url(r'^admin/dosage/list/$', views.ListDosage.as_view(), name='admin-list-dosage'),
+    url(r'^admin/dosage/create/$', views.CreateDosage.as_view(), name='admin-create-dosage'),
+    url(r'^admin/dosage/update/(?P<pk>\d+)/$', views.UpdateDosage.as_view(), name='admin-update-dosage'),
+    #url(r'^admin/dosage/delete/(?P<pk>\d+)/$', views.DeleteDrug.as_view(), name='admin-delete-drug'),
+
 )

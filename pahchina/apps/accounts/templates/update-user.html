@@ -17,12 +17,15 @@
 
 {% block content %}
 <h2>用户管理</h2>
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 
-<table class="table border">
-    {{ form.as_table }}
-</table>
-    <a class="btn" onclick="location.href=document.referrer;">返回</a>
-    <input class="btn btn-primary" type="submit" value="提交"/>
-</form>
+    <div class="hero-unit">
+        <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+        <table class="table table-bordered">
+            {{ form.as_table }}
+        </table>
+            <a class="btn" onclick="location.href=document.referrer;">返回</a>
+            <input class="btn btn-primary" type="submit" value="提交"/>
+        </form>
+    </div>
 {% endblock %}

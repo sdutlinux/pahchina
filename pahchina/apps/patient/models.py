@@ -30,6 +30,10 @@ class Patient(models.Model):
     mood = models.TextField(verbose_name='心情', max_length=140,blank=True, null=True)
     onset_process = models.TextField(verbose_name='发病过程',blank=True, null=True)
 
+    def model_name(self):
+        """ 用于某些时候描述这个model
+        """
+        return '患者'
 
     def set_sex(self, s):
         if s == '1': self.sex='男'
@@ -53,7 +57,12 @@ class Drug(models.Model):
     name = models.CharField(verbose_name='药物名称', unique=True,
                             max_length=20, help_text='不能重复')
     description = models.TextField(verbose_name='药品描述')
-    price = models.IntegerField(verbose_name='价格', max_length=10)
+    price = models.IntegerField(verbose_name='价格', max_length=10, help_text='单位为元(人民币)')
+
+    def model_name(self):
+        """ 用于某些时候描述这个model
+        """
+        return '药物'
 
     def __unicode__(self):
 
@@ -71,6 +80,10 @@ class Dosage(models.Model):
 
     datetime = models.DateField(auto_now_add=True)
 
+    def model_name(self):
+        """ 用于某些时候描述这个model
+        """
+        return '药物用量记录'
 
     def __unicode__(self):
 

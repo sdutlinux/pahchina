@@ -1,17 +1,21 @@
 {% extends 'base-index.html' %}
 
+
 {% block title %}个人主页{% endblock %}
 
 {% block content %}
+<div class="hero-unit">
 
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 
     <table class="table bordered">
         {{ form.as_table }}
     </table>
+    <a class="btn" onclick="location.href=document.referrer;">返回</a>
+    <input class="btn btn-primary" type="submit" value="提交"/>
 
-    <a class="button" onclick="location.href=document.referrer;">返回</a>
-    <input class="button green" type="submit" value="提交"/>
 </form>
+
+</div>
 
 {% endblock %}
