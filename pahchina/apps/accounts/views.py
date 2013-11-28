@@ -16,7 +16,7 @@ from ..utils import SuperUser
 
 from .models import User
 from .froms import (RegisterForm,
-    UpdateUserForm, UpdateProfileForm, )#PasswordResetForm)
+    UpdateUserForm, UpdateProfileForm, UpdateUserIdentityForm)
 
 
 
@@ -139,3 +139,16 @@ class UpdatePassword(generic.FormView):
     def form_valid(self, form):
         form.save()
         return super(UpdatePassword, self).form_valid(form)
+
+
+class UpdateIdentity(generic.FormView):
+
+    form_class = UpdateUserIdentityForm
+    template_name = 'update-user-profile.html'
+
+    def get_success_url(self):
+        return reverse('admin-detail-user', kwargs=self.kwargs)
+    
+    def form_valid(self, form):
+        form.save()
+        return super(UpdateIdentity, self).form_valid(form)    

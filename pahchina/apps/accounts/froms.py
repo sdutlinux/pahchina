@@ -12,35 +12,18 @@ from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 
-from .models import User
-
-IDENTITY_CHOICES = (
-    ('5,','志愿者'),
-    ('1,', '患者'),
-    ('2,','医生'),
-    ('3,','医院'),
-    ('4,','捐献者'),
-    ('6,','药商'),
-)
-
+from .models import User, IDENTITY_CHOICES
 
 class RegisterForm(UserCreationForm):
     """ 用户注册表单
-    choices = (
-        ('1,', '患者'),
-        ('2,','医生'),
-        ('3,','医院'),
-        ('4,','捐献者'),
-        ('5,','志愿者'),
-        ('6,','药商'),
-    )
+    重写了save方法，用于注册后修改身份
     """
-    identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
-                                 help_text='请正确选择身份')
+    #identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
+    #                             help_text='请正确选择身份')
 
     class Meta:
         model = User
-        fields=('username',)
+        fields=('username', 'identity')
 
     def clear_identity(self):
         identity = self.cleaned_data.get("identity")
@@ -68,7 +51,7 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.identity=self.cleaned_data["identity"] # 修改身份
+        user.identity = int(self.cleaned_data["identity"]) # 修改身份
         if commit:
             user.save()
         return user
@@ -143,3 +126,47 @@ class PasswordResetForm(forms.Form):
             subject = ''.join(subject.splitlines())
             email = loader.render_to_string(email_template_name, c)
             send_mail(subject, email, from_email, [user.email])
+
+
+class UpdateUserIdentityForm(forms.ModelForm):
+
+    identity = forms.ComboField(label='用户身份',
+                widget=forms.CheckboxSelectMultiple(choices=IDENTITY_CHOICES))
+
+    class Meta:
+        model = User
+        fields = ('username',)
+
+
+    def save(self, commit=True):
+
+        #super(UpdateUserIdentityForm, self).save()
+
+        identity = self.cleaned_data["identity"]
+        print identity
+        #
+        #if '1,' in identity: self.instance.is_patient = True
+        #if '2,' in identity: self.instance.is_doctor = True
+        #if '3,' in identity: self.instance.is_hospital = True
+        #if '4,' in identity: self.instance.is_donor = True
+        #if '5,' in identity: self.instance.is_volunteer = True
+        #if '6,' in identity: self.instance.is_druggist = True
+
+
+
+
+
+
+#IDENTITY_CHOICES = (
+#    ('5,','志愿者'),
+#    ('1,', '患者'),
+#    ('2,','医生'),
+#    ('3,','医院'),
+#    ('4,','捐献者'),
+#    ('6,','药商'),
+#)
+
+
+
+
+

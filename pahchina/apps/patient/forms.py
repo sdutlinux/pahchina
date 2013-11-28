@@ -16,11 +16,3 @@ class UpdatePatientForm(forms.ModelForm):
                   'disease_quality', 'mood','onset_process')
 
 
-#class UpdatePasswordForm(forms.ModelForm):
-#
-#    old_password = forms.CharField(label=_("Old password"),
-#                               widget=forms.PasswordInput)
-#
-#    class Meta:
-#        model = Patient
-#        fields = ('password')

@@ -48,19 +48,86 @@ class Patient(models.Model):
 
         return self.user.username
 
+class Drug(models.Model):
 
-def on_create(sender, instance, created, **kwargs):
-    """ 创建用户的时候同步创建其他类型的用户
+    name = models.CharField(verbose_name='药物名称', unique=True,
+                            max_length=20, help_text='不能重复')
+    description = models.TextField(verbose_name='药品描述')
+    price = models.IntegerField(verbose_name='价格', max_length=10)
+
+    def __unicode__(self):
+
+        return self.name
+
+class Dosage(models.Model):
+    """ 药物用量
     """
-    if created:
-        print instance.is_patient
-        if instance.is_patient:
-            Patient.objects.create(user=instance)
-        elif instance.is_volunteer:
-            Volunteer.objects.create(user=instance)
-        else:
-            pass
 
-post_save.connect(on_create, sender=User, weak=False,
-          dispatch_uid='models.on_create')
+    drug = models.ForeignKey(Drug, verbose_name='药物名称')
+    patient = models.ForeignKey(Patient, verbose_name='患者')
+
+    dose = models.TextField(verbose_name='服药剂量', max_length=200,
+                            help_text='描述患者使用该药的剂量，比如一月一盒等')
+
+    datetime = models.DateField(auto_now_add=True)
+
+
+    def __unicode__(self):
+
+        return "%s使用%s的用量"% (self.patient, self.drug)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
