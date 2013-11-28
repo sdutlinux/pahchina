@@ -5,28 +5,27 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 
+IDENTITY_CHOICES = ((0,'无'), (1,'患者'), (2, '医生'),
+                    (3,'医院'),(4, '志愿者'), (5, '药商'),)
 
 class User(AbstractUser):
-    """
-    1: patient, 患者
-    2: doctor, 医生
-    3: hospital, 医院
-    4: donor, 捐献者
-    5: volunteer, 志愿者
-    6: druggist,  药商
+    """用户类
+    自定义了django默认的用户系统
+    增加了下面两个字段以及一些常用方法
     """
     avatar = models.ImageField(verbose_name='照片', upload_to='user/avatar',
                                blank=True, null=True)
-    identity = models.CommaSeparatedIntegerField(verbose_name='身份类型',
-                                                 max_length=10, blank=True, null=True)
+    #identity = models.CommaSeparatedIntegerField(verbose_name='身份类型', default='', max_length=10)
+
+    identity = models.SmallIntegerField(verbose_name='身份类型', default=0, choices=IDENTITY_CHOICES,
+                                        max_length=1)
 
     identity_dic = {
-        'is_patient':'1,',
-        'is_doctor': '2,',
-        'is_hospital': '3,',
-        'is_donor': '4,',
-        'is_volunteer': '5,',
-        'is_druggist': '6,',
+        'is_patient':1,
+        'is_doctor': 2,
+        'is_hospital': 3,
+        'is_volunteer': 4,
+        'is_druggist': 5,
     }
 
     def get_absolute_url(self):
@@ -38,8 +37,7 @@ class User(AbstractUser):
     def get_profile_url(self):
         """ 返回个人主页链接
         """
-        if self.is_donor: res = '/'
-        elif self.is_volunteer: res = '/'
+        if self.is_volunteer: res = '/'
         elif self.is_doctor: res = '/'
         elif self.is_druggist: res = '/'
         elif self.is_hospital: res = '/'
@@ -48,17 +46,14 @@ class User(AbstractUser):
         return res
 
     def get_identity(self):
-        """ 返回具体身份名称
+        """ 返回身份名称
+        eg: 患者，志愿者等
         """
-        res = ''
-        if self.is_donor: res += '捐献者、'
-        if self.is_volunteer: res += '志愿者、'
-        if self.is_doctor: res += '医生、'
-        if self.is_druggist: res += '药商、'
-        if self.is_hospital: res += '医院、'
-        if self.is_patient: res += '患者、'
-        if self.is_staff: res = '分站管理员、'
-        if self.is_superuser: res = '总站管理员、'
+        for i in IDENTITY_CHOICES:
+            if i[0] == self.identity:
+                res = i[1]
+        if self.is_staff: res = '分站管理员'
+        if self.is_superuser: res = '总站管理员'
         return res
 
     def get_full_name(self):
@@ -73,51 +68,12 @@ class User(AbstractUser):
         """
         if item in self.identity_dic and item.startswith('is_'):
             # 判断非属性并且以 `is_`开头
-            try:
-                if self.identity_dic[item] in self.identity:
-                    return True
-                else:
-                    return False
-            except TypeError:
+            if self.identity_dic[item] == self.identity:
+                return True
+            else:
                 return False
         else:
             super(User, self).__getattr__(item)
-
-    def __setattr__(self, key, value):
-        """ 用来设置用户身份
-        Usage: self.is_patient = True
-        设定的值只允许为True, 其它值抛出异常。
-        """
-        if key in self.identity_dic and key.startswith('is_'):
-            if self.identity_dic[key] not in self.identity and value is True:
-                self.identity += self.identity_dic[key]
-                self.save(update_fields=["identity"])
-            else:
-                raise Exception('Value not permit, Just allow `True`')
-        else:
-            # 不符合条件时调用父类的该方法，避免AttributeError
-            super(User, self).__setattr__(key, value)
-
-    def __delattr__(self, item):
-        """ 用于删除用户身份
-        Usage: del self.is_patient, ....
-        """
-        if item in self.identity_dic:
-            if self.identity_dic[item]+',' in self.identity:
-                self.identity = self.identity.replace(self.identity_dic[item], '')
-                self.save(update_fields=["identity"])
-            else:
-                raise Exception('User is not %s'%self.identity_dic[item][3:])
-        else:
-            super(User, self).__delattr__(item)
-
-
-
-
-
-
-
-
 
 
 

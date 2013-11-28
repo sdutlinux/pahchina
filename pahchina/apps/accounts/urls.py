@@ -28,6 +28,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/user/update/(?P<pk>\d+)/$', views.UpdateUser.as_view(), name='admin-update-user'),
 
+    url(r'^admin/user/update/identity/(?P<pk>\d+)/$', views.UpdateIdentity.as_view(), name='admin-update-identity'),
+
     url(r'^admin/user/delete/(?P<pk>\d+)/$', views.DeleteUser.as_view(), name='admin-delete-user'),
 )
 
