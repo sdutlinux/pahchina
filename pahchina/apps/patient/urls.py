@@ -5,7 +5,6 @@ __author__ = 'zhwei'
 
 from django.conf.urls import patterns, include, url
 
-
 from . import views
 
 
@@ -28,9 +27,12 @@ urlpatterns = patterns('',
     url(r'^admin/dosage/detail/patient/(?P<pk>\d+)/$', views.DeleteDrug.as_view(),
         name='admin-detail-patient-dosage'),
 
+    url(r'^/dosage/detail/$', views.DetailOwnDosage.as_view(), name='detail-dosage'),
+
     url(r'^admin/dosage/list/$', views.ListDosage.as_view(), name='admin-list-dosage'),
+    url(r'^admin/dosage/detail/(?P<pk>\d+)/$', views.DetailPatientDosage.as_view(),
+        name='admin-detail-patient-dosage'),
     url(r'^admin/dosage/create/$', views.CreateDosage.as_view(), name='admin-create-dosage'),
     url(r'^admin/dosage/update/(?P<pk>\d+)/$', views.UpdateDosage.as_view(), name='admin-update-dosage'),
-    #url(r'^admin/dosage/delete/(?P<pk>\d+)/$', views.DeleteDrug.as_view(), name='admin-delete-drug'),
 
 )

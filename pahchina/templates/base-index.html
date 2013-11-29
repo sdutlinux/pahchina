@@ -125,11 +125,24 @@
           </div>
         </div><!-- /.navbar -->
       </div>
+      
+    {% if user.is_authenticated %}
+    
+      <ul class="breadcrumb">
+          <li><a href="{{ user.get_profile_url }}">我的详细信息</a> <span class="divider">/</span></li>
+          {% if user.is_patient %}
+          <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
+          {% endif %}
+          <li><a href="{% url 'update-password' %}">修改密码</a> <span class="divider">/</span></li>
+      </ul>
 
-        
-        {% block content %}
-        
-        {% endblock %}
+    {% endif %}
+
+    {% block content %}
+
+    {% endblock %}
 
       <hr>
       <div class="footer">

@@ -5,7 +5,7 @@ from django.views import generic
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.shortcuts import render_to_response as r2r
+from django.shortcuts import render_to_response as r2r, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -40,7 +40,7 @@ class UpdatePatient(generic.UpdateView, SuperUser):
     def get_success_url(self):
         return reverse('admin-detail-patient', kwargs=self.kwargs)
 
-class Profile(generic.DetailView, SuperUser):
+class Profile(generic.DetailView):
     """ 患者用来查看个人信息
     """
     template_name = 'profile-patient.html'
@@ -51,7 +51,7 @@ class Profile(generic.DetailView, SuperUser):
         except:
             raise Http404
 
-class UpdateProfile(generic.UpdateView, SuperUser):
+class UpdateProfile(generic.UpdateView):
     """ 患者更新个人信息
     """
     form_class = UpdatePatientForm
@@ -99,7 +99,22 @@ class ListDosage(generic.ListView, SuperUser):
 
 class DetailPatientDosage(generic.DetailView, SuperUser):
 
-    model = Drug
+    model = Patient
+    context_object_name = 'patient'
+    template_name = 'detail-patient-dosage.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPatientDosage, self).get_context_data( **kwargs)
+        context['dosage_list'] = Dosage.objects.filter(patient_id = self.kwargs['pk'])
+        return context
+
+class DetailOwnDosage(generic.DetailView):
+
+    context_object_name = 'dosage_list'
+    template_name = 'detail-dosage.html'
+
+    def get_object(self, queryset=None):
+        return Dosage.objects.filter(patient=self.request.user.patient)
 
 class CreateDosage(generic.CreateView, SuperUser):
     """ 添加剂量

@@ -6,23 +6,13 @@
 
     <h3>我的个人页面</h3>
     <table class="table table-bordered">
+
         {% with patient.user as object_user %}
         {% include 'includes/user-info-as-table.html' %}
         {% endwith %}
 
-        <tr>
-            <th></th>
-            <td><a class="btn" href="{% url 'update-profile' %}">点击修改以上用户信息</a>
-                <a href="{% url 'update-password' %}" class="btn btn-inverse">修改登录密码</a>
-            </td>
-        </tr>
-
         {% include 'includes/patient-info-as-table.html' %}
 
-        <tr>
-            <th></th>
-            <td><a href="{% url 'update-patient-profile' %}" class="btn">点击修改以上患者信息</a></td>
-        </tr>
     </table>
 
 {% endblock %}

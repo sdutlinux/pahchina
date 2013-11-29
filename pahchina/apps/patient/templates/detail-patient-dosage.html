@@ -1,0 +1,22 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+患者用药详情页面
+{% endblock %}
+
+{% block content %}
+    <h2>患者用药详情页面</h2>
+    <p>患者：<a class="btn" href="{% url 'admin-detail-patient' patient.id %}">{{ patient }}</a></p>
+
+    <div>
+        {% for dosage in dosage_list %}
+            <div class="well well-small">
+                <p><span class="badge badge-inverse">{{ dosage.datetime|date:'Y年m月d日' }}</span></p>
+                <p><span class="label label-info"><i class="icon-plus-sign"></i>&nbsp;{{ dosage.drug }}</span>
+                    服药剂量：{{ dosage.dose }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

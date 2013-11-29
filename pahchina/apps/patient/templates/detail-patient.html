@@ -12,7 +12,10 @@
         {% include 'includes/user-info-as-table.html' %}
         {% endwith %}
     </table>
-    <p><a href="{% url 'admin-update-user' patient.user.id %}" class="btn btn-inverse">修改用户信息</a></p>
+    <p>
+        <a href="{% url 'admin-update-user' patient.user.id %}" class="btn btn-inverse">修改用户信息</a>
+        <a href="{% url 'admin-detail-patient-dosage' patient.id %}" class="btn">患者用药历史</a>
+    </p>
     <table class="table table-bordered">
         {% include 'includes/patient-info-as-table.html' %}
     </table>
