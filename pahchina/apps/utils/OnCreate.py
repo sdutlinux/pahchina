@@ -8,6 +8,7 @@ from django.db.models.signals import post_save
 from ..accounts.models import User
 from ..patient.models import Patient
 from ..volunteer.models import Volunteer
+from ..medical.models import Hospital, Doctor
 
 def on_create(sender, instance, created, **kwargs):
     """ 创建用户的时候同步创建其他类型的用户
@@ -18,6 +19,10 @@ def on_create(sender, instance, created, **kwargs):
             Patient.objects.create(user=instance)
         elif instance.is_volunteer:
             Volunteer.objects.create(user=instance)
+        elif instance.is_hospital:
+            Hospital.objects.create(user=instance)
+        elif instance.is_doctor:
+            Doctor.objects.create(user=instance)
         else:
             pass
 

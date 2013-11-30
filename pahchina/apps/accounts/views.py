@@ -48,6 +48,8 @@ def pah_login(request):
                     return HttpResponseRedirect(reverse('admin-index'))
                 elif user.is_patient:
                     return HttpResponseRedirect(reverse('profile-patient'))
+                elif user.is_hospital:
+                    return HttpResponseRedirect(reverse('profile-hospital'))
                 else:
                     return HttpResponse('请定义页面')
             else:

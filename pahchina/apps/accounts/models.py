@@ -3,7 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 
 IDENTITY_CHOICES = ((0,'无'), (1,'患者'), (2, '医生'),
                     (3,'医院'),(4, '志愿者'), (5, '药商'),)
@@ -40,8 +40,8 @@ class User(AbstractUser):
         if self.is_volunteer: res = '/'
         elif self.is_doctor: res = '/'
         elif self.is_druggist: res = '/'
-        elif self.is_hospital: res = '/'
-        elif self.is_patient: res = '/patients/profile'
+        elif self.is_hospital: res = reverse('profile-hospital')
+        elif self.is_patient: res = reverse('profile-patient')
         else: res ='/'
         return res
 

@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
 
 from .models import Patient, Drug, Dosage
-from .forms import UpdatePatientForm
+from .forms import UpdatePatientForm, CreateDosageForm
 from ..utils import SuperUser
 
 class DetailPatient(generic.DeleteView):
@@ -109,22 +109,41 @@ class DetailPatientDosage(generic.DetailView, SuperUser):
         return context
 
 class DetailOwnDosage(generic.DetailView):
-
+    """ 患者查看个人用药记录
+    """
     context_object_name = 'dosage_list'
     template_name = 'detail-dosage.html'
 
     def get_object(self, queryset=None):
         return Dosage.objects.filter(patient=self.request.user.patient)
 
+class CreateOwnDosage(generic.FormView):
+    """ 患者创建个人用药记录
+    """
+
+    form_class = CreateDosageForm
+    success_url = reverse_lazy('detail-dosage')
+    template_name = 'update-user-profile.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateOwnDosage, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(CreateOwnDosage, self).form_valid(form)
+
+
 class CreateDosage(generic.CreateView, SuperUser):
-    """ 添加剂量
+    """ 管理员创建患者用药记录
     """
     model = Dosage
     success_url = reverse_lazy('admin-list-dosage')
     template_name = 'update.html'
 
 class UpdateDosage(generic.UpdateView, SuperUser):
-    """ 修改剂量
+    """ 管理员修改患者用药记录
     """
     model = Dosage
     success_url = reverse_lazy('admin-list-dosage')

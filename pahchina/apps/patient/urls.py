@@ -27,7 +27,8 @@ urlpatterns = patterns('',
     url(r'^admin/dosage/detail/patient/(?P<pk>\d+)/$', views.DeleteDrug.as_view(),
         name='admin-detail-patient-dosage'),
 
-    url(r'^/dosage/detail/$', views.DetailOwnDosage.as_view(), name='detail-dosage'),
+    url(r'^dosage/detail/$', views.DetailOwnDosage.as_view(), name='detail-dosage'),
+    url(r'^dosage/create/$', views.CreateOwnDosage.as_view(), name='create-dosage'),
 
     url(r'^admin/dosage/list/$', views.ListDosage.as_view(), name='admin-list-dosage'),
     url(r'^admin/dosage/detail/(?P<pk>\d+)/$', views.DetailPatientDosage.as_view(),

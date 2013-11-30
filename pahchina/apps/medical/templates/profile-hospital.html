@@ -1,0 +1,17 @@
+{% extends 'base-index.html' %}
+
+{% block title %}个人主页{% endblock %}
+
+{% block content %}
+
+    <h3>我的个人页面</h3>
+    <table class="table table-bordered">
+
+        {% with user as object_user %}
+        {% include 'includes/user-info-as-table.html' %}
+        {% endwith %}
+
+        {% include 'includes/hospital-info-as-table.html' %}
+    </table>
+
+{% endblock %}

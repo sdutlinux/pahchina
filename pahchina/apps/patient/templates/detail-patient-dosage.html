@@ -6,7 +6,10 @@
 
 {% block content %}
     <h2>患者用药详情页面</h2>
-    <p>患者：<a class="btn" href="{% url 'admin-detail-patient' patient.id %}">{{ patient }}</a></p>
+    <p>
+        <a class="btn" href="{% url 'admin-detail-patient' patient.id %}">
+            <i class="icon-arrow-left"></i>&nbsp;
+            {{ patient }}</a></p>
 
     <div>
         {% for dosage in dosage_list %}
