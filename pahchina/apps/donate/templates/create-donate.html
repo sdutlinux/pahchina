@@ -1,0 +1,20 @@
+{% extends 'base-index.html' %}
+
+{% block title %}
+捐赠 {{ object_donate.number }}
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+
+<table class="table border">
+    {{ form.as_table }}
+</table>
+
+    <a class="btn btn-inverse" onclick="location.href=document.referrer;">返回</a>
+    <input class="btn btn-warning" type="submit" value="提交"/>
+</form>
+
+
+{% endblock %}

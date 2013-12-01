@@ -1,0 +1,34 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}捐赠管理{% endblock %}
+
+{% block content %}
+
+    <h2>捐赠管理</h2>
+<a href="{% url 'admin-create-itemized' %}">添加捐赠</a>
+<table class="table border">
+<thead>
+<tr>
+    <th>捐赠单号</th>
+    <th>捐赠金额</th>
+    <th>捐赠时间</th>
+    <th>是否匿名</th>
+</tr>
+</thead>
+    <tbody>
+    {% for itemized in itemized_list %}
+    <tr>
+        <td><a href="{% url 'admin-detail-itemized' itemized.id %}">{{ itemized.number }}</a></td>
+        <td>{{ itemized.cast }}</td>
+        <td>{{ itemized.create_time }}</td>
+        <td>{{ itemized.get_anyone }}</td>
+        <td>
+        <a href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete-itemized' itemized.id %}"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
