@@ -20,4 +20,9 @@ urlpatterns = patterns('',
     url(r'^admin/doctor/list/$', views.ListDoctor.as_view(), name='admin-list-doctor'),
     url(r'^admin/doctor/detail/(?P<pk>\d+)/$', views.DetailDoctor.as_view(), name='admin-detail-doctor'),
     url(r'^admin/doctor/update/(?P<pk>\d+)/$', views.UpdateDoctor.as_view(), name='admin-update-doctor'),
+
+    url(r'^record/create/(?P<pk>\d+)/$', views.CreateRecord.as_view(), name='create-record'),
+    url(r'^record/list/(?P<pk>\d+)/$', views.ListRecord.as_view(), name='admin-list-record'),
+    url(r'^admin/record/delete/(?P<pk>\d+)/$', views.DeleteRecord.as_view(), name='admin-delete-record'),
+    url(r'^admin/record/detail/(?P<patient>\d+)/(?P<pk>\d+)/$', views.DetailRecord.as_view(), name='admin-detail-record'),
 )

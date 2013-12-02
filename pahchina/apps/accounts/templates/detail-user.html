@@ -7,6 +7,8 @@
 {% block content %}
 
 <h2>用户{{ object_user.username }}</h2>
+<p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a></p>
+
 <table class="table table-bordered" border="0">
     {% include 'includes/user-info-as-table.html' %}
     <tr>

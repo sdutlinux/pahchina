@@ -1,0 +1,18 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+病历详情
+{% endblock %}
+
+{% block content %}
+    <h3>病历详情</h3>
+    <p>
+        <a class="btn" href="{% url 'admin-list-record' patient.id %}"><i class="icon-arrow-left"></i>&nbsp;{{ patient }}</a>
+    </p>
+    <p>患者{{ patient }}-<span class="label">{{ record.created_date }}</span>病例详情</p>
+
+    <table class="table table-bordered">
+        {% include 'includes/record-info-as-table.html' %}
+    </table>
+
+{% endblock %}

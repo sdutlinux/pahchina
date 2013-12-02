@@ -11,6 +11,9 @@
         <a href="{% url 'admin-update-user' patient.user.id %}" class="btn">修改用户信息</a>
         <a href="{% url 'admin-update-patient' patient.id %}" class="btn">修改患者信息</a>
         <a href="{% url 'admin-detail-patient-dosage' patient.id %}" class="btn">患者用药记录</a>
+        <a href="{% url 'admin-create-dosage' patient.id %}" class="btn">创建患者用药记录</a>
+        <a href="{% url 'admin-list-record' patient.id %}" class="btn">患者病历历史</a>
+        <a href="{% url 'create-record' patient.id %}" class="btn">创建患者病历</a>
     </p>
     <table class="table table-bordered">
         {% with patient.user as object_user %}

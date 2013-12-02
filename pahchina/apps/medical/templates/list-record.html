@@ -1,0 +1,39 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}查看病历历史{% endblock %}
+
+{% block content %}
+    <h2>查看病历历史</h2>
+    <p><a class="btn" href="{% url 'admin-detail-patient' patient.id %}"><i class="icon-arrow-left"></i></a></p>
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>内容</th>
+    <th>详细</th>
+    <th>更新时间</th>
+    <th>创建时间</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+
+    {% for record in record_list %}
+        <tr>
+            <td>{{ record.content }}</td>
+            <td><a href="{% url 'admin-detail-record' record.patient.id record.id %}"><i class="icon-info-sign"></i></a></td>
+            <td>{{ record.updated_date }}</td>
+            <td>{{ record.created_date }}</td>
+            <td>
+                <a href=""><i class="icon-edit"></i></a>
+                <a href="{% url 'admin-delete-record' record.id %}"><i class="icon-remove"></i></a>
+            </td>
+        </tr>
+    {% endfor %}
+
+    
+
+
+    </tbody>
+</table>
+
+{% endblock %}
