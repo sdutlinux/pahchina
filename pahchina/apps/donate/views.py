@@ -53,11 +53,21 @@ class CreateDonateUser(generic.FormView):
     
     
     
-class ListItemized(generic.ListView, SuperUser):
+class ListItemized(generic.DetailView, SuperUser):
 
-    model = Itemized
-    context_object_name = 'itemized_list'
+    model = Donate
+    #context_object_name = 'itemized_list'
     template_name = 'list-itemized-admin.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListItemized, self).get_context_data( **kwargs)
+        donate = Donate.objects.get(id=self.kwargs['pk'])
+        context['itemized_list'] = Itemized.objects.filter(number=donate)
+        return context
+
+    #def get_queryset(self):
+    #    Itemized.objects.filter(number_id )
+
 
 
 class DetailItemized(generic.DetailView, SuperUser):

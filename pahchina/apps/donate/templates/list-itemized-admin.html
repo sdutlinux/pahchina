@@ -4,15 +4,15 @@
 
 {% block content %}
 
-    <h2>捐赠管理</h2>
-<a href="{% url 'admin-create-itemized' %}">添加捐赠</a>
+    <h2>捐赠使用管理</h2>
+
 <table class="table border">
 <thead>
 <tr>
     <th>捐赠单号</th>
-    <th>捐赠金额</th>
-    <th>捐赠时间</th>
-    <th>是否匿名</th>
+    <th>此次使用</th>
+    <th>使用时间</th>
+    <th>余额</th>
 </tr>
 </thead>
     <tbody>
@@ -21,7 +21,7 @@
         <td><a href="{% url 'admin-detail-itemized' itemized.id %}">{{ itemized.number }}</a></td>
         <td>{{ itemized.cast }}</td>
         <td>{{ itemized.create_time }}</td>
-        <td>{{ itemized.get_anyone }}</td>
+        <td>{{ itemized.residue }}</td>
         <td>
         <a href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i></a>
         <a href="{% url 'admin-delete-itemized' itemized.id %}"><i class="icon-remove"></i></a>

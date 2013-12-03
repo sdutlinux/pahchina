@@ -13,6 +13,7 @@
     <th>捐赠金额</th>
     <th>捐赠时间</th>
     <th>是否匿名</th>
+    <th>捐赠账户</th>
 </tr>
 </thead>
     <tbody>
@@ -22,6 +23,7 @@
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>
         <td>{{ donate.get_anyone }}</td>
+        <td>{{ donate.user.username }}</td>
         <td>
         <a href="{% url 'admin-update-donate' donate.id %}"><i class="icon-edit"></i></a>
         <a href="{% url 'admin-delete-donate' donate.id %}"><i class="icon-remove"></i></a>
