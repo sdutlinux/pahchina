@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 from ..accounts.models import User
 from ..volunteer.models import Volunteer
+from ..utils.models import TimeStampedModel
 
 SEX_CHOICES=(('1','男'),('0', '女'),('2','隐私'))
 
@@ -77,7 +78,7 @@ class Dosage(models.Model):
     dose = models.TextField(verbose_name='服药剂量', max_length=200,
                             help_text='描述使用该药的剂量，比如一月一盒等')
 
-    datetime = models.DateField(auto_now_add=True)
+    datetime = models.DateTimeField(auto_now_add=True)
 
     def model_name(self):
         """ 用于某些时候描述这个model
