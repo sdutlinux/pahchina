@@ -1,0 +1,26 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+医生详情页面
+{% endblock %}
+
+{% block content %}
+    <h2>医生详情页面</h2>
+    <p>
+        <a href="{% url 'admin-list-patient' %}" class="btn"><i class="icon-arrow-left"></i></a>
+        <a href="{% url 'admin-update-user' doctor.user.id %}" class="btn">修改用户信息</a>
+        <a href="{% url 'admin-update-doctor' doctor.id %}" class="btn">修改医生信息</a>
+    </p>
+    <table class="table table-bordered">
+        {% with doctor.user as object_user %}
+        {% include 'includes/user-info-as-table.html' %}
+        {% endwith %}
+    </table>
+    <p>
+
+    </p>
+    <table class="table table-bordered">
+        {% include 'includes/doctor-info-as-table.html' %}
+    </table>
+
+{% endblock %}

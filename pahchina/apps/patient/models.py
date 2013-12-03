@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 
 from ..accounts.models import User
@@ -76,7 +75,7 @@ class Dosage(models.Model):
     patient = models.ForeignKey(Patient, verbose_name='患者')
 
     dose = models.TextField(verbose_name='服药剂量', max_length=200,
-                            help_text='描述患者使用该药的剂量，比如一月一盒等')
+                            help_text='描述使用该药的剂量，比如一月一盒等')
 
     datetime = models.DateField(auto_now_add=True)
 

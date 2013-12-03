@@ -44,12 +44,18 @@ def pah_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                if user.is_superuser:
-                    return HttpResponseRedirect(reverse('admin-index'))
-                elif user.is_patient:
-                    return HttpResponseRedirect(reverse('profile-patient'))
+                redirect_to = request.REQUEST.get('next', False)
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
                 else:
-                    return HttpResponse('请定义页面')
+                    if user.is_superuser:
+                        return HttpResponseRedirect(reverse('admin-index'))
+                    elif user.is_patient:
+                        return HttpResponseRedirect(reverse('profile-patient'))
+                    elif user.is_hospital:
+                        return HttpResponseRedirect(reverse('profile-hospital'))
+                    else:
+                        return HttpResponse('请定义页面')
             else:
                 return HttpResponse('用户没有激活')
         else:
@@ -101,6 +107,10 @@ class UpdateUser(generic.UpdateView, SuperUser):
     form_class = UpdateUserForm
     success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
+
+    #def get_success_url(self):
+    #    if self.get_object().is_doctor:
+    #        return reverse('admin-detail-doctor')
 
 
 class DeleteUser(generic.DeleteView, SuperUser):

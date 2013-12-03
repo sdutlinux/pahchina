@@ -1,0 +1,14 @@
+        <tr>
+            <th>所在地区</th>
+            <td>{{ hospital.local }}</td>
+        </tr>
+        <tr>
+            <th>是否医疗中心</th>
+            <td>
+                {% if hospital.is_community %}是{% else %}否{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>医院等级</th>
+            <td>{{ hospital.level }}</td>
+        </tr>
