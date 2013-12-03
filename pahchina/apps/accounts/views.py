@@ -11,8 +11,9 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib import messages
 
-from ..utils import SuperUser, SuperRequiredMixin
+from ..utils import  SuperRequiredMixin
 
 from .models import User
 from .froms import (RegisterForm,
@@ -29,7 +30,8 @@ def pah_register(request):
             form = RegisterForm(request.POST.copy())
             if form.is_valid():
                 form.save()
-                return HttpResponse('<script>alert("注册成功！");top.location="/"</script>')
+                messages.success(request, '注册成功, 请登录！')
+                return HttpResponseRedirect(reverse('login'))
 
     return r2r('register.html', locals(), context_instance=RequestContext(request))
 
@@ -44,6 +46,7 @@ def pah_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
                 redirect_to = request.REQUEST.get('next', False)
                 if redirect_to:
                     return HttpResponseRedirect(redirect_to)
@@ -57,9 +60,9 @@ def pah_login(request):
                     else:
                         return HttpResponse('请定义页面')
             else:
-                return HttpResponse('用户没有激活')
+                messages.error(request, '用户暂停使用，请联系管理员！')
         else:
-            return HttpResponse('用户名与密码不匹配')
+            messages.error(request, '用户名与密码不匹配！')
 
     form = AuthenticationForm
     return r2r('login.html', locals(), context_instance = RequestContext(request))
@@ -68,6 +71,7 @@ def pah_logout(request):
     """ 网站登出
     """
     logout(request)
+    messages.info(request, '成功注销本次登录！')
     return HttpResponseRedirect(reverse('login'))
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -85,14 +89,14 @@ class ListUser(SuperRequiredMixin, generic.ListView):
     template_name = 'list-user.html'
 
 
-class DetailUser(generic.DetailView, SuperUser):
+class DetailUser(SuperRequiredMixin, generic.DetailView):
     """ 管理员查看用户详情
     """
     model = User
     context_object_name = 'object_user'
     template_name = 'detail-user.html'
 
-class CreateUser(generic.CreateView, SuperUser):
+class CreateUser(SuperRequiredMixin, generic.CreateView):
     """ 管理员创建用户
     """
     model = User
@@ -100,7 +104,7 @@ class CreateUser(generic.CreateView, SuperUser):
     success_url = reverse_lazy('admin-list-user')
     template_name = 'update-user.html'
 
-class UpdateUser(generic.UpdateView, SuperUser):
+class UpdateUser(SuperRequiredMixin, generic.UpdateView):
     """ 管理员更新用户详情
     """
     model = User
@@ -113,7 +117,7 @@ class UpdateUser(generic.UpdateView, SuperUser):
     #        return reverse('admin-detail-doctor')
 
 
-class DeleteUser(generic.DeleteView, SuperUser):
+class DeleteUser(SuperRequiredMixin, generic.DeleteView):
     """ 管理员删除用户
     """
     model = User

@@ -7,7 +7,7 @@ from django.views import generic
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
 
-from ..utils import SuperUser
+from ..utils import SuperUser, SuperRequiredMixin
 from ..patient.models import Patient
 
 from .models import Hospital, Doctor, Record
@@ -34,20 +34,20 @@ class UpdateHospitalProfile(generic.UpdateView):
         return self.request.user.hospital
 
 
-class ListHospital(generic.ListView, SuperUser):
+class ListHospital(SuperRequiredMixin, generic.ListView):
     """ 列出所有医院
     """
     model = Hospital
     template_name = 'list-hospital.html'
 
-class DetailHospital(generic.DetailView, SuperUser):
+class DetailHospital(SuperRequiredMixin, generic.DetailView):
     """ 管理员查看医院详细信息
     """
     model = Hospital
     context_object_name = 'hospital'
     template_name = 'detail-hospital.html'
 
-class UpdateHospital(generic.UpdateView, SuperUser):
+class UpdateHospital(SuperRequiredMixin, generic.UpdateView):
     """ 管理员更新医院信息
     """
     model = Hospital
@@ -55,7 +55,7 @@ class UpdateHospital(generic.UpdateView, SuperUser):
     template_name = 'update.html'
 
 
-class DeleteHospital(generic.DeleteView, SuperUser):
+class DeleteHospital(SuperRequiredMixin, generic.DeleteView):
     """ 管理员删除医院
     """
     model = Hospital
@@ -63,20 +63,20 @@ class DeleteHospital(generic.DeleteView, SuperUser):
     template_name = 'confirm_delete.html'
 
 
-class DetailDoctor(generic.DetailView, SuperUser):
+class DetailDoctor(SuperRequiredMixin, generic.DetailView):
     """ 医生查看医生详情
     """
     model = Doctor
     context_object_name = 'doctor'
     template_name = 'detail-doctor.html'
 
-class ListDoctor(generic.ListView, SuperUser):
+class ListDoctor(SuperRequiredMixin, generic.ListView):
     """ 管理员列出所有医生
     """
     model = Doctor
     template_name = 'list-doctor.html'
 
-class UpdateDoctor(generic.UpdateView, SuperUser):
+class UpdateDoctor(SuperRequiredMixin, generic.UpdateView):
     """ 管理员更新医生信息
     """
     model = Doctor
@@ -105,7 +105,7 @@ class CreateRecord(generic.FormView):
         form.save()
         return super(CreateRecord, self).form_valid(form)
 
-class ListRecord(generic.DetailView, SuperUser):
+class ListRecord(SuperRequiredMixin, generic.DetailView):
     """ 管理员查看患者所有病例
     """
 
@@ -118,7 +118,7 @@ class ListRecord(generic.DetailView, SuperUser):
         context['record_list'] = Record.objects.filter(patient_id = self.kwargs['pk'])
         return context
 
-class DetailRecord(generic.DetailView, SuperUser):
+class DetailRecord(SuperRequiredMixin, generic.DetailView):
     """ 管理员查病历详情
     """
     model = Record
@@ -130,7 +130,7 @@ class DetailRecord(generic.DetailView, SuperUser):
         context['patient'] = get_object_or_404(Patient, id=self.kwargs['patient'])
         return context
 
-class DeleteRecord(generic.DeleteView, SuperUser):
+class DeleteRecord(SuperRequiredMixin, generic.DeleteView):
     """ 管理员删除病历
     """
     model = Record

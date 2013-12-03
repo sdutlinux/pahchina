@@ -1,5 +1,5 @@
 {% extends 'base-index.html' %}
-
+{% load bootstrap_tags %}
 {% block title %}
 注册用户
 {% endblock %}
@@ -25,7 +25,8 @@
     <div class="hero-unit">
     <form action="" method="post">{% csrf_token %}
 
-    {{ form.as_p }}
+    {{ form|as_bootstrap }}
+
     <div class="clear"></div>
      <a class="btn" href="{% url 'login' %}">去登录</a>
      <input class="btn btn-primary" type="submit" value="注册"/>
