@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 
-from ..utils import SuperUser
+from ..utils import SuperUser, SuperRequiredMixin
 
 from .models import User
 from .froms import (RegisterForm,
@@ -77,7 +77,7 @@ def admin_index(request):
     return r2r('admin-index.html', locals(),
                context_instance=RequestContext(request))
 
-class ListUser(generic.ListView, SuperUser):
+class ListUser(SuperRequiredMixin, generic.ListView):
     """ 管理员列出所有用户
     """
     model = User

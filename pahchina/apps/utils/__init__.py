@@ -5,4 +5,4 @@ __author__ = 'zhwei'
 
 __all__ = ['SuperUser']
 
-from .AuthUser import SuperUser
+from .views import SuperUser, SuperRequiredMixin
