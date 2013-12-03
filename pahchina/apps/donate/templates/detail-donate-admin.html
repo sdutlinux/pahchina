@@ -25,7 +25,16 @@
     <th>用户选择方式</th>
     <td>{{ object_donate.get_anyone }}</td>
     </tr>
+    <tr>
+        <th>捐赠帐号</th>
+        {% if object_donate.user.id %}
+        <td><a href="{% url "admin-detail-user" object_donate.user.id %}">{{ object_donate.user.username }}</a></td>
+        {% else %}
+        <td>{{ object_donate.user.username }}</td>
+        {% endif %}
+    </tr>
     </table>
+    <div><a href="{% url "admin-list-itemized" object_donate.id %}">使用详情</a></div>
     <h6 style="text-align: center">捐赠详情</h6>
     <div><pre>{{ object_donate.details }}</pre></div>
 

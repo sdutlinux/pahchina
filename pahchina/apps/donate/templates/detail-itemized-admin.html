@@ -1,32 +1,29 @@
 {% extends 'base-admin.html' %}
 
 {% block title %}
-捐赠详情 {{ object_donate.number }}
+捐赠详情 {{ object_itemized.number }}
 {% endblock %}
 
 
 {% block content %}
 
-<h2>花费-{{ object_donate.number }}</h2>
+<h2>花费-{{ object_itemized.number }}</h2>
     <table class="table bordered" border="0">
     <tr>
     <th>单号</th>
-    <td>{{ object_donate.number }}</td>
+    <td>{{ object_itemized.number }}</td>
     </tr>
     <tr>
     <th>花费时间</th>
-    <td>{{ object_donate.create_time }}</td>
+    <td>{{ object_itemized.create_time }}</td>
     </tr>
     <tr>
     <th>花费金额</th>
-    <td>{{ object_donate.cast }}</td>
-    </tr>
-    <tr>
-    <th>用户选择方式</th>
-    <td>{{ object_donate.get_anyone }}</td>
+    <td>{{ object_itemized.cast }}</td>
     </tr>
     </table>
+
     <h6 style="text-align: center">捐赠详情</h6>
-    <div><pre>{{ object_donate.details }}</pre></div>
+    <div><pre>{{ object_itemized.details }}</pre></div>
 
 {% endblock %}
