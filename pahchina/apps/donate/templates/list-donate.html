@@ -1,11 +1,10 @@
-{% extends 'base-admin.html' %}
+{% extends 'base-index.html' %}
 
-{% block title %}捐赠管理{% endblock %}
+{% block title %}我的捐赠{% endblock %}
 
 {% block content %}
 
-    <h2>捐赠管理</h2>
-<a href="{% url 'admin-create-donate' %}">添加捐赠</a>
+    <h2>我的捐赠</h2>
 <table class="table border">
 <thead>
 <tr>
@@ -13,8 +12,6 @@
     <th>捐赠金额</th>
     <th>捐赠时间</th>
     <th>是否匿名</th>
-    <th>捐赠账户</th>
-    <th>操作</th>
 </tr>
 </thead>
     <tbody>
@@ -24,11 +21,6 @@
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>
         <td>{{ donate.get_anyone }}</td>
-        <td>{{ donate.user.username }}</td>
-        <td>
-        <a href="{% url 'admin-update-donate' donate.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete-donate' donate.id %}"><i class="icon-remove"></i></a>
-        </td>
     </tr>
     {% endfor %}
     </tbody>

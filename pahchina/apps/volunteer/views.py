@@ -7,30 +7,30 @@
 from django.views import generic
 from ...apps.volunteer.models import Volunteer
 from django.core.urlresolvers import reverse_lazy, reverse
-from ..utils import SuperUser
+from ..utils.views import SuperRequiredMixin
 from .forms import VolunteerForm
 
 
 
-class ListVolunteer(generic.ListView, SuperUser):
+class ListVolunteer(SuperRequiredMixin, generic.ListView):
 
     model = Volunteer
     context_object_name = 'volunteer_list'
     template_name = 'list-volunteer-admin.html'
 
 
-class DetailVolunteer(generic.DetailView, SuperUser):
+class DetailVolunteer(SuperRequiredMixin, generic.DetailView):
 
     model = Volunteer
     context_object_name = 'object_volunteer'
     template_name = 'detail-volunteer-admin.html'
 
-class CreateVolunteer(generic.CreateView, SuperUser):
+class CreateVolunteer(SuperRequiredMixin, generic.CreateView):
     model = Volunteer
     success_url = reverse_lazy('admin-list-volunteer')
     template_name = 'update-volunteer-admin.html'
 
-class UpdateVolunteer(generic.UpdateView, SuperUser):
+class UpdateVolunteer(SuperRequiredMixin, generic.UpdateView):
     model = Volunteer
     template_name = 'update-volunteer-admin.html'
 
@@ -38,7 +38,7 @@ class UpdateVolunteer(generic.UpdateView, SuperUser):
         return reverse('admin-detail-volunteer', kwargs=self.kwargs)
 
 
-class DeleteVolunteer(generic.DeleteView, SuperUser):
+class DeleteVolunteer(SuperRequiredMixin, generic.DeleteView):
     model = Volunteer
     success_url = reverse_lazy('admin-list-volunteer')
     template_name = 'user_confirm_delete.html'

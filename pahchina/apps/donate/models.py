@@ -37,7 +37,10 @@ class Itemized(models.Model):
 
     def check_residue(self):
         temp = Itemized.objects.filter(number=self.number).order_by('-time')
-        residue = temp[0].residue - self.cast
+        if temp:
+            residue = temp[0].residue - self.cast
+        else:
+            residue = self.number.money - self.cast
         return residue
 
     def save(self, force_insert=False, force_update=False, using=None,
