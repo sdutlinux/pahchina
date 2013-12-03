@@ -138,6 +138,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+
+    ## Third-party packages
+    'django_forms_bootstrap',
+
+    ## apps
     'pahchina.apps.accounts',
     'pahchina.apps.patient',
     'pahchina.apps.volunteer',

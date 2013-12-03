@@ -1,5 +1,7 @@
 {% extends 'base-index.html' %}
 
+{% load bootstrap_tags %}
+
 {% block title %}
 登录
 {% endblock %}
@@ -16,21 +18,14 @@
         padding: 4px 9px;
         margin: 1px;
     }
-    .helptext {
-        font-style: italic;
-    }
-    .errorlist {
-        list-style: none;
-        color: #b61318;
-        font-weight: bold;
-    }
     </style>
 {% endblock %}
 
 {% block content %}
+
     <div class="hero-unit">
     <form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
+    {{ form|as_bootstrap }}
     <small><a href="{% url 'password-reset' %}">忘记密码？</a></small>
     <br/>
     <a class="btn btn-info" href="{% url 'register' %}">注册</a>

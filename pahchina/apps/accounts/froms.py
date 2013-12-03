@@ -11,7 +11,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
-
 from .models import User, IDENTITY_CHOICES
 
 class RegisterForm(UserCreationForm):
