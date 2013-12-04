@@ -37,13 +37,9 @@ class User(AbstractUser):
     def get_profile_url(self):
         """ 返回个人主页链接
         """
-        if self.is_volunteer: res = '/'
-        elif self.is_doctor: res = '/'
-        elif self.is_druggist: res = '/'
-        elif self.is_hospital: res = reverse('profile-hospital')
-        elif self.is_patient: res = reverse('profile-patient')
-        else: res ='/'
-        return res
+        if not self.is_staff:
+            return reverse_lazy('profile')
+        return reverse_lazy('index')
 
     def get_identity(self):
         """ 返回身份名称

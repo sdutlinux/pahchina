@@ -1,0 +1,39 @@
+{% extends 'base-index.html' %}
+
+{% block title %}就医详情{% endblock %}
+
+{% block content %}
+    <h2>就医详情</h2>
+    <p>
+        <a onclick="location.href=document.referrer;" class="btn"><i class="icon-arrow-left"></i></a>
+        <a href="{% url 'patient-end-doctor-record' record.id %}" class="btn btn-inverse">就医结束</a>
+    </p>
+    <table class="table table-hover">
+    <tbody>
+        <tr>
+            <th>医院</th>
+            <td>{{ record.doctor.hospital }}</td>
+        </tr>
+        <tr>
+            <th>医生</th>
+            <td>{{ record.doctor }}</td>
+        </tr>
+        <tr>
+            <th>开始时间</th>
+            <td>{{ record.from_date|date:'Y-m-d H:i:s' }}</td>
+        </tr>
+        <tr>
+            <th>就医说明</th>
+            <td>{{ record.from_description }}</td>
+        </tr>
+        <tr>
+            <th>结束时间</th>
+            <td>{{ record.end_date|date:'Y-m-d H:i:s' }}</td>
+        </tr>
+        <tr>
+            <th>结束说明</th>
+            <td>{{ record.end_description }}</td>
+        </tr>
+    </tbody>
+    </table>
+{% endblock %}

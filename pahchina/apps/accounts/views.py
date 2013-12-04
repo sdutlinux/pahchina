@@ -51,14 +51,10 @@ def pah_login(request):
                 if redirect_to:
                     return HttpResponseRedirect(redirect_to)
                 else:
-                    if user.is_superuser:
+                    if user.is_superuser or user.is_staff:
                         return HttpResponseRedirect(reverse('admin-index'))
-                    elif user.is_patient:
-                        return HttpResponseRedirect(reverse('profile-patient'))
-                    elif user.is_hospital:
-                        return HttpResponseRedirect(reverse('profile-hospital'))
                     else:
-                        return HttpResponse('请定义页面')
+                        return HttpResponseRedirect(reverse_lazy('profile'))
             else:
                 messages.error(request, '用户暂停使用，请联系管理员！')
         else:
@@ -73,6 +69,27 @@ def pah_logout(request):
     logout(request)
     messages.info(request, '成功注销本次登录！')
     return HttpResponseRedirect(reverse('login'))
+
+class Profile(generic.DetailView):
+    """ 用户个人主页
+    """
+
+    def get_object(self, queryset=None):
+        request_user = self.request.user
+        if request_user.is_patient:
+            self.object = request_user.patient
+            self.template_name = 'profile-patient.html'
+            self.context_object_name = 'patient'
+        elif request_user.is_hospital:
+            self.object = request_user.hospital
+            self.template_name = 'profile-hospital.html'
+            self.context_object_name = 'hospital'
+        elif request_user.is_doctor:
+            self.object = request_user.doctor
+            self.template_name = 'profile-doctor.html'
+            self.context_object_name = 'doctor'
+        return self.object
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_index(request):
@@ -165,4 +182,4 @@ class UpdateIdentity(generic.FormView):
     
     def form_valid(self, form):
         form.save()
-        return super(UpdateIdentity, self).form_valid(form)    
+        return super(UpdateIdentity, self).form_valid(form)
