@@ -5,6 +5,7 @@ __author__ = 'zhwei'
 
 from django import forms
 from django.utils import timezone
+from django.http import Http404
 from django.contrib.admin import widgets
 
 #from datetimewidget.widgets import DateTimeWidget
@@ -52,7 +53,7 @@ class DoctorRecordStartForm(forms.ModelForm):
             last_one = DoctorRecord.objects.filter(patient=self._patient).order_by('-id')[0]
             if doctor == last_one.doctor and last_one.end_date is None:
                 raise forms.ValidationError('正在接受该医生的治疗！')
-        except DoctorRecord.DoesNotExist:
+        except IndexError,DoctorRecord.DoesNotExist:
             return doctor
         return doctor
 
@@ -73,12 +74,12 @@ class DoctorRecordEndForm(forms.ModelForm):
         context.end_date = timezone.now()
         context.save()
 
-dateTimeOptions = {
+#dateTimeOptions = {
     #'format': 'dd/mm/yyyy HH:ii P',
-    'format': 'yyyy-mm-dd HH:ii:ss',
+    #'format': 'yyyy-mm-dd HH:ii:ss',
     #'autoclose': 'true',
     #'showMeridian' : 'true'
-}
+#}
 
 #class DoctorRecordForm(forms.ModelForm):
 #

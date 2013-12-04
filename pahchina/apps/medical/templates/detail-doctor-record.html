@@ -6,7 +6,11 @@
     <h2>就医详情</h2>
     <p>
         <a onclick="location.href=document.referrer;" class="btn"><i class="icon-arrow-left"></i></a>
+        {% if not record.end_date %}
         <a href="{% url 'patient-end-doctor-record' record.id %}" class="btn btn-inverse">就医结束</a>
+        {% else %}
+            <a class="btn btn-inverse">已结束</a>
+        {% endif %}
     </p>
     <table class="table table-hover">
     <tbody>

@@ -90,6 +90,28 @@ class Profile(generic.DetailView):
             self.context_object_name = 'doctor'
         return self.object
 
+class Show(generic.DetailView):
+    """ 用户个人主页
+    """
+
+    model = User
+
+    def get_object(self, queryset=None):
+        request_user = self.request.user
+        if request_user.is_patient:
+            self.object = request_user.patient
+            self.template_name = 'profile-patient.html'
+            self.context_object_name = 'patient'
+        elif request_user.is_hospital:
+            self.object = request_user.hospital
+            self.template_name = 'profile-hospital.html'
+            self.context_object_name = 'hospital'
+        elif request_user.is_doctor:
+            self.object = request_user.doctor
+            self.template_name = 'profile-doctor.html'
+            self.context_object_name = 'doctor'
+        return self.object
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_index(request):
@@ -146,11 +168,13 @@ class UpdateProfile(generic.UpdateView):
     """ 用户修改个人信息
     """
     form_class = UpdateProfileForm
-    success_url = reverse_lazy('profile-patient')
     template_name = 'update-user-profile.html'
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_success_url(self):
+        return self.request.user.get_profile_url()
 
 class UpdatePassword(generic.FormView):
     """ 用户或管理员更新个人密码

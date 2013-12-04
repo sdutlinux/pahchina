@@ -3,6 +3,7 @@
 
 __author__ = 'zhwei'
 
-__all__ = ['SuperUser']
+#__all__ = ['SuperUser']
 
-from .views import SuperUser, SuperRequiredMixin
+from .views import SuperUser, SuperRequiredMixin, LoginRequiredMixin
+

@@ -17,6 +17,9 @@ urlpatterns = patterns('',
     url(r'^admin/hospital/update/(?P<pk>\d+)/$', views.UpdateHospitalProfile.as_view(),
         name='admin-update-hospital'),
 
+
+    url(r'^doctor/list/patients/$', views.MyPatient.as_view(), name='doctor-list-patient'),
+
     url(r'^admin/doctor/list/$', views.ListDoctor.as_view(), name='admin-list-doctor'),
     url(r'^admin/doctor/detail/(?P<pk>\d+)/$', views.DetailDoctor.as_view(),
         name='admin-detail-doctor'),

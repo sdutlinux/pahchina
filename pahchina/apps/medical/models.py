@@ -87,6 +87,10 @@ class DoctorRecord(models.Model):
     def model_name(self):
         return '患者就医记录'
 
+    def status(self):
+        if self.end_date:return '已结束'
+        else:return '正在接受治疗'
+
     def __unicode__(self):
         return self.patient.user.username + ' Doctor History'
 

@@ -21,9 +21,6 @@ class Patient(models.Model):
     onset_date = models.DateField(verbose_name='发病日期', blank=True, null=True)
     onset_causes = models.TextField(verbose_name='发病原因',blank=True, null=True)
 
-    # 诊断医生 - 待做
-    # 诊断医院 - 待做
-
     checklist = models.ImageField(verbose_name='检查单据', upload_to='patient/checklist',blank=True, null=True)
     # -- 个人描述 --
     disease_quality = models.TextField(verbose_name='病性',blank=True, null=True)
@@ -34,6 +31,9 @@ class Patient(models.Model):
         """ 用于某些时候描述这个model
         """
         return '患者'
+
+    def get_doctor(self):
+        return self.doctorrecord_set.get(patient=self).doctor
 
     def set_sex(self, s):
         if s == '1': self.sex='男'

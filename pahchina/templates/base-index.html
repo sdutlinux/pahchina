@@ -122,7 +122,7 @@
                     <li><a href="{% url 'register' %}">注册</a></li>
                 {% endif %}
                 <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#">{{ user.get_identity|default:'Contact' }}</a></li>
               </ul>
             </div>
           </div>
@@ -133,23 +133,24 @@
     
       <ul class="breadcrumb">
           <li><a href="{{ user.get_profile_url }}">我的详细信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
 
           {% if user.is_patient %}
           <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
           <li><a href="{% url 'create-dosage' %}">创建用药记录</a> <span class="divider">/</span></li>
           <li><a href="{% url 'patient-list-doctor-record' %}">就医记录</a> <span class="divider">/</span></li>
           <li><a href="{% url 'patient-start-doctor-record' %}">创建就医记录</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
-          {% endif %}
 
-          {% if user.is_hospital %}
+          {% elif user.is_doctor %}
+          <li><a href="{% url 'doctor-list-patient' %}">我的病人</a> <span class="divider">/</span></li>
+
+          {% elif user.is_hospital %}
           <li><a href="{% url 'update-hospital' %}">修改医院信息</a> <span class="divider">/</span></li>
-          {% endif %}
+          <li><a href="{% url 'doctor-list-patient' %}">本院的病人</a> <span class="divider">/</span></li>
 
-          {% if user.is_volunteer %}
+          {% elif user.is_volunteer %}
           <li><a href="{% url 'detail-dosage' %}">我的活动</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
           {% endif %}
 
           <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
