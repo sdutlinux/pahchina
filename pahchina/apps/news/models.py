@@ -18,14 +18,14 @@ class Sorts(MPTTModel):
 
 
 class News(TimeStampedModel):
-    title = models.CharField(max_length=50, verbose_name='标题')
+    title = models.CharField(max_length=50, verbose_name='标题', unique=True)
     content = models.TextField(verbose_name='内容')
     author = models.ForeignKey(User, verbose_name='作者')
     #site = models.ManyToManyField()
     is_draft = models.BooleanField(verbose_name='草稿')
     is_push = models.BooleanField(verbose_name='推送')
     is_top = models.BooleanField(verbose_name='置顶')
-    img = models.ImageField(upload_to='news/show', verbose_name='推广图片')
+    img = models.ImageField(upload_to='news/show', verbose_name='推广图片',blank=True, null=True)
     sort = models.ForeignKey(Sorts, verbose_name='分类')
 
     def get_draft(self):

@@ -1,0 +1,28 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+查看标签 {{ object_sorts.title }}
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ object_sorts.title }}</h2>
+<table class="table bordered" border="0">
+    <tr>
+        <th>标签</th>
+        <td>{{ object_sorts.name }}</td>
+    </tr>
+    <tr>
+        <th>父节点</th>
+        <td>{{ object_sorts.parent }}</td>
+    </tr>
+    <tr>
+        <th>操作</th>
+        <td>
+        <a class="btn" href="{% url 'admin-update-sorts' object_sorts.id %}">修改</a>
+        <a class="btn" href="{% url 'admin-delete-sorts' object_sorts.id %}">删除</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

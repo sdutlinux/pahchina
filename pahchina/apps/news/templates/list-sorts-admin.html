@@ -1,0 +1,30 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}新闻管理{% endblock %}
+
+{% block content %}
+
+    <h2>管理标签</h2>
+<a href="{% url 'admin-create-sorts' %}">添加节点</a>
+<table class="table border">
+<thead>
+<tr>
+    <th>标签</th>
+    <th>父节点</th>
+</tr>
+</thead>
+    <tbody>
+    {% for sorts in sorts_list %}
+    <tr>
+        <td>{{ sorts.name }}</td>
+        <td>{{ sorts.parent }}</td>
+        <td>
+        <a href="{% url 'admin-update-sorts' sorts.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete-sorts' sorts.id %}"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

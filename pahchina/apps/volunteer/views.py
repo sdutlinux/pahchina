@@ -37,12 +37,6 @@ class UpdateVolunteer(SuperRequiredMixin, generic.UpdateView):
     def get_success_url(self):
         return reverse('admin-detail-volunteer', kwargs=self.kwargs)
 
-
-class DeleteVolunteer(SuperRequiredMixin, generic.DeleteView):
-    model = Volunteer
-    success_url = reverse_lazy('admin-list-volunteer')
-    template_name = 'user_confirm_delete.html'
-
 class ShowVolunteer(generic.DetailView):
     model = Volunteer
     context_object_name = 'object_volunteer'

@@ -1,0 +1,20 @@
+{% extends 'base-admin.html' %}
+{% load bootstrap_tags %}
+{% block title %}
+新闻  {{ object_news.name }}
+{% endblock %}
+
+{% block content %}
+<div class="hero-unit">
+<form action="" method="post">{% csrf_token %}
+    {{ form|as_bootstrap }}
+    <div class="form-actions">
+    <a class="btn" onclick="location.href=document.referrer;">返回</a>
+    <input class="btn btn-inverse" type="submit" value="提交"/>
+    </div>
+</form>
+
+</div>
+
+
+{% endblock %}
