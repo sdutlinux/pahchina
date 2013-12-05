@@ -33,7 +33,7 @@ class Patient(models.Model):
         return '患者'
 
     def get_doctor(self):
-        return self.doctorrecord_set.get(patient=self).doctor
+        return self.doctorrecord_set.get(end_date=None, patient=self).doctor
 
     def set_sex(self, s):
         if s == '1': self.sex='男'

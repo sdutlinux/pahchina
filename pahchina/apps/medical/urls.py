@@ -18,13 +18,19 @@ urlpatterns = patterns('',
         name='admin-update-hospital'),
 
 
-    url(r'^doctor/list/patients/$', views.MyPatient.as_view(), name='doctor-list-patient'),
+    url(r'^doctor/patients/$', views.MyPatient.as_view(), name='doctor-list-patient'),
+    url(r'^hospital/doctors/$', views.ListDoctor.as_view(), name='hospital-list-doctor'),
+
+    url(r'^hospital/list/doctors/(?P<pk>\d+)/$', views.ListDoctorPatient.as_view(),
+        name='hospital-list-doctor-patient'),
 
     url(r'^admin/doctor/list/$', views.ListDoctor.as_view(), name='admin-list-doctor'),
     url(r'^admin/doctor/detail/(?P<pk>\d+)/$', views.DetailDoctor.as_view(),
         name='admin-detail-doctor'),
     url(r'^admin/doctor/update/(?P<pk>\d+)/$', views.UpdateDoctor.as_view(),
         name='admin-update-doctor'),
+    url(r'^admin/list/doctors/(?P<pk>\d+)/$', views.ListDoctorPatient.as_view(),
+        name='admin-list-doctor-patient'), # 管理员查看该医生的病人
 
     url(r'^record/create/(?P<pk>\d+)/$', views.CreateRecord.as_view(), name='create-record'),
     url(r'^record/list/(?P<pk>\d+)/$', views.ListRecord.as_view(),

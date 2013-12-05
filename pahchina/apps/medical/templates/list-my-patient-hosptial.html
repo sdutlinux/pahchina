@@ -16,7 +16,7 @@
 
     {% for patient in patient_list %}
         <tr>
-            <td>{{ patient.user.username }}</td>
+            <td><a href="{% url 'show' patient.user.id %}">{{ patient.user.username }}</a></td>
             <td>{{ patient.get_sex }}</td>
         </tr>
     {% endfor %}

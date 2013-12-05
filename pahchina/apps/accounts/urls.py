@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^logout$', views.pah_logout, name='logout'),
 
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
-    url(r'^show/(?P<pk>\d+)/$', views.Show.as_view(), name='profile'),
+    url(r'^show/(?P<pk>\d+)/$', views.Show.as_view(), name='show'),
 
     url(r'^profile/update/$', views.UpdateProfile.as_view(), name='update-profile'),
     #url(r'^password/update/$', views.change_password, name='update-password'),

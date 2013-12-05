@@ -43,6 +43,13 @@ class Doctor(models.Model):
         elif self.sex == '0': return '女'
         else: return '隐私'
 
+    def get_patients(self):
+        """ 通过就医记录获取患者列表
+        """
+        record_list = self.doctorrecord_set.filter(end_date=None, doctor=self)
+        for r in record_list:
+            yield r.patient
+
     def get_job_title(self):
         """ 获取医生职称
         """

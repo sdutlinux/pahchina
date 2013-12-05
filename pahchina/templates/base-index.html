@@ -132,6 +132,7 @@
     {% if user.is_authenticated %}
     
       <ul class="breadcrumb">
+          <li><a href="{{ user.get_show_url }}">个人展示</a> <span class="divider">/</span></li>
           <li><a href="{{ user.get_profile_url }}">我的详细信息</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
 
@@ -147,7 +148,8 @@
 
           {% elif user.is_hospital %}
           <li><a href="{% url 'update-hospital' %}">修改医院信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'doctor-list-patient' %}">本院的病人</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'hospital-list-doctor' %}">本院医生</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'doctor-list-patient' %}">本院病人</a> <span class="divider">/</span></li>
 
           {% elif user.is_volunteer %}
           <li><a href="{% url 'detail-dosage' %}">我的活动</a> <span class="divider">/</span></li>

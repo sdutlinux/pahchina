@@ -1,0 +1,44 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}医生列表{% endblock %}
+
+{% block content %}
+    <h2>医生列表</h2>
+    <p><a class="btn" href="{% url 'admin-create-user' %}"><i class="icon-plus"></i></a></p>
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>姓名</th>
+    <th>所在医院</th>
+    <th>性别</th>
+    <th>年龄</th>
+    <th>职称</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+
+    {% for doctor in doctor_list %}
+        <tr>
+            <td><a href="{% url 'admin-detail-doctor' doctor.id %}">{{ doctor.user.username }}</a></td>
+            <td>
+                {% if doctor.hospital %}
+                    {{ doctor.hospital.user.username }}
+                {% endif %}
+            </td>
+            <td>{{ doctor.get_sex }}</td>
+            <td>{{ doctor.age }}</td>
+            <td>{{ doctor.job_title }}</td>
+            <td>
+                <a href="{% url 'admin-update-doctor' doctor.id %}"><i class="icon-edit"></i></a>
+                <a href="{% url 'admin-delete-user' doctor.user.id %}"><i class="icon-remove"></i></a>
+            </td>
+        </tr>    
+    {% endfor %}
+    
+
+
+    </tbody>
+</table>
+
+{% endblock %}

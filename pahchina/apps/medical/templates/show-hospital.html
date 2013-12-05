@@ -1,0 +1,23 @@
+{% extends 'base-index.html' %}
+
+{% block title %}{{ hospital.user.get_identity }}{{ hospital.user.username }}的个人页面{% endblock %}
+
+{% block content %}
+
+    <h3>{{ hospital.user.get_identity }}{{ hospital.user.username }}的个人页面</h3>
+    <table class="table table-bordered">
+
+        <tr>
+            <th>头像</th>
+            <td>
+                {% if hospital.user.avatar %}
+                    <img src="{{ hospital.user.avatar.url }}" alt="{{ hospital.user.username }}"/>
+                {% endif %}
+            </td>
+        </tr>
+
+        {% include 'includes/hospital-info-as-table.html' %}
+
+    </table>
+
+{% endblock %}

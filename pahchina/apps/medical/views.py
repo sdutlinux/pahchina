@@ -54,11 +54,42 @@ class DetailDoctor(SuperRequiredMixin, generic.DetailView):
     context_object_name = 'doctor'
     template_name = 'detail-doctor.html'
 
-class ListDoctor(SuperRequiredMixin, generic.ListView):
+class ListDoctor(LoginRequiredMixin, generic.ListView):
     """ 管理员列出所有医生
     """
     model = Doctor
-    template_name = 'list-doctor.html'
+
+    def get_template_names(self):
+        if self.request.user.is_superuser:
+            return 'list-doctor-admin.html'
+        elif self.request.user.is_hospital:
+            return 'list-doctor.html'
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return super(ListDoctor, self).get_queryset()
+        elif self.request.user.is_hospital:
+            return self.request.user.hospital.doctor_set.all()
+
+class ListDoctorPatient(LoginRequiredMixin, generic.DetailView):
+    """ 查看该医生的病人
+    使用者： 管理员、医院
+    """
+    model = Doctor
+
+    def get_template_names(self):
+        if self.request.user.is_hospital:
+            return 'list-my-patient.html'
+        elif self.request.user.is_superuser:
+            return 'list-patient.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListDoctorPatient, self).get_context_data(**kwargs)
+        if self.request.user.is_hospital and \
+            self.get_object().hospital == self.request.user.hospital or \
+                self.request.user.is_superuser:
+            context['patient_list'] = self.get_object().get_patients()
+        return context
 
 class UpdateDoctor(SuperRequiredMixin, generic.UpdateView):
     """ 管理员更新医生信息

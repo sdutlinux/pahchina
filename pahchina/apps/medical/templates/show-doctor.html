@@ -1,0 +1,23 @@
+{% extends 'base-index.html' %}
+
+{% block title %}{{ doctor.user.get_identity }}{{ doctor.user.username }}的个人页面{% endblock %}
+
+{% block content %}
+
+    <h3>{{ doctor.user.get_identity }}{{ doctor.user.username }}的个人页面</h3>
+    <table class="table table-bordered">
+
+        <tr>
+            <th>头像</th>
+            <td>
+                {% if doctor.user.avatar %}
+                    <img src="{{ doctor.user.avatar.url }}" alt="{{ doctor.user.username }}"/>
+                {% endif %}
+            </td>
+        </tr>
+
+        {% include 'includes/doctor-info-as-table.html' %}
+
+    </table>
+
+{% endblock %}

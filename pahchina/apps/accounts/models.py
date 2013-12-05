@@ -41,6 +41,11 @@ class User(AbstractUser):
             return reverse_lazy('profile')
         return reverse_lazy('index')
 
+    def get_show_url(self):
+        """ 获取展示页面URL
+        """
+        return reverse('show', kwargs={'pk': self.id})
+
     def get_identity(self):
         """ 返回身份名称
         eg: 患者，志愿者等

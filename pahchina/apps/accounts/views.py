@@ -5,7 +5,7 @@ from django.views import generic
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.shortcuts import render_to_response as r2r
+from django.shortcuts import render_to_response as r2r, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -14,6 +14,9 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
 
 from ..utils import  SuperRequiredMixin
+from ..patient.models import Patient
+from ..medical.models import Doctor, Hospital
+from ..volunteer.models import Volunteer
 
 from .models import User
 from .froms import (RegisterForm,
@@ -91,26 +94,28 @@ class Profile(generic.DetailView):
         return self.object
 
 class Show(generic.DetailView):
-    """ 用户个人主页
+    """ 用户个人展示页面
     """
 
     model = User
 
     def get_object(self, queryset=None):
-        request_user = self.request.user
-        if request_user.is_patient:
-            self.object = request_user.patient
-            self.template_name = 'profile-patient.html'
+        super_object = super(Show, self).get_object()
+        if super_object.is_patient:
             self.context_object_name = 'patient'
-        elif request_user.is_hospital:
-            self.object = request_user.hospital
-            self.template_name = 'profile-hospital.html'
+            self.template_name = 'show-patient.html'
+            return super_object.patient
+        elif super_object.is_hospital:
             self.context_object_name = 'hospital'
-        elif request_user.is_doctor:
-            self.object = request_user.doctor
-            self.template_name = 'profile-doctor.html'
+            self.template_name = 'show-hospital.html'
+            return super_object.hospital
+        elif super_object.is_doctor:
             self.context_object_name = 'doctor'
-        return self.object
+            self.template_name = 'show-doctor.html'
+            return super_object.doctor
+        else:
+            return HttpResponseRedirect(reverse_lazy('index'))
+
 
 
 @user_passes_test(lambda u: u.is_superuser)
