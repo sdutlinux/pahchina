@@ -1,0 +1,36 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}查看患者就医记录{% endblock %}
+
+{% block content %}
+    <h2>查看患者就医记录</h2>
+    <p><a class="btn" href="{% url 'admin-detail-patient' patient.id %}"><i class="icon-arrow-left"></i></a></p>
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>医生</th>
+    <th>就医时间</th>
+    <th>详细</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+    {% for record in doctor_record_list %}
+    <tr>
+        <td><a href="{% url 'admin-detail-doctor' record.doctor.id %}">{{ record.doctor }}</a></td>
+        <td><span class="label">{{ record.from_date }}</span></td>
+        <td>
+            <a href="{% url 'admin-detail-doctor-record' record.id %}">
+                <i class="icon-info-sign"></i></a>
+        </td>
+        <td>
+            <a href=""><i class="icon-edit"></i></a>
+            <a href=""><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}

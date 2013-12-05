@@ -7,7 +7,7 @@
 {% block content %}
     <h2>医生详情页面</h2>
     <p>
-        <a href="{% url 'admin-list-patient' %}" class="btn"><i class="icon-arrow-left"></i></a>
+        <a onclick="location.href=document.referrer;" class="btn"><i class="icon-arrow-left"></i></a>
         <a href="{% url 'admin-update-user' doctor.user.id %}" class="btn">修改用户信息</a>
         <a href="{% url 'admin-update-doctor' doctor.id %}" class="btn">修改医生信息</a>
     </p>

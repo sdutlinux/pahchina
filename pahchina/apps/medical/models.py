@@ -68,3 +68,33 @@ class Record(TimeStampedModel):
 
     def __unicode__(self):
         return self.patient.user.username + "'s Record"
+
+
+class DoctorRecord(models.Model):
+    """ 患者就医记录
+    患者患病后经过那些医生的诊治
+    """
+
+    patient = models.ForeignKey(Patient, verbose_name='患者', blank=True)
+    doctor = models.ForeignKey(Doctor, verbose_name='医生')
+
+    from_date = models.DateTimeField(verbose_name='开始日期', auto_now_add=True)
+    from_description = models.TextField(verbose_name='就医说明', max_length=500)
+
+    end_date = models.DateTimeField(verbose_name='结束日期', blank=True, null=True)
+    end_description = models.TextField(verbose_name='结束说明', max_length=500, blank=True, null=True)
+
+    def model_name(self):
+        return '患者就医记录'
+
+    def __unicode__(self):
+        return self.patient.user.username + ' Doctor History'
+
+
+
+
+
+
+
+
+

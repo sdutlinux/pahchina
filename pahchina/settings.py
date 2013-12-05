@@ -141,6 +141,7 @@ INSTALLED_APPS = (
 
     ## Third-party packages
     'django_forms_bootstrap',
+    #'datetimewidget',
 
     ## apps
     'pahchina.apps.accounts',

@@ -137,16 +137,21 @@
           {% if user.is_patient %}
           <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
           <li><a href="{% url 'create-dosage' %}">创建用药记录</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'patient-list-doctor-record' %}">就医记录</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'patient-start-doctor-record' %}">创建就医记录</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
           {% endif %}
+
           {% if user.is_hospital %}
           <li><a href="{% url 'update-hospital' %}">修改医院信息</a> <span class="divider">/</span></li>
           {% endif %}
+
           {% if user.is_volunteer %}
           <li><a href="{% url 'detail-dosage' %}">我的活动</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
           {% endif %}
+
           <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
           <li><a href="{% url 'list-donate' %}">我的捐赠</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-password' %}">修改密码</a> <span class="divider">/</span></li>

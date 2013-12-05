@@ -7,6 +7,8 @@
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <!-- Le styles -->
     <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
     <style>
       body {
         padding-top: 60px;
@@ -25,7 +27,6 @@
         }
       }
     </style>
-    <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
     {% block head %}
 
     {% endblock %}
@@ -108,7 +109,6 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
     {% block foot %}

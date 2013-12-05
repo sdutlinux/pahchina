@@ -1,0 +1,30 @@
+{% extends 'base-index.html' %}
+
+{% block title %}查看就医记录{% endblock %}
+
+{% block content %}
+    <h2>查看就医记录</h2>
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>就医时间</th>
+    <th>医生</th>
+    <th>详细</th>
+</tr>
+</thead>
+    <tbody>
+    {% for record in doctor_record_list %}
+    <tr>
+        <td><span class="label">{{ record.from_date|date:'Y年m月d日 H:i:s' }}</span></td>
+        <td><a href="{% url 'profile' %}">{{ record.doctor }}</a></td>
+        <td>
+            <a href="{% url 'patient-detail-doctor-record' record.id %}">
+                <i class="icon-info-sign"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}
