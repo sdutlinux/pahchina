@@ -51,7 +51,8 @@ class CreateDonateUser(generic.FormView):
 
     def get_form_kwargs(self):
         kwargs = super(CreateDonateUser, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
+        if self.request.user.is_authenticated():
+            kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
