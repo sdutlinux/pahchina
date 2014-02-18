@@ -7,3 +7,4 @@ __author__ = 'zhwei'
 
 from .views import SuperUser, SuperRequiredMixin, LoginRequiredMixin
 
+from .models import *

@@ -1,0 +1,52 @@
+        <tr>
+            <th>ID</th>
+            <td>{{ site.id }}</td>
+        </tr>
+        <tr>
+            <th>网站名称</th>
+            <td>{{ site.name }}</td>
+        </tr>
+        <tr>
+            <th>域名</th>
+            <td>{{ site.domain }}</td>
+        </tr>
+        <tr>
+            <th>站点管理员</th>
+            <td><a href="{% url 'admin-detail-user' site.admin.id %}">{{ site.admin.username }}</a></td>
+        </tr>
+        <tr>
+            <th>网站logo</th>
+            <td><img src="{{ site.logo.url }}" alt=""/></td>
+        </tr>
+        <tr>
+            <th>网站图片</th>
+            <td><img src="{{ site.get_cut_url }}" alt=""/></td>
+        </tr>
+        <tr>
+            <th>网站简介</th>
+            <td>{{ site.description }}</td>
+        </tr>
+        <tr>
+            <th>联系人</th>
+            <td>{{ site.get_contact }}</td>
+        </tr>
+        <tr>
+            <th>联系电话</th>
+            <td>{{ site.get_telephone }}</td>
+        </tr>
+        <tr>
+            <th>联系QQ</th>
+            <td>{{ site.qq }}</td>
+        </tr>
+        <tr>
+            <th>联系地址</th>
+            <td>{{ site.address }}</td>
+        </tr>
+        <tr>
+            <th>创建时间</th>
+            <td>{{ site.siteprofile.created_date }}</td>
+        </tr>
+        <tr>
+            <th>修改时间</th>
+            <td>{{ site.siteprofile.updated_date }}</td>
+        </tr>

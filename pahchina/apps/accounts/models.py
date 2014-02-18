@@ -15,7 +15,8 @@ class User(AbstractUser):
     """
     avatar = models.ImageField(verbose_name='照片', upload_to='user/avatar',
                                blank=True, null=True)
-    #identity = models.CommaSeparatedIntegerField(verbose_name='身份类型', default='', max_length=10)
+
+    telephone = models.CharField(verbose_name='联系电话', max_length=13)
 
     identity = models.SmallIntegerField(verbose_name='身份类型', default=0, choices=IDENTITY_CHOICES,
                                         max_length=1)
@@ -50,10 +51,12 @@ class User(AbstractUser):
         """ 返回身份名称
         eg: 患者，志愿者等
         """
+        res = None
+
         for i in IDENTITY_CHOICES:
             if i[0] == self.identity:
                 res = i[1]
-        if self.is_staff: res = '分站管理员'
+        if self.is_staff: res += ', 分站管理员'
         if self.is_superuser: res = '总站管理员'
         return res
 

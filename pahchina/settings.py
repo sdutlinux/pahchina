@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from django import conf
+
 # Django settings for pahchina project.
 import os
 DIR = os.path.abspath(os.path.dirname(__file__))
@@ -14,6 +16,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+SITE_ID = 1
 
 
 #DATABASES = {
@@ -42,7 +45,6 @@ TIME_ZONE = 'Asia/Shanghai'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'zh_CN'
 
-SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -106,6 +108,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -124,15 +127,21 @@ TEMPLATE_DIRS = (
     os.path.join(DIR, 'apps/volunteer/templates'),
     os.path.join(DIR, 'apps/donate/templates'),
     os.path.join(DIR, 'apps/medical/templates'),
+    os.path.join(DIR, 'apps/subsites/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
+#CONTEXT_PROCESSORS = ('pahchina.apps.context_processor.site')
+
+#TEMPLATE_CONTEXT_PROCESSORS +=
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.redirects',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -153,6 +162,7 @@ INSTALLED_APPS = (
     'pahchina.apps.index',
     'pahchina.apps.medical',
     'pahchina.apps.news',
+    'pahchina.apps.subsites',
 )
 
 AUTH_USER_MODEL = 'accounts.User'

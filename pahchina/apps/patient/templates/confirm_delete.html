@@ -1,18 +1,18 @@
 {% extends 'base-admin.html' %}
 
 {% block title %}
-删除{{ object.model_name }} {{ object.name }}
+删除{{ object.verbose_name }} {{ object.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="span7 well">
 
-<h3>删除{{ object.model_name }}</h3>
+<h3>删除{{ object.verbose_name }}</h3>
     <p><strong>注意！</strong></p>
 
-    <p>你确定要删除 {{ object.model_name }}&nbsp;
-        <a href="" class="button bigrounded green">{{ object }}</a>&nbsp;吗?</p>
+    <p>你确定要删除 {{ object.verbose_name }}&nbsp;
+        <span class="badge badge-important">{{ object }}</span>&nbsp;吗?</p>
 
 <form action="" method="post">{% csrf_token %}
     <div>

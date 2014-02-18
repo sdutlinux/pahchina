@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -104,13 +103,14 @@
     <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">PAH肺动脉高压联盟</h3>
+        <h3 class="muted">{{ site.name }}</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
               <ul class="nav">
 
                 <li><a href="{% url 'index' %}">首页</a></li>
+                <li><a href="{% url 'create-donate' %}">捐赠</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'admin-index' %}">后台</a></li>
                 {% endif %}
@@ -121,8 +121,8 @@
                     <li><a href="{% url 'login' %}">登录</a></li>
                     <li><a href="{% url 'register' %}">注册</a></li>
                 {% endif %}
-                <li><a href="#">About</a></li>
                 <li><a href="#">{{ user.get_identity|default:'Contact' }}</a></li>
+
               </ul>
             </div>
           </div>

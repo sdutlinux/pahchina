@@ -20,8 +20,8 @@ class Hospital(models.Model):
     is_community = models.BooleanField(verbose_name='是否治疗中心')
     level = models.CharField(verbose_name='医院等级', max_length=20)
 
-    def model_name(self):
-        return "医院"
+    class Meta:
+        verbose_name = '医生'
 
     def __unicode__(self):
         return self.user.username
@@ -37,6 +37,9 @@ class Doctor(models.Model):
 
     job_title = models.CharField(verbose_name='职称', max_length=10, blank=True, null=True,
                                  choices=DOCTOR_CHOICES)
+
+    class Meta:
+        verbose_name = '医生'
 
     def get_sex(self):
         if self.sex == '1': return '男'
@@ -55,10 +58,6 @@ class Doctor(models.Model):
         """
         return get_full_desc(self.job_title, choices=DOCTOR_CHOICES)
 
-    def model_name(self):
-
-        return '医生'
-
     def __unicode__(self):
         return self.user.username
 
@@ -70,8 +69,8 @@ class Record(TimeStampedModel):
     patient = models.ForeignKey(Patient, verbose_name='患者', blank=True)
     content = models.TextField(verbose_name='病例内容',max_length=500, blank=True, null=True)
 
-    def model_name(self):
-        return '病历'
+    class Meta:
+        verbose_name = '病例'
 
     def __unicode__(self):
         return self.patient.user.username + "'s Record"
@@ -91,8 +90,8 @@ class DoctorRecord(models.Model):
     end_date = models.DateTimeField(verbose_name='结束日期', blank=True, null=True)
     end_description = models.TextField(verbose_name='结束说明', max_length=500, blank=True, null=True)
 
-    def model_name(self):
-        return '患者就医记录'
+    class Meta:
+        verbose_name = '患者就医记录'
 
     def status(self):
         if self.end_date:return '已结束'

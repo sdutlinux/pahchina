@@ -57,9 +57,15 @@ class RegisterForm(UserCreationForm):
 
 class UpdateUserForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+        self.fields['is_active'].help_text = ''
+        self.fields['is_staff'].label = '是否管理员'
+        self.fields['is_staff'].help_text = ''
+
     class Meta:
         model = User
-        fields=('username', 'last_name', 'first_name', 'email', 'avatar', 'is_active')
+        fields=('username', 'last_name', 'first_name', 'email', 'avatar', 'is_active', 'is_staff')
 
 class UpdateProfileForm(forms.ModelForm):
 

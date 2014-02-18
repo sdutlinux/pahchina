@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
+from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
+
 
 from ..utils import  SuperRequiredMixin
 from ..patient.models import Patient
@@ -91,6 +94,9 @@ class Profile(generic.DetailView):
             self.object = request_user.doctor
             self.template_name = 'profile-doctor.html'
             self.context_object_name = 'doctor'
+        elif request_user.is_superuser:
+            self.template_name = 'index.html'
+            return HttpResponseRedirect(reverse_lazy('index'))
         return self.object
 
 class Show(generic.DetailView):
@@ -114,6 +120,7 @@ class Show(generic.DetailView):
             self.template_name = 'show-doctor.html'
             return super_object.doctor
         else:
+            self.template_name = 'index.html'
             return HttpResponseRedirect(reverse_lazy('index'))
 
 
@@ -212,3 +219,41 @@ class UpdateIdentity(generic.FormView):
     def form_valid(self, form):
         form.save()
         return super(UpdateIdentity, self).form_valid(form)
+
+
+class ListUserGroup(generic.ListView, SuperRequiredMixin):
+    """ 管理员查看所有用户组
+    """
+
+    model = Group
+    template_name = 'list-group.html'
+    context_object_name = 'group_list'
+
+class CreateUserGroup(generic.CreateView, SuperRequiredMixin):
+    """ 管理员创建用户组
+    """
+    model = Group
+    template_name = 'update.html'
+    success_url = '/'
+
+    #def get_object(self, queryset=None):
+    #    if self.kwargs['']
+
+class UpdateUserGroup(generic.UpdateView, SuperRequiredMixin):
+    """ 管理员修改用户组
+    """
+    model = Group
+    template_name = 'update.html'
+    success_url = ''
+
+class DeleteUserGroup(generic.DeleteView, SuperRequiredMixin):
+
+    """ 管理员删除用户组
+    """
+    model = Group
+    template_name = 'confirm_delete.html'
+    success_url = '/'
+
+
+#class PermManage(SuperRequiredMixin, generic.DetailView):
+

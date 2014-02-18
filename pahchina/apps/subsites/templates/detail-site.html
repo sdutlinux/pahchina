@@ -1,0 +1,20 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+站点详情页面
+{% endblock %}
+
+{% block content %}
+    <h2>站点详情页面</h2>
+    <p><a href="{% url 'admin-list-patient' %}" class="btn"><i class="icon-arrow-left"></i></a></p>
+    <div class="form-actions">
+        <a href="{% url 'admin-update-site' site.id %}" class="btn">修改站点</a>
+        <a href="http://{{ site.domain }}" target="_blank" class="btn">查看站点</a>
+    </div>
+
+    <table class="table table-bordered">
+
+        {% include 'includes/site-info-as-table.html' %}
+    </table>
+
+{% endblock %}

@@ -27,10 +27,13 @@ class Patient(models.Model):
     mood = models.TextField(verbose_name='心情', max_length=140,blank=True, null=True)
     onset_process = models.TextField(verbose_name='发病过程',blank=True, null=True)
 
-    def model_name(self):
-        """ 用于某些时候描述这个model
-        """
-        return '患者'
+    class Meta:
+        verbose_name = '患者'
+        permissions = (
+            ('my_doctor', 'Only my doctor can see'),
+            ('my_hospital', 'Only my hospital can see'),
+        )
+
 
     def get_doctor(self):
         return self.doctorrecord_set.get(end_date=None, patient=self).doctor
