@@ -5,6 +5,6 @@ __author__ = 'zhwei'
 
 #__all__ = ['SuperUser']
 
-from .views import SuperUser, SuperRequiredMixin, LoginRequiredMixin
+from .views import *
 
 from .models import *

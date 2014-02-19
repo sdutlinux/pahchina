@@ -21,7 +21,11 @@ urlpatterns = patterns('',
     url(r'^admin/list$', views.ListSites.as_view(), name='admin-list-sites'),
     url(r'^admin/detail/(?P<pk>\d+)/$', views.DetailSite.as_view(), name='admin-detail-site'),
     url(r'^admin/update/(?P<pk>\d+)/$', views.UpdateSite.as_view(), name='admin-update-site'),
-    url(r'^admin/update/(?P<pk>\d+)/$', views.DeleteSite.as_view(), name='admin-delete-site'),
+    url(r'^admin/delete/(?P<pk>\d+)/$', views.DeleteSite.as_view(), name='admin-delete-site'),
+
+
+    url(r'^detail/mysite/$', views.StaffDetailSite.as_view(), name='staff-detail-mysite'),
+    url(r'^update/mysite/$', views.StaffUpdateSite.as_view(), name='staff-update-mysite'),
 
 )
 

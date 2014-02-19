@@ -38,9 +38,9 @@ class User(AbstractUser):
     def get_profile_url(self):
         """ 返回个人主页链接
         """
-        if not self.is_staff:
-            return reverse_lazy('profile')
-        return reverse_lazy('index')
+        #if not self.is_staff:
+        return reverse_lazy('profile')
+        #return reverse_lazy('index')
 
     def get_show_url(self):
         """ 获取展示页面URL

@@ -103,7 +103,7 @@
     <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">{{ site.name }}</h3>
+        <h3 class="muted"><img src="{{ SITE.logo.url }}" alt="站点LOGO"/></h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
@@ -111,7 +111,7 @@
 
                 <li><a href="{% url 'index' %}">首页</a></li>
                 <li><a href="{% url 'create-donate' %}">捐赠</a></li>
-                {% if user.is_superuser %}
+                {% if user.is_staff %}
                     <li><a href="{% url 'admin-index' %}">后台</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
@@ -133,7 +133,7 @@
     
       <ul class="breadcrumb">
           <li><a href="{{ user.get_show_url }}">个人展示</a> <span class="divider">/</span></li>
-          <li><a href="{{ user.get_profile_url }}">我的详细信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'profile' %}">我的详细信息</a> <span class="divider">/</span></li>
           <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
 
           {% if user.is_patient %}
@@ -144,6 +144,7 @@
           <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
 
           {% elif user.is_doctor %}
+          <li><a href="{% url 'doctor-update-profile' %}">修改医生信息</a> <span class="divider">/</span></li>
           <li><a href="{% url 'doctor-list-patient' %}">我的病人</a> <span class="divider">/</span></li>
 
           {% elif user.is_hospital %}

@@ -48,7 +48,7 @@ class DetailHospital(SuperRequiredMixin, generic.DetailView):
 
 
 class DetailDoctor(SuperRequiredMixin, generic.DetailView):
-    """ 医生查看医生详情
+    """ 管理员查看医生详情
     """
     model = Doctor
     context_object_name = 'doctor'
@@ -100,6 +100,18 @@ class UpdateDoctor(SuperRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse('admin-detail-doctor', kwargs=self.kwargs)
+
+class DoctorUpdateProfile(generic.UpdateView):
+    """ 管理员更新医生信息
+    """
+    model = Doctor
+    template_name = 'update.html'
+
+    def get_object(self, queryset=None):
+        return Doctor.objects.get(user=self.request.user)
+
+    def get_success_url(self):
+        return reverse('profile')
 
 class MyPatient(LoginRequiredMixin, generic.ListView):
     """ 医生或者医院查看自己的病人

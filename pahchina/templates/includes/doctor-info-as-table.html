@@ -1,6 +1,10 @@
         <tr>
             <th>所在医院</th>
+            {% if doctor.hospital %}
             <td><a href="{% url 'show' doctor.hospital.user.id %}">{{ doctor.hospital }}</a></td>
+            {% else %}
+            <td>无</td>
+            {% endif %} 
         </tr>
         <tr>
             <th>性别</th>

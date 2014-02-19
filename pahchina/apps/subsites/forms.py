@@ -26,12 +26,6 @@ from ..accounts.models import User
 #        model = SiteProfile
 #        exclude = ('site',)
 #
-#    def clear_domain(self):
-#        domain = self.cleaned_data.get("domain")
-#        if Site.objects.filter(doamin=domain).count() != 0:
-#            raise forms.ValidationError('该域名已被占用')
-#
-#
 #    def save(self, *args, **kwargs):
 #         s = self.instance.site
 #         s.name = self.cleaned_data['name']
@@ -39,3 +33,13 @@ from ..accounts.models import User
 #         s.save()
 #         profile = super(SiteForm, self).save(*args, **kwargs)
 #         return profile
+
+
+class StaffSiteForm(forms.ModelForm):
+
+    """ 分站管理员使用
+    """
+
+    class Meta:
+        model = Site
+        exclude = ('admin')

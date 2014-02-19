@@ -27,7 +27,7 @@ class Site(TimeStampedModel):
 
     admin = models.OneToOneField(User, verbose_name='站点管理员',
                                  #choices=[(u.id,u.username) for u in User.objects.filter(is_staff=True)],
-                                 help_text='只有管理员用户可选')
+                                 help_text='只有管理员用户可选<a href="/accounts/user/list">添加管理员</a>')
 
     address = models.CharField(verbose_name='地址', max_length=200)
     description = models.TextField(verbose_name='网站简介', max_length=300,
@@ -48,6 +48,11 @@ class Site(TimeStampedModel):
     def __unicode__(self):
         return "%s(%s)"%(self.name,self.domain)
 
+    def get_level(self):
+        """ 获取网站等级
+        ret: 总站、分站
+        """
+        return '总站' if self.id == 1 else '地方分站'
 
     def get_dict(self):
 

@@ -3,6 +3,10 @@
             <td>{{ site.id }}</td>
         </tr>
         <tr>
+            <th>网站等级</th>
+            <td>{{ site.get_level }}</td>
+        </tr>
+        <tr>
             <th>网站名称</th>
             <td>{{ site.name }}</td>
         </tr>
@@ -10,10 +14,12 @@
             <th>域名</th>
             <td>{{ site.domain }}</td>
         </tr>
+        {% if user.is_superuser %}
         <tr>
             <th>站点管理员</th>
             <td><a href="{% url 'admin-detail-user' site.admin.id %}">{{ site.admin.username }}</a></td>
         </tr>
+        {% endif %}
         <tr>
             <th>网站logo</th>
             <td><img src="{{ site.logo.url }}" alt=""/></td>
@@ -44,9 +50,9 @@
         </tr>
         <tr>
             <th>创建时间</th>
-            <td>{{ site.siteprofile.created_date }}</td>
+            <td>{{ site.created_date }}</td>
         </tr>
         <tr>
             <th>修改时间</th>
-            <td>{{ site.siteprofile.updated_date }}</td>
+            <td>{{ site.updated_date }}</td>
         </tr>

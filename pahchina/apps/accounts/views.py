@@ -125,7 +125,7 @@ class Show(generic.DetailView):
 
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def admin_index(request):
     """ 网站后台首页
     """

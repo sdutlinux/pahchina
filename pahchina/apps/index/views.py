@@ -17,10 +17,10 @@ from django.contrib.auth.forms import UserCreationForm
 
 class Index(generic.TemplateView):
 
-    #def get_context_data(self, **kwargs):
-    #    context = super(Index, self).get_context_data(**kwargs)
-    #    context['site']=get_current_site(self.request)
-    #    return context
+    def get_context_data(self, **kwargs):
+        context = super(Index, self).get_context_data(**kwargs)
+        context['test'] = self.request.SITE
+        return context
 
     template_name = 'index.html'
 

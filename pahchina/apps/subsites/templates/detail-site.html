@@ -6,10 +6,18 @@
 
 {% block content %}
     <h2>站点详情页面</h2>
-    <p><a href="{% url 'admin-list-patient' %}" class="btn"><i class="icon-arrow-left"></i></a></p>
+    <p><a href="{% url 'admin-list-sites' %}" class="btn"><i class="icon-arrow-left"></i></a></p>
     <div class="form-actions">
-        <a href="{% url 'admin-update-site' site.id %}" class="btn">修改站点</a>
         <a href="http://{{ site.domain }}" target="_blank" class="btn">查看站点</a>
+        {% if user.is_superuser %}
+            <a href="{% url 'admin-update-site' site.id %}" class="btn">修改站点</a>
+            {% if site.id != 1 %}
+            <a href="{% url 'admin-delete-site' site.id %}" target="_blank" class="btn btn-danger">删除站点</a>
+            {% endif %}
+        {% elif user.is_staff %}
+            <a href="{% url 'staff-update-mysite' %}" class="btn">修改站点</a>
+        {% endif %}
+
     </div>
 
     <table class="table table-bordered">

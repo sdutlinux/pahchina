@@ -11,6 +11,7 @@
     <th>ID</th>
     <th>名称</th>
     <th>域名</th>
+    <th>等级</th>
     <th>操作</th>
 </tr>
 </thead>
@@ -22,9 +23,12 @@
             <a href="{% url 'admin-detail-site' site.id %}">{{ site.name }}</a>
         </td>
         <td>{{ site.domain }}</td>
+        <td>{{ site.get_level }}</td>
         <td>
         <a href="{% url 'admin-update-site' site.id %}"><i class="icon-edit"></i></a>
+        {% if site.id != 1 %}
         <a href="{% url 'admin-delete-site' site.id %}"><i class="icon-remove"></i></a>
+        {% endif %}
         </td>
     </tr>
     {% endfor %}

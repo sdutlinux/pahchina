@@ -23,6 +23,19 @@ class SuperRequiredMixin(object):
                                      REDIRECT_FIELD_NAME,)
         return super(SuperRequiredMixin, self).dispatch(request, *args, **kwargs)
 
+
+class StaffRequiredMixin(object):
+    """ 基类
+    用于管理员页面权限控制, 只能管理员进行访问
+    Usage: class SimpleView(SuperUser): ...
+    """
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect_to_login(request.get_full_path(),
+                                     reverse_lazy('login'),
+                                     REDIRECT_FIELD_NAME,)
+        return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
+
 class LoginRequiredMixin(object):
     """ 基类
     用于管理员页面权限控制, 只能管理员进行访问
