@@ -10,13 +10,41 @@ from ..utils.models import TimeStampedModel
 
 SEX_CHOICES=(('1','男'),('0', '女'),('2','隐私'))
 
-class Patient(models.Model):
+class Patient(TimeStampedModel):
 
     user = models.OneToOneField(User)
-    sex = models.CharField(verbose_name='性别', default='2', choices=SEX_CHOICES, max_length=1)
-    id_no = models.CharField(verbose_name='身份证号', max_length=18,blank=True, null=True)
-    hometown=models.CharField(verbose_name='户籍地', max_length=10,blank=True, null=True)
-    local = models.CharField(verbose_name='居住地', max_length=10,blank=True, null=True)
+
+    medical_history = models.TextField(verbose_name='病史', max_length=200,
+                                       help_text='病情描述，叙述患病经过以及治疗和用药状况')
+    # 初诊
+    init_diag_hosp = models.CharField(verbose_name='初诊医院名称', max_length=50)
+    init_diag_hosp_type = models.CharField(verbose_name='初诊医院类型', max_length=20,
+                                           choices=(
+                                               ("sjyy","省级医院"),
+                                               ("xsjyy","县市级医院"),
+                                               ("sqyy","社区医院"),
+                                               ("xzyy","乡镇医院"),
+                                               ("ncyy","农村医院"),
+                                               ("srzs","私人诊所"),
+                                               ("other","其他（请注明）"),
+                                           ))
+    init_diag_doct_conclu = models.TextField(verbose_name='初诊医生诊断结论', max_length=500)
+    is_confirm = models.BooleanField(verbose_name='是否确认肺动脉高压',
+                                     choices=((False,'否'),(True,'是')),default=False)
+    why_not_confirm = models.CharField(verbose_name='未确诊原因', max_length=10,
+                                       choices=(
+                                           ("bqbyz","病情不严重"),
+                                           ("jjyyzh","经济原因暂缓"),
+                                           ("fcwhsyy","附近无合适医院"),
+                                           ("other","其他（请注明）"),
+                                       ),)
+
+    # 确诊
+    confirm_pah_date = models.DateField()
+    #sex = models.CharField(verbose_name='性别', default='2', choices=SEX_CHOICES, max_length=1)
+    #id_no = models.CharField(verbose_name='身份证号', max_length=18,blank=True, null=True)
+    #hometown=models.CharField(verbose_name='户籍地', max_length=10,blank=True, null=True)
+    #local = models.CharField(verbose_name='居住地', max_length=10,blank=True, null=True)
 
     onset_date = models.DateField(verbose_name='发病日期', blank=True, null=True)
     onset_causes = models.TextField(verbose_name='发病原因',blank=True, null=True)
