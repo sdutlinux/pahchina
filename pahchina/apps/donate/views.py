@@ -42,6 +42,7 @@ class DeleteDonate(SuperRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy('admin-list-donate')
     template_name = 'user_confirm_delete.html'
 
+
 class CreateDonateUser(generic.FormView):
 
     form_class = DonateFormUser
@@ -50,7 +51,8 @@ class CreateDonateUser(generic.FormView):
 
     def get_form_kwargs(self):
         kwargs = super(CreateDonateUser, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
+        if self.request.user.is_authenticated():
+            kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
@@ -68,7 +70,11 @@ class ListDonateUser(generic.DetailView):
 
     def get_object(self, queryset=None):
         return self.request.user
-    
+
+class DetailDonateUser(generic.DetailView):
+    model = Donate
+    context_object_name = 'object_donate'
+    template_name = 'detail-donate.html'
     
     
     

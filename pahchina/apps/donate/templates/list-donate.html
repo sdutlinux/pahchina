@@ -17,7 +17,7 @@
     <tbody>
     {% for donate in donate_list %}
     <tr>
-        <td><a href="{% url 'admin-detail-donate' donate.id %}">{{ donate.number }}</a></td>
+        <td><a href="{% url 'detail-donate' donate.id %}">{{ donate.number }}</a></td>
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>
         <td>{{ donate.get_anyone }}</td>

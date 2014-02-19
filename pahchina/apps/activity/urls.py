@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'paomian'
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from . import views
 
 urlpatterns = patterns('',
@@ -11,5 +11,5 @@ urlpatterns = patterns('',
                        url(r'^show/(?P<pk>\d+)$', views.ShowActivity.as_view(), name='show-activity'),
                        url(r'^admin/create$', views.CreateActivity.as_view(), name='admin-create-activity'),
                        url(r'^admin/update/(?P<pk>\d+)$', views.UpdateActivity.as_view(), name='admin-update-activity'),
-                       url(r'^admin/delete/(?P<pk>\d+)$', views.DeleteActivity.as_view(), name='admin-delete-activity')
+                       url(r'^admin/delete/(?P<pk>\d+)$', views.DeleteActivity.as_view(), name='admin-delete-activity'),
                        )

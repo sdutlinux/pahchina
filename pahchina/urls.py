@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^donate/', include('pahchina.apps.donate.urls')),
     url(r'^medical/', include('pahchina.apps.medical.urls')),
     url(r'^site/', include('pahchina.apps.subsites.urls')),
+    url(r'news/', include('pahchina.apps.news.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

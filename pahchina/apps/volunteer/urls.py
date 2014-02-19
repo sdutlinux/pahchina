@@ -10,7 +10,6 @@ urlpatterns = patterns('',
                        url(r'^admin/(?P<pk>\d+)/$', views.DetailVolunteer.as_view(), name='admin-detail-volunteer'),
                        url(r'^admin/create/$', views.CreateVolunteer.as_view(), name='admin-create-volunteer'),
                        url(r'^admin/update/(?P<pk>\d+)/$', views.UpdateVolunteer.as_view(), name='admin-update-volunteer'),
-                       url(r'^admin/delete/(?P<pk>\d+)/$', views.DeleteVolunteer.as_view(), name='admin-delete-volunteer'),
                        url(r'^show/(?P<pk>\d+)/$', views.ShowVolunteer.as_view(), name='show-volunteer'),
                        url(r'^update/(?P<pk>\d+)/$', views.VolunteerPro.as_view(), name='update-volunteer')
                        )

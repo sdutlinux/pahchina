@@ -133,6 +133,7 @@ TEMPLATE_DIRS = (
     os.path.join(DIR, 'apps/donate/templates'),
     os.path.join(DIR, 'apps/medical/templates'),
     os.path.join(DIR, 'apps/subsites/templates'),
+    os.path.join(DIR, 'apps/news/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

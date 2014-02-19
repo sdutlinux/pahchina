@@ -84,3 +84,30 @@ class User(AbstractUser):
 
 
 
+#个人资料
+class Personal(models.Model):
+    previous_name = models.CharField(verbose_name='曾用名')
+    nickname = models.CharField(verbose_name='昵称')
+    sex = models.CharField(choices=('man','woman'))
+    ID_number = models.CharField(verbose_name='')
+    age = models.IntegerField('')
+    birthday = models.DateField('')
+    nationality = models.CharField(verbose_name='')
+    belief ＝ models.CharField(verbose_name='')
+    height ＝ models.DecimalField(verbose_name='')
+    weight = models.DecimalField(verbose_name='')
+    marital_status = models.CharField(verbose_name='',choices=(''))
+    bear_status = models.CharField(verbose_name='',choices=())
+    home_phone = models.CharField(verbose_name='')
+    domicile ＝ models.CharField(verbose_name='')
+    permanent_residence = models.CharField(verbose_name='')
+    address = models.CharField(verbose_name='')
+    education = models.CharField(verbose_name='',choices=())
+    school = models.CharField(verbose_name='')
+    major = models.CharField(verbose_name='')
+    qualification = models.CharField(verbose_name='')
+    specialty ＝ models.CharField(verbose_name='')
+
+
+
+

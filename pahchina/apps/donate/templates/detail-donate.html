@@ -1,0 +1,33 @@
+{% extends 'base-index.html' %}
+
+{% block title %}
+捐赠详情 {{ object_donate.number }}
+{% endblock %}
+
+
+{% block content %}
+
+<h2>捐赠-{{ object_donate.number }}</h2>
+    <table class="table bordered" border="0">
+    <tr>
+    <th>单号</th>
+    <td>{{ object_donate.number }}</td>
+    </tr>
+    <tr>
+    <th>捐赠时间</th>
+    <td>{{ object_donate.create_time }}</td>
+    </tr>
+    <tr>
+    <th>捐赠金额</th>
+    <td>{{ object_donate.money }}</td>
+    </tr>
+    <tr>
+    <th>用户选择方式</th>
+    <td>{{ object_donate.get_anyone }}</td>
+    </tr>
+    </table>
+    <div><a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a></div>
+    <h6 style="text-align: center">捐赠详情</h6>
+    <div><pre>{{ object_donate.details }}</pre></div>
+
+{% endblock %}
