@@ -25,7 +25,7 @@ class RecordForm(forms.ModelForm):
 
     class Meta:
         model = Record
-        fields = ('content',)
+        #fields = ('content',)
 
 
     def __init__(self, patient=None,*args,**kwargs):

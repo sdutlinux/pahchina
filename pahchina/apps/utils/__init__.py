@@ -6,5 +6,4 @@ __author__ = 'zhwei'
 #__all__ = ['SuperUser']
 
 from .views import *
-
 from .models import *

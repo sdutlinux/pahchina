@@ -32,8 +32,10 @@ class UpdatePatient(SuperRequiredMixin, generic.UpdateView):
     form_class = UpdatePatientForm
     template_name = 'update-patient.html'
 
+
     def get_success_url(self):
         return reverse('admin-detail-patient', kwargs=self.kwargs)
+
 
 class Profile(generic.DetailView):
     """ 患者用来查看个人信息

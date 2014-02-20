@@ -68,6 +68,7 @@ class Record(TimeStampedModel):
     """
     patient = models.ForeignKey(Patient, verbose_name='病人', blank=True)
     doctor = models.ForeignKey(Doctor, verbose_name='检查医师')
+
     type = models.CharField(verbose_name='记录类型', max_length=10,
                             choices=(("description","病情描述"),("result","检查结果"),),
                             help_text='病情描述、检查结果数据')
@@ -106,8 +107,7 @@ class Record(TimeStampedModel):
                                             ("xzhfbfz","下肢或腹部浮肿"),
                                             ("exot","恶心呕吐"),
                                             ("other","其他症状（请描述）"),
-                                        ),
-                                        blank=True, null=True)
+                                        ),)
 
     present_heart_func = models.CharField(verbose_name='目前心功能', max_length=20,
                                           choices=(
@@ -130,8 +130,7 @@ class Record(TimeStampedModel):
     heart_fail_value = models.CharField(verbose_name='心衰值', max_length=10)
 
     walk_distance_in6 = models.PositiveIntegerField(verbose_name='6分钟步行距离',
-                                                help_text='单位：（米）',
-                                                blank=True, null=True)
+                                                help_text='单位：（米）')
     bp = models.CharField(verbose_name='血压', max_length=20,
                           help_text='单位：mmHg')
     glu = models.CharField(verbose_name='血糖', max_length=20,

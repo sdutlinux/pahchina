@@ -13,7 +13,7 @@ SEX_CHOICES=(('1','男'),('0', '女'),('2','隐私'))
 
 class Patient(TimeStampedModel):
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, blank=True)
 
     medical_history = models.TextField(verbose_name='病史', max_length=200,
                                        help_text='病情描述，叙述患病经过以及治疗和用药状况',
@@ -32,7 +32,8 @@ class Patient(TimeStampedModel):
                                                ("other","其他（请注明）"),
                                            ),
                                            blank=True, null=True)
-    init_diag_doct_conclu = models.TextField(verbose_name='初诊医生诊断结论', max_length=500)
+    init_diag_doct_conclu = models.TextField(verbose_name='初诊医生诊断结论', max_length=500,
+                                             blank=True, null=True)
     is_confirm = models.BooleanField(verbose_name='是否确认肺动脉高压',
                                      choices=((False,'否'),(True,'是')),default=False,)
     why_not_confirm = models.CharField(verbose_name='未确诊原因', max_length=10,
@@ -42,12 +43,16 @@ class Patient(TimeStampedModel):
                                            ("fcwhsyy","附近无合适医院"),
                                            ("other","其他（请注明）"),
                                        ),
-                                   blank=True, null=True)
+                                       blank=True, null=True)
     # 确诊
-    confirm_pah_date = models.DateField(verbose_name='确诊PAH日期')
-    confirm_hospital = models.CharField(verbose_name='确诊医院', max_length=20)
-    confirm_section = models.CharField(verbose_name='确诊科室', max_length=20)
-    confirm_doctor = models.CharField(verbose_name='医生', max_length=10)
+    confirm_pah_date = models.DateField(verbose_name='确诊PAH日期',
+                                        blank=True, null=True)
+    confirm_hospital = models.CharField(verbose_name='确诊医院', max_length=20,
+                                        blank=True, null=True)
+    confirm_section = models.CharField(verbose_name='确诊科室', max_length=20,
+                                       blank=True, null=True)
+    confirm_doctor = models.CharField(verbose_name='医生', max_length=10,
+                                      blank=True, null=True)
     exam_func = models.CharField(verbose_name='检查手段', max_length=20,
                                  choices=(
                                      ("xzcc","心脏彩超"),
@@ -57,7 +62,7 @@ class Patient(TimeStampedModel):
                                      ("cgz","磁共振"),
                                      ("other","其他（请注明）"),
                                  ),
-                                   blank=True, null=True)
+                                 blank=True, null=True)
     doctor_diagnosis = models.ImageField(verbose_name='医生诊断说明',
                                          help_text='上传诊断书照片，申请资助使用',
                                          upload_to='diagnosis',
@@ -78,7 +83,8 @@ class Patient(TimeStampedModel):
                                         ),
                                    blank=True, null=True)
     # 定期检查
-    has_regular_check = models.BooleanField(verbose_name='是否定期检查', default=False)
+    has_regular_check = models.BooleanField(verbose_name='是否定期检查',
+                                            choices=((False,'否'),(True,'是')),default=False)
     regular_check_rate = models.PositiveIntegerField(verbose_name='定期检查频率',
                                                      choices=[(n, n) for n in range(1,13)].append((999,'其他')),
                                                      help_text='几个月进行一次检查',
@@ -100,9 +106,11 @@ class Patient(TimeStampedModel):
                                    blank=True, null=True)
     # 随访相关
     follow_up_hospital = models.CharField(verbose_name='随访检查医院', max_length=30,
-                                          help_text='十大主要诊疗基地医院（外键）')
+                                          help_text='十大主要诊疗基地医院（外键）',
+                                          blank=True, null=True)
     follow_up_doctor = models.CharField(verbose_name='随访主治医生', max_length=10,
-                                        help_text='随访主治医生（外键）')
+                                        help_text='随访主治医生（外键）',
+                                        blank=True, null=True)
     follow_up_target = models.CharField(verbose_name='随访检查目的', max_length=30,
                                         choices=(
                                             ("","波生坦赠药计划"),
@@ -110,7 +118,7 @@ class Patient(TimeStampedModel):
                                             ("","万他维赠药计划"),
                                             ("other","其他（请注明）"),
                                         ),
-                                   blank=True, null=True)
+                                        blank=True, null=True)
 
     medical_evaluate = models.CharField(verbose_name='对医疗服务评价', max_length=20,
                                         choices=(
@@ -120,7 +128,7 @@ class Patient(TimeStampedModel):
                                             ("bmy","不满意"),
                                             ("fcbmy","非常不满意"),
                                         ),
-                                   blank=True, null=True)
+                                        blank=True, null=True)
 
     # 目前状况
 
@@ -134,7 +142,8 @@ class Patient(TimeStampedModel):
                                    blank=True, null=True)
 
     # 吸氧
-    has_daily_oxygen = models.BooleanField(verbose_name='是否每天吸氧治疗', default=False)
+    has_daily_oxygen = models.BooleanField(verbose_name='是否每天吸氧治疗',
+                                           choices=((False,'否'),(True,'是')),default=False)
     daily_oxygen_hours = models.PositiveIntegerField(verbose_name='每天吸氧时间', help_text='单位：（小时）',
                                                      choices=[(n,n) for n in range(1,25)],
                                                      blank=True, null=True)
@@ -155,10 +164,12 @@ class Patient(TimeStampedModel):
     year_drugs_pay = models.CharField(verbose_name='年药费支出', max_length=20,
                                         help_text="上述日常药物的费用，单位：元",
                                         blank=True, null=True)
-    year_medical_pay = models.CharField(verbose_name='年治疗费指出', max_length=30,
-                                        help_text='日常药费之外的住院、检查及差旅费')
+    year_medical_pay = models.CharField(verbose_name='年治疗费支出', max_length=30,
+                                        help_text='日常药费之外的住院、检查及差旅费',
+                                        blank=True, null=True)
 
-    year_pi = models.CharField(verbose_name='个人年收入', max_length=10)
+    year_pi = models.CharField(verbose_name='个人年收入', max_length=10,
+                               blank=True, null=True)
     year_pi_source = models.CharField(verbose_name='个人收入来源', max_length=10,
                                       choices=(
                                           ("","工资收入"),

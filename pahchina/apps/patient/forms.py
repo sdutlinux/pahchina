@@ -7,14 +7,37 @@ from django import forms
 #from django.contrib.localflavor.cn.forms import CNProvinceSelect
 
 from .models import Patient, Dosage
+from ..utils.fields import ChoiceWithOtherWidget, ChoiceWithOtherField
+
 
 class UpdatePatientForm(forms.ModelForm):
 
+    init_diag_hosp_type = forms.MultiValueField(fields=(
+        forms.Select(choices=(("sjyy","省级医院"),
+                               ("xsjyy","县市级医院"),
+                               ("sqyy","社区医院"),
+                               ("xzyy","乡镇医院"),
+                               ("ncyy","农村医院"),
+                               ("srzs","私人诊所"),
+                               ("other","其他（请注明）"),)),
+        forms.CharField()
+    ))
+
     class Meta:
         model = Patient
-        #fields = ('sex', 'id_no', 'hometown', 'local',
-        #          'onset_date', 'onset_causes', 'checklist',
-        #          'disease_quality', 'mood','onset_process')
+        exclude = ('user', 'init_diag_hosp_type')
+
+        #widgets = {
+            #'init_diag_hosp_type': ChoiceWithOtherWidget(choices=(
+            #                                   ("sjyy","省级医院"),
+            #                                   ("xsjyy","县市级医院"),
+            #                                   ("sqyy","社区医院"),
+            #                                   ("xzyy","乡镇医院"),
+            #                                   ("ncyy","农村医院"),
+            #                                   ("srzs","私人诊所"),
+            #                                   ("other","其他（请注明）"),
+            #                               ),),
+        #}
 
 
 class CreateDosageForm(forms.ModelForm):

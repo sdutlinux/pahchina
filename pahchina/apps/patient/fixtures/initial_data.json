@@ -1,92 +1,92 @@
 [
     {
         "pk": 1,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "波生坦",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 2,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "安立生坦",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 3,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "万他维",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 4,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "西地那非",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 5,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "伐地那非",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 6,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "他达拉非",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 7,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "德纳",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 8,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "华法林",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 8,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "利尿片",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     },
     {
         "pk": 10,
-        "model": "medical.Drug",
+        "model": "patient.drug",
         "fields": {
             "name": "安定片",
-            "description":"",
-            "price": ""
+            "description":"药物",
+            "price": 0
         }
     }
 ]
