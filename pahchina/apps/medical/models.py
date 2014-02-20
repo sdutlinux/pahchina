@@ -63,17 +63,90 @@ class Doctor(models.Model):
 
 
 class Record(TimeStampedModel):
-    """ 患者的病例
+    """ 患者的病情记录
     More: 此处可用 **unique_for_？？** 来限制病例的创建频率
     """
-    patient = models.ForeignKey(Patient, verbose_name='患者', blank=True)
-    content = models.TextField(verbose_name='病例内容',max_length=500, blank=True, null=True)
+    patient = models.ForeignKey(Patient, verbose_name='病人', blank=True)
+    doctor = models.ForeignKey(Doctor, verbose_name='检查医师')
+    type = models.CharField(verbose_name='记录类型', max_length=10,
+                            choices=(("description","病情描述"),("result","检查结果"),),
+                            help_text='病情描述、检查结果数据')
+    physical_state = models.CharField(verbose_name='最近身体状况', max_length=10,
+                                      choices=(
+                                          ("badly","非常不好"),
+                                          ("worse","不太好"),
+                                          ("stable","稳定"),
+                                          ("better","有改善"),
+                                          ("nice","改善明显"),
+                                      ))
+    mental_state = models.CharField(verbose_name='最近精神状态', max_length=10,
+                                    choices=(
+                                        ("zshbg","总是很悲观"),
+                                        ("jchbg","经常很悲观"),
+                                        ("oeng","偶尔难过"),
+                                        ("ddlg","大多数时间乐观"),
+                                        ("zslg","总是很乐观"),
+                                    ))
+    living_state = models.CharField(verbose_name='目前生活状况', max_length=10,
+                                        choices=(
+                                            ("zcgz","基本正常工作"),
+                                            ("gzcl","工作很吃力"),
+                                            ("sbzl","不工作生活自理"),
+                                            ("shbnzl","生活不能自理"),
+                                        ))
+    present_symptoms = models.CharField(verbose_name='目前症状及体征', max_length=30,
+                                        choices=(
+                                            ("xmqd","胸闷气短"),
+                                            ("xt","胸痛"),
+                                            ("kx","咳血"),
+                                            ("pwjghxkn","平卧即感呼吸困难"),
+                                            ("zg","紫绀"),
+                                            ("xj","心悸"),
+                                            ("jrtt","肌肉疼痛"),
+                                            ("xzhfbfz","下肢或腹部浮肿"),
+                                            ("exot","恶心呕吐"),
+                                            ("other","其他症状（请描述）"),
+                                        ),
+                                        blank=True, null=True)
+
+    present_heart_func = models.CharField(verbose_name='目前心功能', max_length=20,
+                                          choices=(
+                                              ("1","I级"),
+                                              ("2","II级"),
+                                              ("3","III级"),
+                                              ("4","IV级"),
+                                          ),)
+
+    check_item = models.CharField(verbose_name='检查项目', max_length=20,
+                                  choices=(
+                                      ("ggn","肝功能"),
+                                      ("sgn","肾功能"),
+                                      ("xgn","心功能"),
+                                      ("cc","彩超"),
+                                      ("other","其他(请列明)"),
+                                  ))
+    pap = models.CharField(verbose_name='肺动脉压力', max_length=10,
+                           help_text='单位：mmHg')
+    heart_fail_value = models.CharField(verbose_name='心衰值', max_length=10)
+
+    walk_distance_in6 = models.PositiveIntegerField(verbose_name='6分钟步行距离',
+                                                help_text='单位：（米）',
+                                                blank=True, null=True)
+    bp = models.CharField(verbose_name='血压', max_length=20,
+                          help_text='单位：mmHg')
+    glu = models.CharField(verbose_name='血糖', max_length=20,
+                           help_text='单位：mmol/L，正常值：3.61~6.11mmol/L')
+    chol = models.CharField(verbose_name='胆固醇', max_length=20,
+                            help_text='单位：，正常值：2.4--5.5mmol/L')
+    ua = models.CharField(verbose_name='尿酸', max_length=20,
+                          help_text='单位：umol/L，正常值：男149~416umol/L；女89~357umol/L；')
+
 
     class Meta:
-        verbose_name = '病例'
+        verbose_name = '病情记录'
 
     def __unicode__(self):
-        return self.patient.user.username + "'s Record"
+        return self.patient.user.username + "'s 病情记录"
 
 
 class DoctorRecord(models.Model):

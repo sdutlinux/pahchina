@@ -12,9 +12,9 @@ class UpdatePatientForm(forms.ModelForm):
 
     class Meta:
         model = Patient
-        fields = ('sex', 'id_no', 'hometown', 'local',
-                  'onset_date', 'onset_causes', 'checklist',
-                  'disease_quality', 'mood','onset_process')
+        #fields = ('sex', 'id_no', 'hometown', 'local',
+        #          'onset_date', 'onset_causes', 'checklist',
+        #          'disease_quality', 'mood','onset_process')
 
 
 class CreateDosageForm(forms.ModelForm):

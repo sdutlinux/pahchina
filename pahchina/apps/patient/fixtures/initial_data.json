@@ -1,0 +1,92 @@
+[
+    {
+        "pk": 1,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "波生坦",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "安立生坦",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "万他维",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 4,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "西地那非",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 5,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "伐地那非",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 6,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "他达拉非",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 7,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "德纳",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 8,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "华法林",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 8,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "利尿片",
+            "description":"",
+            "price": ""
+        }
+    },
+    {
+        "pk": 10,
+        "model": "medical.Drug",
+        "fields": {
+            "name": "安定片",
+            "description":"",
+            "price": ""
+        }
+    }
+]
