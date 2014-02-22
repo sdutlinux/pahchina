@@ -10,7 +10,7 @@ from django.core.validators import RegexValidator
 from ..utils import TimeStampedModel
 from ..accounts.models import User
 
-class Site(TimeStampedModel):
+class Website(TimeStampedModel):
     """ 站点必要信息
     添加： 站点管理员、描述
     """

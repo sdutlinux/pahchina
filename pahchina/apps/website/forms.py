@@ -7,7 +7,7 @@ from django import forms
 from django.forms.models import model_to_dict, fields_for_model
 from django.contrib.sites.models import Site
 
-from .models import Site
+from .models import Website
 from ..accounts.models import User
 
 
@@ -17,5 +17,5 @@ class StaffSiteForm(forms.ModelForm):
     """
 
     class Meta:
-        model = Site
+        model = Website
         exclude = ('admin')

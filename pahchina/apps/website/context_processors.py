@@ -6,7 +6,7 @@ __author__ = 'zhwei'
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
-from .models import Site
+from .models import Website as Site
 
 def site(request):
     """

@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
 
-#from ..subsites.models import get_current_site
+#from ..website.models import get_current_site
 
 
 class Index(generic.TemplateView):

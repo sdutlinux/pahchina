@@ -29,9 +29,11 @@ class Patient(TimeStampedModel):
                                                ("xzyy","乡镇医院"),
                                                ("ncyy","农村医院"),
                                                ("srzs","私人诊所"),
-                                               ("other","其他（请注明）"),
+                                               ("other",""),
                                            ),
                                            blank=True, null=True)
+    #init_diag_hosp_type = models.CharField(verbose_name='初诊医院类型', max_length=20,
+    #                                       blank=True, null=True)
     init_diag_doct_conclu = models.TextField(verbose_name='初诊医生诊断结论', max_length=500,
                                              blank=True, null=True)
     is_confirm = models.BooleanField(verbose_name='是否确认肺动脉高压',
@@ -290,6 +292,9 @@ class Drug(models.Model):
     description = models.TextField(verbose_name='药品描述')
     price = models.IntegerField(verbose_name='价格', max_length=10, help_text='单位为元(人民币)')
 
+    class Meta:
+        verbose_name = '药物'
+
     def model_name(self):
         """ 用于某些时候描述这个model
         """
@@ -310,6 +315,9 @@ class Dosage(models.Model):
                             help_text='描述使用该药的剂量，比如一月一盒等')
 
     datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = '药物用量记录'
 
     def model_name(self):
         """ 用于某些时候描述这个model

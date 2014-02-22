@@ -112,12 +112,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pahchina.apps.subsites.middleware.SubSiteMiddleWare',
+    'pahchina.apps.website.middleware.SubSiteMiddleWare',
 )
 
 ROOT_URLCONF = 'pahchina.urls'
 
-#SUBSITE_URLCONF = 'pahchina.apps.subsites.urls'
+#SUBSITE_URLCONF = 'pahchina.apps.website.urls'
 SUBSITE_URLCONF = 'pahchina.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -132,7 +132,7 @@ TEMPLATE_DIRS = (
     os.path.join(DIR, 'apps/volunteer/templates'),
     os.path.join(DIR, 'apps/donate/templates'),
     os.path.join(DIR, 'apps/medical/templates'),
-    os.path.join(DIR, 'apps/subsites/templates'),
+    os.path.join(DIR, 'apps/website/templates'),
     os.path.join(DIR, 'apps/news/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -148,7 +148,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "pahchina.apps.subsites.context_processors.site",
+    "pahchina.apps.website.context_processors.site",
 )
 
 #TEMPLATE_CONTEXT_PROCESSORS +=
@@ -178,7 +178,7 @@ INSTALLED_APPS = (
     'pahchina.apps.index',
     'pahchina.apps.medical',
     'pahchina.apps.news',
-    'pahchina.apps.subsites',
+    'pahchina.apps.website',
 )
 
 AUTH_USER_MODEL = 'accounts.User'

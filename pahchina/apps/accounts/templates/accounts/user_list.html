@@ -1,0 +1,37 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}管理用户{% endblock %}
+
+{% block content %}
+
+    <h2>管理用户</h2>
+<p><a href="{% url 'admin-create' 'user' %}" class="btn"><i class="icon-plus"></i></a></p>
+
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>用户名</th>
+    <th>email</th>
+    <th>姓名</th>
+    <th>身份</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+    {% for user in object_list %}
+    <tr>
+        <td><a href="{{ user.get_absolute_url }}">{{ user.username }}</a></td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.get_full_name }}</td>
+        <td>{{ user.get_identity }}</td>
+        <td>
+        <a href="{% url 'admin-update-user' user.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete-user' user.id %}"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

@@ -8,6 +8,7 @@ from django.contrib.auth.views import password_reset
 from django.core.urlresolvers import reverse_lazy, reverse
 
 from . import views
+import generic
 
 
 urlpatterns = patterns('',
@@ -20,6 +21,12 @@ urlpatterns = patterns('',
 
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
     url(r'^show/(?P<pk>\d+)/$', views.Show.as_view(), name='show'),
+
+    # generic
+    url(r'^update/(?P<model>\w+)/(?P<pk>\d+)/$', generic.Update.as_view(), name='admin-update'),
+    url(r'^create/(?P<model>\w+)/$', generic.Create.as_view(), name='admin-create'),
+    url(r'^list/(?P<model>\w+)/$', generic.List.as_view(), name='admin-list'),
+
 
     url(r'^profile/update/$', views.UpdateProfile.as_view(), name='update-profile'),
     #url(r'^password/update/$', views.change_password, name='update-password'),

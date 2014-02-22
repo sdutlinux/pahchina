@@ -16,7 +16,7 @@ from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.contrib.sites.models import Site, SiteManager
 
-from .models import Site
+from .models import Website
 from ..utils import SuperRequiredMixin, StaffRequiredMixin
 import forms
 

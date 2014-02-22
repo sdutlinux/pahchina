@@ -1,5 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django import forms
+from django.db import models
 from django.utils.encoding import StrAndUnicode, force_unicode
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 class ChoiceWithOtherRenderer(forms.RadioSelect.renderer):
@@ -7,6 +12,7 @@ class ChoiceWithOtherRenderer(forms.RadioSelect.renderer):
     def __init__(self, *args, **kwargs):
         super(ChoiceWithOtherRenderer, self).__init__(*args, **kwargs)
         self.choices, self.other = self.choices[:-1], self.choices[-1]
+        #print self.others
 
     def __iter__(self):
         for input in super(ChoiceWithOtherRenderer, self).__iter__():
@@ -14,8 +20,9 @@ class ChoiceWithOtherRenderer(forms.RadioSelect.renderer):
         id = '%s_%s' % (self.attrs['id'], self.other[0]) if 'id' in self.attrs else ''
         label_for = ' for="%s"' % id if id else ''
         checked = '' if not force_unicode(self.other[0]) == self.value else 'checked="true" '
-        yield '<label%s><input type="radio" id="%s" value="%s" name="%s" %s/> %s</label> %%s' % (
-            label_for, id, self.other[0], self.name, checked, self.other[1])
+        yield mark_safe('<label%s><input type="radio" id="%s" value="%s" name="%s" %s/> %s %%s</label> ' % (
+            label_for, id, self.other[0], self.name, checked, self.other[1]))
+
 
 class ChoiceWithOtherWidget(forms.MultiWidget):
     """MultiWidget for use with ChoiceWithOtherField."""
@@ -85,7 +92,9 @@ specify:</label> <input type="text" name="age_1" id="id_age_1" /></li>
         kwargs.pop('choices')
         self._was_required = kwargs.pop('required', True)
         kwargs['required'] = False
-        super(ChoiceWithOtherField, self).__init__(widget=widget, fields=fields, *args, **kwargs)
+        kwargs['widget'] = widget
+        kwargs['fields'] = fields
+        super(ChoiceWithOtherField, self).__init__(*args, **kwargs)
 
     def compress(self, value):
         if self._was_required and not value or value[0] in (None, ''):
@@ -93,3 +102,28 @@ specify:</label> <input type="text" name="age_1" id="id_age_1" /></li>
         if not value:
             return [None, u'']
         return (value[0], value[1] if force_unicode(value[0]) == force_unicode(self.fields[0].choices[-1][0]) else u'')
+
+
+class ChoiceWithCharModelFiled(models.CharField):
+
+    description = 'Radio Choice with Input Filed'
+
+    def get_internal_type(self):
+        return "ChoiceWithCharModelFiled"
+
+    def to_python(self, value):
+        for k, v in self._choices:
+            if k == value:
+                return v
+        return value
+
+    def get_prep_value(self, value):
+        return self.to_python(value)
+
+    def formfield(self, **kwargs):
+
+        defaults = {'form_class': ChoiceWithOtherField}
+        defaults.update(kwargs)
+        return super(ChoiceWithCharModelFiled, self).formfield(**defaults)
+        #return super(ChoiceWithCharModelFiled, self).formfield(**defaults)
+        #return ChoiceWithCharModelFiled(kwargs)

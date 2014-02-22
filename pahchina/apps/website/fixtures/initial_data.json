@@ -1,6 +1,6 @@
 [
   {
-    "model": "subsites.Site",
+    "model": "website.Website",
     "pk":1,
     "fields": {
         "name": "PAH肺动脉高压联盟",

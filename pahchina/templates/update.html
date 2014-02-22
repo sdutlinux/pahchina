@@ -1,6 +1,6 @@
 {% extends 'base-admin.html' %}
 
-{% block title %}添加or编辑{% endblock %}
+{% block title %}{{ operate }}{{ verbose_name }}{% endblock %}
 
 {% block head %}
     <style>
@@ -29,6 +29,7 @@
 
 {% block content %}
 
+    <h2>{{ operate }}{{ verbose_name }}</h2>
 <p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a></p>
 
 {#<div class="hero-unit">#}
