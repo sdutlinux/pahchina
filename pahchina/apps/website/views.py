@@ -33,39 +33,6 @@ class SiteIndex(generic.TemplateView):
         return context
 
 
-class ListSites(SuperRequiredMixin, generic.ListView):
-    """ 站点列表
-    """
-    model = Site
-    template_name = 'list-sites.html'
-    context_object_name = 'site_list'
-
-
-class DetailSite(SuperRequiredMixin,generic.DetailView):
-
-    model = Site
-    template_name = 'detail-site.html'
-
-
-class UpdateSite(SuperRequiredMixin, generic.UpdateView):
-
-    model = Site
-    template_name = 'update.html'
-
-    def get_success_url(self):
-        return reverse('admin-detail-site', kwargs=self.kwargs)
-
-class CreateSite(SuperRequiredMixin, generic.CreateView):
-    """ 创建站点
-    管理员功能
-    """
-
-    model = Site
-    template_name = 'update.html'
-    success_url = reverse_lazy('admin-list-sites')
-
-
-
 class DeleteSite(SuperRequiredMixin, generic.DeleteView):
     """ 创建站点详情
     第一次创建站点时调用

@@ -17,10 +17,10 @@ urlpatterns = patterns('',
 
 
 
-    url(r'^admin/create/site$', views.CreateSite.as_view(), name='admin-create-site'),
-    url(r'^admin/list$', views.ListSites.as_view(), name='admin-list-sites'),
-    url(r'^admin/detail/(?P<pk>\d+)/$', views.DetailSite.as_view(), name='admin-detail-site'),
-    url(r'^admin/update/(?P<pk>\d+)/$', views.UpdateSite.as_view(), name='admin-update-site'),
+    #url(r'^admin/create/site$', views.CreateSite.as_view(), name='admin-create-site'),
+    #url(r'^admin/list$', views.ListSites.as_view(), name='admin-list-sites'),
+    #url(r'^admin/detail/(?P<pk>\d+)/$', views.DetailSite.as_view(), name='admin-detail-site'),
+    #url(r'^admin/update/(?P<pk>\d+)/$', views.UpdateSite.as_view(), name='admin-update-site'),
     url(r'^admin/delete/(?P<pk>\d+)/$', views.DeleteSite.as_view(), name='admin-delete-site'),
 
 

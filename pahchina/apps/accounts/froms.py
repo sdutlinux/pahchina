@@ -81,8 +81,6 @@ class PasswordResetForm(forms.Form):
     }
     email = forms.EmailField(label="电子邮件", max_length=254)
 
-
-
     def clean_email(self):
         """
         Validates that an active user exists with the given email address.
@@ -133,22 +131,22 @@ class PasswordResetForm(forms.Form):
             send_mail(subject, email, from_email, [user.email])
 
 
-class UpdateUserIdentityForm(forms.ModelForm):
-
-    identity = forms.ComboField(label='用户身份',
-                widget=forms.CheckboxSelectMultiple(choices=IDENTITY_CHOICES))
-
-    class Meta:
-        model = User
-        fields = ('username',)
-
-
-    def save(self, commit=True):
-
-        #super(UpdateUserIdentityForm, self).save()
-
-        identity = self.cleaned_data["identity"]
-        print identity
+#class UpdateUserIdentityForm(forms.ModelForm):
+#
+#    identity = forms.ComboField(label='用户身份',
+#                widget=forms.CheckboxSelectMultiple(choices=IDENTITY_CHOICES))
+#
+#    class Meta:
+#        model = User
+#        fields = ('username',)
+#
+#
+#    def save(self, commit=True):
+#
+#        #super(UpdateUserIdentityForm, self).save()
+#
+#        identity = self.cleaned_data["identity"]
+#        print identity
         #
         #if '1,' in identity: self.instance.is_patient = True
         #if '2,' in identity: self.instance.is_doctor = True
@@ -157,19 +155,35 @@ class UpdateUserIdentityForm(forms.ModelForm):
         #if '5,' in identity: self.instance.is_volunteer = True
         #if '6,' in identity: self.instance.is_druggist = True
 
+from django.forms.models import model_to_dict, fields_for_model, modelform_factory
+
+class RoleWithUserForm(forms.ModelForm):
+    """ 带用户的角色创建
+    管理员使用
+    """
+
+    def __init__(self, instance=None, *args, **kwargs):
+        _fields = ('username', 'password',)
+        _initial = kwargs.pop('initial') # pop出initial参数
+        _initial = model_to_dict(instance.user, _fields) if instance is not None else {}
+        super(RoleWithUserForm, self).__init__(initial=_initial, instance=instance, *args, **kwargs)
+        self.fields.update(fields_for_model(User, _fields))
+
+    class Meta:
+        model = User
+        exclude = ('user',)
 
 
 
+    def save(self, *args, **kwargs):
+        u = self.instance.user
+        u.first_name = self.cleaned_data['first_name']
+        u.last_name = self.cleaned_data['last_name']
+        u.email = self.cleaned_data['email']
+        u.save()
+        profile = super(RoleWithUserForm, self).save(*args,**kwargs)
+        return profile
 
-
-#IDENTITY_CHOICES = (
-#    ('5,','志愿者'),
-#    ('1,', '患者'),
-#    ('2,','医生'),
-#    ('3,','医院'),
-#    ('4,','捐献者'),
-#    ('6,','药商'),
-#)
 
 
 

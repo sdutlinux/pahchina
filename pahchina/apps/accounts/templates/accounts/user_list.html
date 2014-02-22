@@ -26,7 +26,9 @@
         <td>{{ user.get_identity }}</td>
         <td>
         <a href="{% url 'admin-update-user' user.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete-user' user.id %}"><i class="icon-remove"></i></a>
+        {% if user.id != 1 %}
+        <a href="{% url 'admin-delete' 'user' user.id %}"><i class="icon-remove"></i></a>
+        {% endif %}
         </td>
     </tr>
     {% endfor %}

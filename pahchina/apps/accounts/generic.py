@@ -20,7 +20,7 @@ from django.contrib.auth.models import Permission, PermissionManager, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.forms.models import modelform_factory
 
-from ..utils import  SuperRequiredMixin
+from ..utils import SuperRequiredMixin
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
@@ -35,7 +35,8 @@ class GenericOperateMixin(ModelFormMixin):
     kwargs = {}
     operate = ''
     object = None
-    forbid_models = () # 禁止使用的model
+    # 禁止使用本方法的model
+    forbid_models = ('group', 'site', 'redirect', 'session')
 
     #def operate_name(self, operate):
     #    name_dict = {'create':'添加', 'update':'修改',
@@ -70,16 +71,28 @@ class GenericOperateMixin(ModelFormMixin):
         })
         return context
 
-class Update(SuperRequiredMixin, GenericOperateMixin, generic.UpdateView):
 
+class Update(SuperRequiredMixin, GenericOperateMixin, generic.UpdateView):
+    """ 修改对象，默认使用ModelForm
+    """
     template_name = 'update.html'
     operate = '修改'
 
+    def get_success_url(self):
+        self.kwargs.pop('pk')
+        return reverse('admin-list', kwargs=self.kwargs)
+
 
 class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
-
+    """ 创建对象
+    默认使用ModelForm
+    """
     template_name = 'update.html'
     operate = '添加'
+
+    def get_success_url(self):
+        return reverse('admin-list', kwargs=self.kwargs)
+
 
 class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
     """
@@ -90,7 +103,6 @@ class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
     operate = '全部'
 
 
-
 class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
     """
     默认删除操作方法
@@ -98,6 +110,34 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
     template_name = 'confirm_delete.html'
     operate = '删除'
 
+    # id为1的下面model不允许被删除
+    admin_protect = ('user', 'website')
+
     def get_success_url(self):
-        kwargs = self.kwargs.pop('pk')
-        return reverse('admin-list', kwargs=kwargs)
+        """ 获取删除成功后跳转的地址
+        """
+        self.kwargs.pop('pk')
+        return reverse('admin-list', kwargs=self.kwargs)
+
+    def check_permit(self):
+        """ 检查对象是否允许被删除
+        """
+        _model, pk = self.kwargs['model'], self.kwargs['pk']
+        if pk == '1' and _model in self.admin_protect:
+            messages.error(self.request,
+                           message='该对象不能被删除！')
+            return True
+        else:
+            return False
+
+    # 检查，重定向
+    def get(self, request, *args, **kwargs):
+        if self.check_permit():
+            return HttpResponseRedirect(reverse('admin-list',
+                                                kwargs={'model': self.kwargs['model']}))
+        return super(Delete, self).get(self, request, *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        if self.check_permit():
+            return HttpResponseRedirect(reverse('admin-list', kwargs={'model': self.kwargs['model']}))
+        return super(Delete, self).post(*args, **kwargs)

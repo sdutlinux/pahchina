@@ -59,36 +59,6 @@ class UpdateProfile(generic.UpdateView):
     def get_object(self, queryset=None):
         return self.request.user.patient
 
-class ListDrug(SuperRequiredMixin, generic.ListView):
-    """ 药物列表
-    查看所有药物，管理员功能
-    """
-    model = Drug
-    context_object_name = 'drug_list'
-    template_name = 'list-drug.html'
-
-class CreateDrug(SuperRequiredMixin, generic.CreateView):
-    """ 添加药物
-    管理员功能
-    """
-    model = Drug
-    success_url = reverse_lazy('admin-list-drug')
-    template_name = 'update.html'
-
-class UpdateDrug(SuperRequiredMixin, generic.UpdateView):
-    """ 管理员修改药物信息
-    """
-    model = Drug
-    success_url = reverse_lazy('admin-list-drug')
-    template_name = 'update.html'
-
-class DeleteDrug(SuperRequiredMixin, generic.DeleteView):
-    """ 删除药物
-    """
-    model = Drug
-    #context_object_name = 'object'
-    success_url = reverse_lazy('admin-list-drug')
-    template_name = 'confirm_delete.html'
 
 class ListDosage(SuperRequiredMixin, generic.ListView):
     """ 使用剂量列表
@@ -147,12 +117,10 @@ class CreateDosage(SuperRequiredMixin, generic.FormView):
     """
     model = Dosage
     form_class = CreateDosageForm
-    #success_url = reverse('admin-detail-patient-dosage', kwargs={'pk':})
     template_name = 'update.html'
 
     def get_success_url(self):
         return reverse('admin-detail-patient-dosage', kwargs=self.kwargs)
-
     
     def get_form_kwargs(self):
         kwargs = super(CreateDosage, self).get_form_kwargs()

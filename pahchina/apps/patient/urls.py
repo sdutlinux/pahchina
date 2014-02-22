@@ -19,13 +19,8 @@ urlpatterns = patterns('',
     url(r'^admin/update/(?P<pk>\d+)/$', views.UpdatePatient.as_view(), name='admin-update-patient'),
 
 
-    url(r'^admin/drug/list/$', views.ListDrug.as_view(), name='admin-list-drug'),
-    url(r'^admin/drug/create/$', views.CreateDrug.as_view(), name='admin-create-drug'),
-    url(r'^admin/drug/update/(?P<pk>\d+)/$', views.UpdateDrug.as_view(), name='admin-update-drug'),
-    url(r'^admin/drug/delete/(?P<pk>\d+)/$', views.DeleteDrug.as_view(), name='admin-delete-drug'),
-
-    url(r'^admin/dosage/detail/patient/(?P<pk>\d+)/$', views.DeleteDrug.as_view(),
-        name='admin-detail-patient-dosage'),
+    #url(r'^admin/dosage/detail/patient/(?P<pk>\d+)/$', views.DeleteDrug.as_view(),
+    #    name='admin-detail-patient-dosage'),
 
     url(r'^dosage/detail/$', views.DetailOwnDosage.as_view(), name='detail-dosage'),
     url(r'^dosage/create/$', views.CreateOwnDosage.as_view(), name='create-dosage'),

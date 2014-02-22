@@ -21,9 +21,8 @@
         <td>{{ drug.description }}</td>
         <td><span class="badge badge-important">{{ drug.price }}元</span></td>
         <td>
-{#        <a href="{% url 'admin-update-drug' drug.id %}"><i class="icon-edit"></i></a>#}
-        <a href="{% url 'admin-update' 'drug' drug.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete-drug' drug.id %}"><i class="icon-remove"></i></a>
+            <a href="{% url 'admin-update' 'drug' drug.id %}"><i class="icon-edit"></i></a>
+            <a href="{% url 'admin-delete' 'drug' drug.id %}"><i class="icon-remove"></i></a>
         </td>
     </tr>
     {% endfor %}

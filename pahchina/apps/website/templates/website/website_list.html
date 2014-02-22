@@ -20,7 +20,7 @@
     <tr>
         <td>{{ site.id }}</td>
         <td>
-            <a href="{% url 'admin-detail-site' site.id %}">{{ site.name }}</a>
+            <a href="{% url 'admin-update' 'website' site.id %}">{{ site.name }}</a>
         </td>
         <td>{{ site.domain }}</td>
         <td>{{ site.get_level }}</td>

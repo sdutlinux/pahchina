@@ -268,7 +268,8 @@ class Relative(models.Model):
                                     ("lover","配偶"),
                                     ("other","其他"),
                                 ))
-    live_together = models.BooleanField(verbose_name='是否与病人共同生活', default=True)
+    live_together = models.BooleanField(verbose_name='是否与病人共同生活', default=True,
+                                        help_text='勾选为‘是’')
 
     ## 外键 个人资料
 
@@ -282,7 +283,8 @@ class Relative(models.Model):
     cert_tele = models.CharField(verbose_name='证明人联系电话', max_length=15,
                                  help_text='申请资助时确认资料的真实性')
 
-
+    class Meta:
+        verbose_name = '病人家属'
 #class
 
 class Drug(models.Model):

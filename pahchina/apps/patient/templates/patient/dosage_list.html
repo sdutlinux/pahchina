@@ -1,0 +1,32 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}药物使用记录列表{% endblock %}
+
+{% block content %}
+    <h2>药物使用记录列表</h2>
+{#    <p><a class="btn" href="{% url 'admin-create-dosage' patient.id %}"><i class="icon-plus"></i></a></p>#}
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>药物</th>
+    <th>患者</th>
+    <th>用量</th>
+    <th>时间</th>
+</tr>
+</thead>
+    <tbody>
+    {% for dosage in object_list %}
+    <tr>
+        <td><a href="">{{ dosage.drug }}</a></td>
+        <td>
+            <a href="{% url 'admin-detail-patient-dosage' dosage.patient.id %}">{{ dosage.patient }}</a>
+        </td>
+        <td>{{ dosage.dose }}</td>
+        <td><span class="badge badge-info">{{ dosage.datetime }}</span></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

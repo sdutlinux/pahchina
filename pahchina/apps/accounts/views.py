@@ -23,7 +23,7 @@ from ..volunteer.models import Volunteer
 
 from .models import User
 from .froms import (RegisterForm,
-    UpdateUserForm, UpdateProfileForm, UpdateUserIdentityForm)
+    UpdateUserForm, UpdateProfileForm)
 
 
 
@@ -208,17 +208,17 @@ class UpdatePassword(generic.FormView):
         return super(UpdatePassword, self).form_valid(form)
 
 
-class UpdateIdentity(generic.FormView):
-
-    form_class = UpdateUserIdentityForm
-    template_name = 'update-user-profile.html'
-
-    def get_success_url(self):
-        return reverse('admin-detail-user', kwargs=self.kwargs)
-    
-    def form_valid(self, form):
-        form.save()
-        return super(UpdateIdentity, self).form_valid(form)
+#class UpdateIdentity(generic.FormView):
+#
+#    form_class = UpdateUserIdentityForm
+#    template_name = 'update-user-profile.html'
+#
+#    def get_success_url(self):
+#        return reverse('admin-detail-user', kwargs=self.kwargs)
+#
+#    def form_valid(self, form):
+#        form.save()
+#        return super(UpdateIdentity, self).form_valid(form)
 
 
 class ListUserGroup(generic.ListView, SuperRequiredMixin):

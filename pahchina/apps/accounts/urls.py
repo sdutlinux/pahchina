@@ -24,6 +24,7 @@ urlpatterns = patterns('',
 
     # generic
     url(r'^update/(?P<model>\w+)/(?P<pk>\d+)/$', generic.Update.as_view(), name='admin-update'),
+    url(r'^delete/(?P<model>\w+)/(?P<pk>\d+)/$', generic.Delete.as_view(), name='admin-delete'),
     url(r'^create/(?P<model>\w+)/$', generic.Create.as_view(), name='admin-create'),
     url(r'^list/(?P<model>\w+)/$', generic.List.as_view(), name='admin-list'),
 
@@ -38,7 +39,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/user/update/(?P<pk>\d+)/$', views.UpdateUser.as_view(), name='admin-update-user'),
 
-    url(r'^admin/user/update/identity/(?P<pk>\d+)/$', views.UpdateIdentity.as_view(), name='admin-update-identity'),
+    #url(r'^admin/user/update/identity/(?P<pk>\d+)/$', views.UpdateIdentity.as_view(), name='admin-update-identity'),
 
     url(r'^admin/user/delete/(?P<pk>\d+)/$', views.DeleteUser.as_view(), name='admin-delete-user'),
 )

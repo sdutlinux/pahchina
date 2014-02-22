@@ -10,9 +10,7 @@ from .models import Patient, Dosage
 from ..utils.fields import ChoiceWithOtherWidget, ChoiceWithOtherField
 
 
-
 class UpdatePatientForm(forms.ModelForm):
-
     #init_diag_hosp_type = ChoiceWithOtherField(choices=[
     #                                           ("sjyy","省级医院"),
     #                                           ("xsjyy","县市级医院"),
@@ -49,11 +47,12 @@ class UpdatePatientForm(forms.ModelForm):
 class CreateDosageForm(forms.ModelForm):
     """ 用于患者创建自己的用药状况
     """
+
     class Meta:
         model = Dosage
         fields = ('drug', 'dose')
 
-    def __init__(self, patient=None,*args,**kwargs):
+    def __init__(self, patient=None, *args, **kwargs):
         super(CreateDosageForm, self).__init__(*args, **kwargs)
         self._patient = patient
 
@@ -61,15 +60,15 @@ class CreateDosageForm(forms.ModelForm):
         context = super(CreateDosageForm, self).save(commit=False)
         context.patient = self._patient
         context.save()
-        
-        
+
+
 class AdminCreateDosageForm(forms.ModelForm):
     """ 管理员用来创建患者的用药状况
     """
-    
+
     class Meta:
         model = Dosage
         fields = ('drug', 'dose')
-        
+
     def save(self, commit=True):
         super(AdminCreateDosageForm, self).save()
