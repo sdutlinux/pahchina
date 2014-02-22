@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
-from .models import User, IDENTITY_CHOICES
+from .models import User, Personal, IDENTITY_CHOICES
 
 class RegisterForm(UserCreationForm):
     """ 用户注册表单
@@ -172,6 +172,17 @@ class UpdateUserIdentityForm(forms.ModelForm):
 #)
 
 
+class VltFirstFill(forms.ModelForm):
+    class Meta:
+        model = Personal
+        fields = ()
+
+
+class VltFill(forms.ModelForm):
+    class Meta:
+        model = Personal
+        fields = ('nickname','nationality','belief','height',
+                  'weight','marital_status','bear_status','home_phone')
 
 
 
