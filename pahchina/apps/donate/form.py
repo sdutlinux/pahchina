@@ -32,7 +32,7 @@ class DonateFormUser(forms.ModelForm):
 class ItemizedForm(forms.ModelForm):
 
     class Meta:
-        modle = Itemized
+        model = Itemized
         exclude = ('residue')
 
     def clean_residue(self):

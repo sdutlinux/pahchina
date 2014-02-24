@@ -20,10 +20,12 @@ from django.contrib.auth.models import Permission, PermissionManager, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.forms.models import modelform_factory
 
-from ..utils import SuperRequiredMixin
+from ..utils import SuperRequiredMixin, create_operate_log
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
+from ..accounts.models import User
+from ..accounts import forms as account_form
 
 
 class GenericOperateMixin(ModelFormMixin):
@@ -66,7 +68,7 @@ class GenericOperateMixin(ModelFormMixin):
         """
         context = super(GenericOperateMixin, self).get_context_data(**kwargs)
         context.update({
-            'verbose_name': self.model._meta.verbose_name,
+            'verbose_name': self.get_model()._meta.verbose_name,
             'operate': self.operate
         })
         return context
@@ -75,24 +77,40 @@ class GenericOperateMixin(ModelFormMixin):
 class Update(SuperRequiredMixin, GenericOperateMixin, generic.UpdateView):
     """ 修改对象，默认使用ModelForm
     """
-    template_name = 'update.html'
+    template_name = 'admin-update.html'
     operate = '修改'
+
+    _form_dict = {
+        'user': account_form.UpdateUserForm,
+    }
 
     def get_success_url(self):
         self.kwargs.pop('pk')
         return reverse('admin-list', kwargs=self.kwargs)
+
+    def get_form_class(self):
+
+        try:
+            return self._form_dict[self.kwargs['model']]
+        except KeyError:
+            return super(Update, self).get_form_class()
 
 
 class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
     """ 创建对象
     默认使用ModelForm
     """
-    template_name = 'update.html'
+    template_name = 'admin-update.html'
     operate = '添加'
 
     def get_success_url(self):
         return reverse('admin-list', kwargs=self.kwargs)
 
+    def get_form_class(self):
+        if self.kwargs['model'] == 'user':
+            return account_form.RegisterForm
+        else:
+            return super(Create, self).get_form_class()
 
 class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
     """
@@ -101,6 +119,12 @@ class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
     内容列表变量名默认为： object_list, 可通过重写方法`get_context_object_name`重新设置
     """
     operate = '全部'
+
+
+class Detail(SuperRequiredMixin, GenericOperateMixin, generic.DetailView):
+
+    operate = '查看'
+
 
 
 class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
@@ -116,6 +140,8 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
     def get_success_url(self):
         """ 获取删除成功后跳转的地址
         """
+        if self.kwargs['model'] == 'record':
+            return reverse('admin-list', kwargs={'model':'patient'})
         self.kwargs.pop('pk')
         return reverse('admin-list', kwargs=self.kwargs)
 

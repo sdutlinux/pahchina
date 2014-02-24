@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views import generic
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render_to_response as r2r, get_object_or_404
@@ -14,16 +14,15 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
+from django.utils.safestring import mark_safe
 
-
-from ..utils import  SuperRequiredMixin
+from ..utils import  SuperRequiredMixin, LoginRequiredMixin
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
 
-from .models import User
-from .froms import (RegisterForm,
-    UpdateUserForm, UpdateProfileForm)
+from .models import User, Personal, Unit, Bank
+import forms
 
 
 
@@ -31,9 +30,9 @@ def pah_register(request):
     """ 网站注册
     注册后同步创建其他身份
     """
-    form = RegisterForm
+    form = forms.RegisterForm
     if request.method == "POST":
-            form = RegisterForm(request.POST.copy())
+            form = forms.RegisterForm(request.POST.copy())
             if form.is_valid():
                 form.save()
                 messages.success(request, '注册成功, 请登录！')
@@ -52,6 +51,7 @@ def pah_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                user.count_login_time() # 修改登录次数
                 messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
                 redirect_to = request.REQUEST.get('next', False)
                 if redirect_to:
@@ -76,28 +76,97 @@ def pah_logout(request):
     messages.info(request, '成功注销本次登录！')
     return HttpResponseRedirect(reverse('login'))
 
-class Profile(generic.DetailView):
+class Profile(LoginRequiredMixin, generic.DetailView):
     """ 用户个人主页
     """
 
+    def get_template_names(self):
+
+        return 'profile-{}.html'.format(self.request.user.get_identity_label())
+
+    def get_context_object_name(self, obj):
+
+        return self.request.user.get_identity_label()
+
     def get_object(self, queryset=None):
-        request_user = self.request.user
-        if request_user.is_patient:
-            self.object = request_user.patient
-            self.template_name = 'profile-patient.html'
-            self.context_object_name = 'patient'
-        elif request_user.is_hospital:
-            self.object = request_user.hospital
-            self.template_name = 'profile-hospital.html'
-            self.context_object_name = 'hospital'
-        elif request_user.is_doctor:
-            self.object = request_user.doctor
-            self.template_name = 'profile-doctor.html'
-            self.context_object_name = 'doctor'
-        elif request_user.is_superuser:
-            self.template_name = 'index.html'
-            return HttpResponseRedirect(reverse_lazy('index'))
-        return self.object
+
+        return self.request.user.get_identity_model()
+
+class UserInfoView(LoginRequiredMixin, generic.DetailView):
+
+    #model = Personal
+    #template_name = 'user-personal.html'
+
+    _dic = {
+        'personal': Personal,
+        'unit': Unit,
+        'bank': Bank,
+    }
+    def get_obj(self):
+        try:
+            return self._dic[self.kwargs['model']]
+        except KeyError:
+            raise Http404
+
+    def get_template_names(self):
+
+        return 'user-{}.html'.format(self.kwargs['model'])
+
+    def get_object(self, queryset=None):
+        try:
+            _obj = self.get_obj().objects.get(user=self.request.user)
+            return _obj
+        except self.get_obj().DoesNotExist:
+            messages.info(self.request, '您尚未创建该信息！')
+
+class UpdatePersonal(LoginRequiredMixin, generic.FormView):
+    """ 修改个人信息
+    包括个人信息、单位信息、银行信息
+    """
+    #form_class = forms.VltFirstFillForm
+    template_name = 'index-update.html'
+
+    _dic = {
+        'personal': (forms.VltFirstFillForm, Personal),
+        'unit': (forms.UnitForm, Unit),
+        'bank': (forms.BankForm, Bank),
+    }
+
+    def get_tu(self):
+        try:
+            return self._dic[self.kwargs['model']]
+        except KeyError:
+            raise Http404
+
+    def get_form_class(self):
+
+        return self.get_tu()[0]
+
+    def get_initial(self):
+        try:
+            obj=self.get_tu()[1].objects.get(user=self.request.user)
+            return obj.__dict__.copy()
+        except self.get_tu()[1].DoesNotExist:
+            return {}
+
+    def form_valid(self, form):
+        form.save()
+        return super(UpdatePersonal, self).form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, '修改成功！')
+        return self.request.user.get_profile_url()
+
+    def get_form_kwargs(self):
+        kwargs = super(UpdatePersonal, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdatePersonal, self).get_context_data(**kwargs)
+        context['title']='修改信息'
+        return context
+
 
 class Show(generic.DetailView):
     """ 用户个人展示页面
@@ -105,25 +174,36 @@ class Show(generic.DetailView):
 
     model = User
 
+    def get_template_names(self):
+
+        return 'show-{}.html'.format(self.request.user.get_identity_label())
+
+    def get_context_object_name(self, obj):
+
+        return self.request.user.get_identity_label()
+
     def get_object(self, queryset=None):
-        super_object = super(Show, self).get_object()
-        if super_object.is_patient:
-            self.context_object_name = 'patient'
-            self.template_name = 'show-patient.html'
-            return super_object.patient
-        elif super_object.is_hospital:
-            self.context_object_name = 'hospital'
-            self.template_name = 'show-hospital.html'
-            return super_object.hospital
-        elif super_object.is_doctor:
-            self.context_object_name = 'doctor'
-            self.template_name = 'show-doctor.html'
-            return super_object.doctor
-        else:
-            self.template_name = 'index.html'
-            return HttpResponseRedirect(reverse_lazy('index'))
+
+        return self.request.user.get_identity_model()
 
 
+class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
+    """ 用户修改账户信息
+    """
+    form_class = forms.UpdateProfileForm
+    template_name = 'index-update.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        messages.success(self.request, '修改成功！')
+        return self.request.user.get_profile_url()
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateProfile, self).get_context_data(**kwargs)
+        context['title']='修改账户信息'
+        return context
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_index(request):
@@ -132,70 +212,18 @@ def admin_index(request):
     return r2r('admin-index.html', locals(),
                context_instance=RequestContext(request))
 
-class ListUser(SuperRequiredMixin, generic.ListView):
-    """ 管理员列出所有用户
-    """
-    model = User
-    context_object_name = 'user_list'
-    template_name = 'list-user.html'
 
 
-class DetailUser(SuperRequiredMixin, generic.DetailView):
-    """ 管理员查看用户详情
-    """
-    model = User
-    context_object_name = 'object_user'
-    template_name = 'detail-user.html'
 
-class CreateUser(SuperRequiredMixin, generic.CreateView):
-    """ 管理员创建用户
-    """
-    model = User
-    form_class = RegisterForm
-    success_url = reverse_lazy('admin-list-user')
-    template_name = 'update-user.html'
-
-class UpdateUser(SuperRequiredMixin, generic.UpdateView):
-    """ 管理员更新用户详情
-    """
-    model = User
-    form_class = UpdateUserForm
-    success_url = reverse_lazy('admin-list-user')
-    template_name = 'update-user.html'
-
-    #def get_success_url(self):
-    #    if self.get_object().is_doctor:
-    #        return reverse('admin-detail-doctor')
-
-
-class DeleteUser(SuperRequiredMixin, generic.DeleteView):
-    """ 管理员删除用户
-    """
-    model = User
-    success_url = reverse_lazy('admin-list-user')
-    template_name = 'user_confirm_delete.html'
-
-
-class UpdateProfile(generic.UpdateView):
-    """ 用户修改个人信息
-    """
-    form_class = UpdateProfileForm
-    template_name = 'update-user-profile.html'
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_success_url(self):
-        return self.request.user.get_profile_url()
-
-class UpdatePassword(generic.FormView):
+class UpdatePassword(LoginRequiredMixin, generic.FormView):
     """ 用户或管理员更新个人密码
     """
 
     form_class = PasswordChangeForm
-    template_name = 'update-user-profile.html'
+    template_name = 'index-update.html'
 
     def get_success_url(self):
+        messages.success(self.request, '修改密码成功！')
         return self.request.user.get_profile_url()
 
     def get_form_kwargs(self):
@@ -203,57 +231,11 @@ class UpdatePassword(generic.FormView):
         kwargs['user'] = self.request.user
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super(UpdatePassword, self).get_context_data(**kwargs)
+        context['title']='修改密码'
+        return context
+
     def form_valid(self, form):
         form.save()
         return super(UpdatePassword, self).form_valid(form)
-
-
-#class UpdateIdentity(generic.FormView):
-#
-#    form_class = UpdateUserIdentityForm
-#    template_name = 'update-user-profile.html'
-#
-#    def get_success_url(self):
-#        return reverse('admin-detail-user', kwargs=self.kwargs)
-#
-#    def form_valid(self, form):
-#        form.save()
-#        return super(UpdateIdentity, self).form_valid(form)
-
-
-class ListUserGroup(generic.ListView, SuperRequiredMixin):
-    """ 管理员查看所有用户组
-    """
-
-    model = Group
-    template_name = 'list-group.html'
-    context_object_name = 'group_list'
-
-class CreateUserGroup(generic.CreateView, SuperRequiredMixin):
-    """ 管理员创建用户组
-    """
-    model = Group
-    template_name = 'update.html'
-    success_url = '/'
-
-    #def get_object(self, queryset=None):
-    #    if self.kwargs['']
-
-class UpdateUserGroup(generic.UpdateView, SuperRequiredMixin):
-    """ 管理员修改用户组
-    """
-    model = Group
-    template_name = 'update.html'
-    success_url = ''
-
-class DeleteUserGroup(generic.DeleteView, SuperRequiredMixin):
-
-    """ 管理员删除用户组
-    """
-    model = Group
-    template_name = 'confirm_delete.html'
-    success_url = '/'
-
-
-#class PermManage(SuperRequiredMixin, generic.DetailView):
-

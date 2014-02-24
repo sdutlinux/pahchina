@@ -12,6 +12,12 @@ from django.contrib.admin import widgets
 
 from .models import Hospital, Doctor, Record, DoctorRecord
 
+class UpdateDoctorForm(forms.ModelForm):
+
+    class Meta:
+        model = Doctor
+        exclude = ('user')
+
 class UpdateHospitalForm(forms.ModelForm):
     """ 医院用来更新自己的信息
     """
@@ -26,7 +32,6 @@ class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
         #fields = ('content',)
-
 
     def __init__(self, patient=None,*args,**kwargs):
         super(RecordForm, self).__init__(*args, **kwargs)

@@ -5,7 +5,14 @@
 {% block content %}
 
     <h2>管理用户</h2>
-<p><a href="{% url 'admin-create' 'user' %}" class="btn"><i class="icon-plus"></i></a></p>
+<p>
+    <a href="{% url 'admin-create' 'user' %}" class="btn"><i class="icon-plus"></i></a>
+    <a href="{% url 'admin-create' 'user' %}?identity=1" class="btn"><i class="icon-plus"></i>添加患者</a>
+    <a href="{% url 'admin-create' 'user' %}?identity=2" class="btn"><i class="icon-plus"></i>添加医生</a>
+    <a href="{% url 'admin-create' 'user' %}?identity=3" class="btn"><i class="icon-plus"></i>添加医院</a>
+    <a href="{% url 'admin-create' 'user' %}?identity=4" class="btn"><i class="icon-plus"></i>添加志愿者</a>
+    <a href="{% url 'admin-create' 'user' %}?identity=5" class="btn"><i class="icon-plus"></i>添加药商</a>
+</p>
 
 <table class="table table-hover">
 <thead>
@@ -20,12 +27,12 @@
     <tbody>
     {% for user in object_list %}
     <tr>
-        <td><a href="{{ user.get_absolute_url }}">{{ user.username }}</a></td>
+        <td><a href="{% url 'admin-update' 'user' user.id %}">{{ user.username }}</a></td>
         <td>{{ user.email }}</td>
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.get_identity }}</td>
         <td>
-        <a href="{% url 'admin-update-user' user.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-update' 'user' user.id %}"><i class="icon-edit"></i></a>
         {% if user.id != 1 %}
         <a href="{% url 'admin-delete' 'user' user.id %}"><i class="icon-remove"></i></a>
         {% endif %}

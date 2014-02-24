@@ -35,7 +35,7 @@ class Doctor(models.Model):
     sex = models.CharField(verbose_name='性别', default='2', choices=SEX_CHOICES, max_length=1)
     age = models.CharField(verbose_name='年龄', max_length=2, blank=True, null=True)
 
-    job_title = models.CharField(verbose_name='职称', max_length=10, blank=True, null=True,
+    job_title = models.CharField(verbose_name='职称', max_length=50, blank=True, null=True,
                                  choices=DOCTOR_CHOICES)
 
     class Meta:
@@ -69,10 +69,10 @@ class Record(TimeStampedModel):
     patient = models.ForeignKey(Patient, verbose_name='病人', blank=True)
     doctor = models.ForeignKey(Doctor, verbose_name='检查医师')
 
-    type = models.CharField(verbose_name='记录类型', max_length=10,
+    type = models.CharField(verbose_name='记录类型', max_length=50,
                             choices=(("description","病情描述"),("result","检查结果"),),
                             help_text='病情描述、检查结果数据')
-    physical_state = models.CharField(verbose_name='最近身体状况', max_length=10,
+    physical_state = models.CharField(verbose_name='最近身体状况', max_length=50,
                                       choices=(
                                           ("badly","非常不好"),
                                           ("worse","不太好"),
@@ -80,7 +80,7 @@ class Record(TimeStampedModel):
                                           ("better","有改善"),
                                           ("nice","改善明显"),
                                       ))
-    mental_state = models.CharField(verbose_name='最近精神状态', max_length=10,
+    mental_state = models.CharField(verbose_name='最近精神状态', max_length=50,
                                     choices=(
                                         ("zshbg","总是很悲观"),
                                         ("jchbg","经常很悲观"),
@@ -88,14 +88,14 @@ class Record(TimeStampedModel):
                                         ("ddlg","大多数时间乐观"),
                                         ("zslg","总是很乐观"),
                                     ))
-    living_state = models.CharField(verbose_name='目前生活状况', max_length=10,
+    living_state = models.CharField(verbose_name='目前生活状况', max_length=50,
                                         choices=(
                                             ("zcgz","基本正常工作"),
                                             ("gzcl","工作很吃力"),
                                             ("sbzl","不工作生活自理"),
                                             ("shbnzl","生活不能自理"),
                                         ))
-    present_symptoms = models.CharField(verbose_name='目前症状及体征', max_length=30,
+    present_symptoms = models.CharField(verbose_name='目前症状及体征', max_length=50,
                                         choices=(
                                             ("xmqd","胸闷气短"),
                                             ("xt","胸痛"),

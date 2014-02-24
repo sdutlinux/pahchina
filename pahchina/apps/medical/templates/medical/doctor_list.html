@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2>医生列表</h2>
-    <p><a class="btn" href="{% url 'admin-create' 'doctor' %}"><i class="icon-plus"></i></a></p>
+    <a href="{% url 'admin-create' 'user' %}?identity=2" class="btn"><i class="icon-plus"></i>添加医生</a>
 <table class="table table-hover">
 <thead>
 <tr>
@@ -20,7 +20,7 @@
 
     {% for doctor in object_list %}
         <tr>
-            <td><a href="{% url 'admin-detail-doctor' doctor.id %}">{{ doctor.user.username }}</a></td>
+            <td><a href="{% url 'admin-detail' 'doctor' doctor.id %}">{{ doctor.user.username }}</a></td>
             <td>
                 {% if doctor.hospital %}
                     {{ doctor.hospital.user.username }}
@@ -30,8 +30,8 @@
             <td>{{ doctor.age }}</td>
             <td>{{ doctor.job_title }}</td>
             <td>
-                <a href="{% url 'admin-update-doctor' doctor.id %}"><i class="icon-edit"></i></a>
-                <a href="{% url 'admin-delete-user' doctor.user.id %}"><i class="icon-remove"></i></a>
+                <a href="{% url 'admin-update' 'doctor' doctor.id %}"><i class="icon-edit"></i></a>
+                <a href="{% url 'admin-delete' 'user' doctor.user.id %}"><i class="icon-remove"></i></a>
             </td>
         </tr>    
     {% endfor %}

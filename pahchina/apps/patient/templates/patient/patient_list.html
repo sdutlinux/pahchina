@@ -4,8 +4,11 @@
 
 {% block content %}
     <h2>管理患者</h2>
-    <p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a>
-    <a href="{% url 'admin-create-user' %}" class="btn"><i class="icon-plus"></i></a></p>
+    <p>
+        <a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i>后退</a>
+        <a href="{% url 'admin-create' 'user' %}?identity=1" class="btn"><i class="icon-plus"></i>添加患者</a>
+    </p>
+
 <table class="table table-hover">
 <thead>
 <tr>
@@ -19,13 +22,13 @@
     <tbody>
     {% for patient in object_list %}
     <tr>
-        <td><a href="{{ patient.get_url }}">{{ patient.user.username }}</a></td>
+        <td><a href="{% url 'admin-detail' 'patient' patient.id %}">{{ patient.user.username }}</a></td>
         <td>{{ patient.user.get_full_name }}</td>
         <td>{{ patient.get_sex }}</td>
         <td>{{ patient.local }}</td>
         <td>
-        <a href="{% url 'admin-detail-patient' patient.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete-user' patient.user.id %}"><i class="icon-remove"></i></a>
+        <a href="{% url 'admin-detail' 'patient' patient.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete' 'user' patient.user.id %}"><i class="icon-remove"></i></a>
         </td>
     </tr>
     {% endfor %}

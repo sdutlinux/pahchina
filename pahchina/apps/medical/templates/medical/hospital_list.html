@@ -4,7 +4,9 @@
 
 {% block content %}
     <h2>医院列表</h2>
-    <p><a class="btn" href="{% url 'admin-create' 'hospital' %}"><i class="icon-plus"></i></a></p>
+    <p><a class="btn" href="{% url 'admin-create' 'hospital' %}"><i class="icon-plus"></i></a>
+    <a href="{% url 'admin-create' 'user' %}?identity=3" class="btn"><i class="icon-plus"></i>添加医院</a>
+    </p>
 <table class="table table-hover">
 <thead>
 <tr>
@@ -18,12 +20,12 @@
 
     {% for hospital in object_list %}
         <tr>
-            <td><a href="{% url 'admin-detail-hospital' hospital.id %}">{{ hospital.user.username }}</a></td>
+            <td><a href="{% url 'admin-detail' 'hospital' hospital.id %}">{{ hospital.user.username }}</a></td>
             <td>{{ hospital.local }}</td>
             <td>{{ hospital.level }}</td>
             <td>
-                <a href="{% url 'admin-update-hospital' hospital.id %}"><i class="icon-edit"></i></a>
-                <a href="{% url 'admin-delete-user' hospital.user.id %}"><i class="icon-remove"></i></a>
+                <a href="{% url 'admin-update' 'hospital' hospital.id %}"><i class="icon-edit"></i></a>
+                <a href="{% url 'admin-delete' 'user' hospital.user.id %}"><i class="icon-remove"></i></a>
             </td>
         </tr>
     {% endfor %}

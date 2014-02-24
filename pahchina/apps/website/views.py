@@ -60,7 +60,7 @@ class StaffUpdateSite(StaffRequiredMixin, generic.UpdateView):
     """
     model = Site
     form_class = forms.StaffSiteForm
-    template_name = 'update.html'
+    template_name = 'admin-update.html'
     success_url = reverse_lazy('admin-index')
 
     def get_object(self, queryset=None):

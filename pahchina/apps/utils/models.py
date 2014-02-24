@@ -40,3 +40,13 @@ class OperateHistory(models.Model):
 
     class Meta:
         verbose_name = '操作历史'
+
+
+def create_operate_log(user, operate, target, info=''):
+    """ 创建操作记录
+    """
+
+    OperateHistory.objects.create(user=user, operate=operate,
+                                  target=target, info=info)
+
+    return True

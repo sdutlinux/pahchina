@@ -1,0 +1,54 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}{{ operate }}{{ verbose_name }}{{ title }}{% endblock %}
+
+{% block head %}
+    <style>
+    input[type="password"] {
+        background: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 1px 1px #ccc inset;
+        font-size: 14px;
+        line-height: 20px;
+        outline: medium none;
+        padding: 4px 9px;
+        margin: 1px;
+    }
+    select[multiple]{
+          height: 200px;
+      }
+    .helptext {
+        font-style: italic;
+        font-size: 14px;
+    }
+    .errorlist {
+        list-style: none;
+        color: #b61318;
+        font-weight: bold;
+    }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ operate }}{{ verbose_name }}{{ title }}</h2>
+<p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a></p>
+
+{#<div class="hero-unit">#}
+
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<table class="table table-bordered">
+    {{ form.as_table }}
+</table>
+    <a class="btn" onclick="location.href=document.referrer;">返回</a>
+    <input class="btn btn-primary" type="submit" value="提交"/>
+</form>
+
+{#</div>#}
+{% endblock %}
+
+{% block foot %}
+    {{ form.media }}
+{% endblock %}

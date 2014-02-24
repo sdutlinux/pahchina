@@ -4,8 +4,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.contenttypes.models import ContentType
 
-IDENTITY_CHOICES = ((0, '无'), (1, '患者'), (2, '医生'),
+IDENTITY_CHOICES = ((0, '普通用户'), (1, '患者'), (2, '医生'),
                     (3, '医院'), (4, '志愿者'), (5, '药商'),)
 
 
@@ -17,11 +18,11 @@ class User(AbstractUser):
 
     #基本信息
     spare = models.EmailField(blank=True, null=True,
-                              verbose_name='常用邮箱',
-                              help_text='验证账号，找会密码用')
-    mobilephone = models.CharField(verbose_name='常用手机',
+                              verbose_name='备用邮箱',
+                              help_text='')
+    cellphone = models.CharField(verbose_name='常用手机', max_length=12,
                                    help_text='')
-    spare_phone = models.CharField(blank=True, null=True,
+    spare_phone = models.CharField(blank=True, null=True, max_length=12,
                                    verbose_name='备用手机',
                                    help_text='')
     qq = models.CharField(verbose_name='QQ号',
@@ -33,19 +34,18 @@ class User(AbstractUser):
     remark = models.TextField(blank=True, null=True,
                               verbose_name='管理员备注',
                               help_text='管理员记录备注信息')
-    information_ratio = models.DecimalField(verbose_name='资料完整度',
-                                            decimal_places=2, max_length=5,
-                                            help_text='折算百分比')
+
+    # 登录次数
     login_times = models.IntegerField(verbose_name='登录次数',
                                       default=0,
                                       help_text='')
-    login_times_week = models.IntegerField(blank=True, null=True,
+    login_times_week = models.IntegerField(default=0,
                                            verbose_name='周登录次数',
                                            help_text='')
-    login_times_month = models.IntegerField(blank=True, null=True,
+    login_times_month = models.IntegerField(default=0,
                                             verbose_name='月登录次数',
                                             help_text='')
-    #
+
     avatar = models.ImageField(verbose_name='照片', upload_to='user/avatar',
                                blank=True, null=True)
 
@@ -55,6 +55,7 @@ class User(AbstractUser):
                                         max_length=1)
 
     identity_dic = {
+        'is_user': 0,
         'is_patient': 1,
         'is_doctor': 2,
         'is_hospital': 3,
@@ -62,11 +63,28 @@ class User(AbstractUser):
         'is_druggist': 5,
     }
 
+    def count_login_time(self):
+        from django.utils import timezone
+        _timedelta = timezone.now() - self.last_login
+        if _timedelta.total_seconds() >= 3600:
+            # 两次登录之间超过一小时才计入
+            self.login_times += 1
+            self.save()
+        return True
+
     def get_absolute_url(self):
         """ 获取用户URL
         用户后台的用户管理
         """
-        return reverse('admin-detail-user', kwargs={'pk': self.id})
+        return reverse('admin-update', kwargs={'model':'user',
+                                               'pk': self.id})
+
+    def get_info_rate(self):
+        """ 个人资料完整度
+        返回结果：0-1 (int)
+        未完成
+        """
+        return 1
 
     def get_profile_url(self):
         """ 返回个人主页链接
@@ -80,6 +98,15 @@ class User(AbstractUser):
         """
         return reverse('show', kwargs={'pk': self.id})
 
+    def get_identity_label(self):
+        """ 返回角色代号
+        """
+        for key, value in self.identity_dic.iteritems():
+            if value == self.identity:
+                #print key, value
+                return key[3:]
+        return 'user'
+
     def get_identity(self):
         """ 返回身份名称
         eg: 患者，志愿者等
@@ -92,6 +119,21 @@ class User(AbstractUser):
         if self.is_staff: res += ', 分站管理员'
         if self.is_superuser: res = '总站管理员'
         return res
+
+    def get_identity_model(self):
+        """ 返回角色model
+        """
+        if self.is_staff:
+            return self
+        elif self.identity==1:
+            return self.patient
+        elif self.identity==2:
+            return self.doctor
+        elif self.identity==3:
+            return self.hospital
+        elif self.identity==4:
+            return self.volunteer
+        return self
 
     def get_full_name(self):
         """ 符合中文姓名风格
@@ -111,6 +153,19 @@ class User(AbstractUser):
                 return False
         else:
             super(User, self).__getattr__(item)
+
+    def __setattr__(self, item, value):
+        """ 用来判断身份
+        item: is_patient, is_doctor, ...
+        """
+        if item in self.identity_dic and item.startswith('is_'):
+            # 判断非属性并且以 `is_`开头
+            if value is True:
+                self.identity = self.identity_dic[item]
+            else:
+                self.identity = 0
+        else:
+            super(User, self).__setattr__(item, value)
 
 
 #个人资料
@@ -136,6 +191,8 @@ EDUCATION_CHOICES = (
 
 
 class Personal(models.Model):
+
+    user=models.OneToOneField(User, blank=True)
     previous_name = models.CharField(verbose_name='曾用名',
                                      max_length=20,
                                      help_text='无则填“无”')
@@ -160,7 +217,7 @@ class Personal(models.Model):
                                 help_text='',
                                 blank=True, null=True)
 
-    nationality = models.CharField(verbose_name='名族',
+    nationality = models.CharField(verbose_name='民族',
                                    max_length=20,
                                    help_text='选，汉族，少数民族',
                                    blank=True, null=True)
@@ -187,8 +244,8 @@ class Personal(models.Model):
 
     bear_status = models.BooleanField(verbose_name='是否生育',
                                       choices=(),
-                                      max_length=20, help_text='',
-                                      blank=True, null=True)
+                                      help_text='',
+                                      blank=True)
 
     home_phone = models.CharField(verbose_name='家庭电话',
                                   max_length=20,
@@ -263,6 +320,7 @@ HOSPITAL_LV_SHOICES = (
 
 
 class Unit(models.Model):
+    user=models.OneToOneField(User, blank=True)
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=20,
                               verbose_name='工作状态',
@@ -283,7 +341,7 @@ class Unit(models.Model):
                                      blank=True, null=True)
     is_hospital = models.BooleanField(verbose_name='是否位医院',
                                       help_text='是则填写等级',
-                                      blank=True, null=True)
+                                      blank=True)
     hospital_lv = models.IntegerField(choices=HOSPITAL_LV_SHOICES,
                                       verbose_name='医院等级',
                                       help_text='',
@@ -325,7 +383,7 @@ class Unit(models.Model):
                            help_text='',
                            blank=True, null=True)
     web_site = models.CharField(max_length=20,
-                                verbose_name='网址',
+                                verbose_name='网站',
                                 help_text='',
                                 blank=True, null=True)
     # logo = models.ImageField(verbose_name='机构logo',help_text='',blank=True,null=True)
@@ -338,6 +396,7 @@ class Unit(models.Model):
 
 
 class Bank(models.Model):
+    user=models.OneToOneField(User, blank=True)
     name = models.CharField(max_length=20,
                             verbose_name='户名',
                             help_text='',

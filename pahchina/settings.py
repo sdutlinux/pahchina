@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'pahchina.apps.medical',
     'pahchina.apps.news',
     'pahchina.apps.website',
+    'pahchina.apps.utils',
 )
 
 AUTH_USER_MODEL = 'accounts.User'

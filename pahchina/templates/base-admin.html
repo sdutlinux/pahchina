@@ -86,9 +86,9 @@
                         <li class="nav-header">用户管理</li>
 {#                        <li><a href="#">用户组管理</a></li>#}
                         <li><a href="{% url 'admin-list' 'user' %}">管理用户</a></li>
-                        <li><a href="{% url 'admin-create' 'permission' %}">添加权限</a></li>
                         <li><a href="{% url 'admin-list' 'patient' %}">管理患者</a></li>
                         <li><a href="{% url 'admin-list' 'doctor' %}">管理医生</a></li>
+                        <li><a href="{% url 'admin-list' 'hospital' %}">管理医院</a></li>
                         <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
                         <li class="nav-header">医疗管理</li>
                         <li><a href="{% url 'admin-list' 'hospital' %}">管理医院</a></li>
@@ -103,11 +103,14 @@
                         <li class="nav-header">捐赠管理</li>
                         <li><a href="{% url 'admin-list-donate' %}">捐赠管理</a></li>
                         <li><a href="{% url 'admin-list-itemized' %}">捐赠使用管理</a></li>
+                        <li class="nav-header">高级功能</li>
+                        <li><a href="{% url 'admin-create' 'permission' %}">添加权限</a></li>
                         {% elif user.is_staff %}
                         <li class="nav-header">站点管理</li>
                         <li><a href="{% url 'staff-detail-mysite' %}">我的站点</a></li>
                         <li><a href="{% url 'staff-update-mysite' %}">管理我的站点</a></li>
                         {% endif %} {# is superuser #}
+
                         <li class="nav-header">个人信息</li>
                         <li><a href="{% url 'update-password' %}">修改密码</a></li>
                     </ul>

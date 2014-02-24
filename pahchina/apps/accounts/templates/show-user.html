@@ -1,0 +1,16 @@
+{% extends 'base-index.html' %}
+
+{% block title %}{{ user.get_identity }}{{ user.username }}的个人页面{% endblock %}
+
+{% block content %}
+
+    <h3>{{ user.get_identity }}{{ user.username }}的个人页面</h3>
+    <table class="table table-bordered">
+
+        {% with user as object_user %}
+        {% include 'includes/user-info-as-table.html' %}
+        {% endwith %}
+
+    </table>
+
+{% endblock %}

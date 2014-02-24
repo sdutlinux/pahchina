@@ -133,8 +133,10 @@
     
       <ul class="breadcrumb">
           <li><a href="{{ user.get_show_url }}">个人展示</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'profile' %}">我的详细信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'update-profile' %}">修改个人信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'profile' %}">账户信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'user-info' 'personal' %}">个人信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'user-info' 'unit' %}">单位信息</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'user-info' 'bank' %}">银行信息</a> <span class="divider">/</span></li>
 
           {% if user.is_patient %}
           <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
