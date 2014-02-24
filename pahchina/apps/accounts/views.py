@@ -119,7 +119,7 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
         except self.get_obj().DoesNotExist:
             messages.info(self.request, '您尚未创建该信息！')
 
-class UpdatePersonal(LoginRequiredMixin, generic.FormView):
+class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
     """ 修改个人信息
     包括个人信息、单位信息、银行信息
     """
@@ -151,19 +151,19 @@ class UpdatePersonal(LoginRequiredMixin, generic.FormView):
 
     def form_valid(self, form):
         form.save()
-        return super(UpdatePersonal, self).form_valid(form)
+        return super(UpdateUserInfo, self).form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, '修改成功！')
-        return self.request.user.get_profile_url()
+        return reverse('user-info', kwargs=self.kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(UpdatePersonal, self).get_form_kwargs()
+        kwargs = super(UpdateUserInfo, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = super(UpdatePersonal, self).get_context_data(**kwargs)
+        context = super(UpdateUserInfo, self).get_context_data(**kwargs)
         context['title']='修改信息'
         return context
 

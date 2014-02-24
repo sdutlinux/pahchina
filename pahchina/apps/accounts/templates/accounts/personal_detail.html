@@ -1,0 +1,15 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+用户{{ personal.user }}的个人信息
+{% endblock %}
+
+{% block content %}
+    <h2>用户{{ personal.user }}的个人信息</h2>
+    <p><a href="{% url 'admin-list' 'user' %}" class="btn"><i class="icon-arrow-left"></i></a></p>
+
+    <table class="table table-bordered">
+        {% include 'includes/personal-info-as-table.html' %}
+    </table>
+
+{% endblock %}

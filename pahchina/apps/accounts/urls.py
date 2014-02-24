@@ -33,7 +33,7 @@ urlpatterns = patterns('',
 
 
     url(r'^(?P<model>\w+)/$', views.UserInfoView.as_view(), name='user-info'),
-    url(r'^update/(?P<model>\w+)/$', views.UpdatePersonal.as_view(), name='update-info'),
+    url(r'^update/(?P<model>\w+)/$', views.UpdateUserInfo.as_view(), name='update-info'),
 
     url(r'^password/update/$', views.UpdatePassword.as_view(), name='update-password'),
 )
