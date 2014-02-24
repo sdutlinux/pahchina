@@ -107,11 +107,17 @@ class DetailItemized(SuperRequiredMixin, generic.DetailView):
     template_name = 'detail-itemized-admin.html'
 
 
-class CreateItemized(SuperRequiredMixin, generic.CreateView):
+# class CreateItemizedId(SuperRequiredMixin, generic.CreateView):
+class CreateItemizedId(generic.CreateView):
     model = Itemized
     form_class = ItemizedForm
     success_url = reverse_lazy('admin-list-itemized')
     template_name = 'update-itemized-admin.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateItemizedId, self).get_form_kwargs()
+        kwargs['donate'] = Donate.objects.get(id = self.kwargs["pk"])
+        return kwargs
 
 class UpdateItemized(SuperRequiredMixin, generic.UpdateView):
     model = Itemized

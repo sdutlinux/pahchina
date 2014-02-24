@@ -32,8 +32,20 @@ class DonateFormUser(forms.ModelForm):
 class ItemizedForm(forms.ModelForm):
 
     class Meta:
-        modle = Itemized
-        exclude = ('residue')
+        model = Itemized
+        exclude = ('residue','number')
+
+    def __init__(self, donate=None, *args, **kwargs):
+        super(ItemizedForm, self).__init__(*args, **kwargs)
+        self._number = donate
+
+    def save(self, commit=True):
+        if self._number:
+            itemized = super(ItemizedForm, self).save(commit=False)
+            itemized.number = self._number
+            itemized.save()
+        else:
+            super(ItemizedForm, self).save(commit=True)
 
     def clean_residue(self):
         temp = Itemized.objects.filter(number=self.number).order_by('-time')

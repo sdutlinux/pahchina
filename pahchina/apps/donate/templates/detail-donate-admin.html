@@ -35,6 +35,7 @@
     </tr>
     </table>
     <div><a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a></div>
+    <div><a href="{% url "admin-create-itemized-id" object_donate.id %}">使用此捐赠</a></div>
     <h6 style="text-align: center">捐赠详情</h6>
     <div><pre>{{ object_donate.details }}</pre></div>
 

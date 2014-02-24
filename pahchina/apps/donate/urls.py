@@ -18,7 +18,7 @@ urlpatterns = patterns('',
                        url(r'^admin/itemized/list/$', views.ListItemized.as_view(), name='admin-list-itemized'),
                        url(r'^admin/itemized/list/(?P<pk>\d+)/$', views.ListItemized.as_view(), name='admin-list-itemized-id'),
                        url(r'^admin/itemized/(?P<pk>\d+)/$', views.DetailItemized.as_view(), name='admin-detail-itemized'),
-                       url(r'^admin/itemized/create/$', views.CreateItemized.as_view(), name='admin-create-itemized'),
+                       url(r'^admin/itemized/create/(?P<pk>\d+)/$', views.CreateItemizedId.as_view(), name='admin-create-itemized-id'),
                        url(r'^admin/itemized/update/(?P<pk>\d+)/$', views.UpdateItemized.as_view(), name='admin-update-itemized'),
                        url(r'^admin/itemized/delete/(?P<pk>\d+)/$', views.DeleteItemized.as_view(), name='admin-delete-itemized'),
                        )
