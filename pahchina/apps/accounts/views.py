@@ -76,6 +76,15 @@ def pah_logout(request):
     messages.info(request, '成功注销本次登录！')
     return HttpResponseRedirect(reverse('login'))
 
+
+#def first_login(request):
+#    """ 用户第一次登录
+#    """
+#    if request.user.is_patient:
+#
+
+
+
 class Profile(LoginRequiredMixin, generic.DetailView):
     """ 用户个人主页
     """

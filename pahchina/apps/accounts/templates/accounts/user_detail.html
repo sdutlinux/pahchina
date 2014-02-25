@@ -9,10 +9,16 @@
 <h2>用户{{ object_user.username }}</h2>
 <p>
     <a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a>
-    <a href="{% url 'update-profile' %}" class="btn"><i class="icon icon-edit"></i>修改账户信息</a>
+    <a href="{% url 'admin-update' 'user' user.id %}" class="btn"><i class="icon icon-edit"></i>修改账户信息</a>
+    {% if user.personal %}
     <a href="{% url 'admin-update' 'personal' user.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改个人信息</a>
-    <a href="{% url 'admin-update' 'unit' user.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改单位信息</a>
-    <a href="{% url 'admin-update' 'bank' user.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改银行信息</a>
+    {% endif %}
+    {% if user.unit %}
+    <a href="{% url 'admin-update' 'unit' user.unit.id %}" class="btn"><i class="icon icon-edit"></i>修改单位信息</a>
+    {% endif %}
+    {% if user.bank %}
+    <a href="{% url 'admin-update' 'bank' user.bank.id %}" class="btn"><i class="icon icon-edit"></i>修改银行信息</a>
+    {% endif %} 
 </p>
 
 <table class="table table-bordered" border="0">

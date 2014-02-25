@@ -8,16 +8,22 @@ from ...apps.accounts.models import User
 # Create your models here.
 class Sorts(MPTTModel):
     name=models.CharField(max_length=20,verbose_name="分类名称",unique=True)
-    parent=TreeForeignKey("self", blank=True, null=True, related_name="children")
+    parent=TreeForeignKey("self", verbose_name='所属分类', blank=True, null=True,
+                          related_name="children",
+                          help_text='空则为顶级分类')
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+    class Meta(MPTTModel.Meta):
+        verbose_name='分类'
 
     def __unicode__(self):
         return self.name
 
 
 class News(TimeStampedModel):
+
     title = models.CharField(max_length=50, verbose_name='标题', unique=True)
     content = models.TextField(verbose_name='内容')
     author = models.ForeignKey(User, verbose_name='作者')
@@ -27,6 +33,9 @@ class News(TimeStampedModel):
     is_top = models.BooleanField(verbose_name='置顶')
     img = models.ImageField(upload_to='news/show', verbose_name='推广图片',blank=True, null=True)
     sort = models.ForeignKey(Sorts, verbose_name='分类')
+
+    class Meta:
+        verbose_name='新闻'
 
     def get_draft(self):
         if self.is_draft:

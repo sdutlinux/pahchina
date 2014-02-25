@@ -339,13 +339,13 @@ class Unit(models.Model):
                                      verbose_name='年收入',
                                      help_text='',
                                      blank=True, null=True)
-    is_hospital = models.BooleanField(verbose_name='是否位医院',
-                                      help_text='是则填写等级',
-                                      blank=True)
-    hospital_lv = models.IntegerField(choices=HOSPITAL_LV_SHOICES,
-                                      verbose_name='医院等级',
-                                      help_text='',
-                                      blank=True, null=True)
+    #is_hospital = models.BooleanField(verbose_name='是否位医院',
+    #                                  help_text='是则填写等级',
+    #                                  blank=True)
+    #hospital_lv = models.IntegerField(choices=HOSPITAL_LV_SHOICES,
+    #                                  verbose_name='医院等级',
+    #                                  help_text='',
+    #                                  blank=True, null=True)
     name = models.CharField(max_length=20,
                             verbose_name='单位名称',
                             help_text='',
