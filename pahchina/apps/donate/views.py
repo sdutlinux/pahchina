@@ -75,9 +75,9 @@ class DetailDonateUser(generic.DetailView):
     model = Donate
     context_object_name = 'object_donate'
     template_name = 'detail-donate.html'
-    
-    
-    
+
+
+
 class ListItemizedId(SuperRequiredMixin, generic.DetailView):
 
     model = Donate
@@ -89,8 +89,6 @@ class ListItemizedId(SuperRequiredMixin, generic.DetailView):
         context['itemized_list'] = Itemized.objects.filter(number=donate)
         return context
 
-    #def get_queryset(self):
-    #    Itemized.objects.filter(number_id )
 
 
 class ListItemized(SuperRequiredMixin, generic.ListView):
@@ -111,8 +109,11 @@ class DetailItemized(SuperRequiredMixin, generic.DetailView):
 class CreateItemizedId(generic.CreateView):
     model = Itemized
     form_class = ItemizedForm
-    success_url = reverse_lazy('admin-list-itemized')
+    # success_url = reverse_lazy('admin-list-itemized')
     template_name = 'update-itemized-admin.html'
+
+    def get_success_url(self):
+        return reverse_lazy('admin-list-itemized')
 
     def get_form_kwargs(self):
         kwargs = super(CreateItemizedId, self).get_form_kwargs()
