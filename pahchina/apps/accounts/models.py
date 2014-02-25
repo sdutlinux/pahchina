@@ -21,9 +21,12 @@ class User(AbstractUser):
                               verbose_name='备用邮箱',
                               help_text='')
     cellphone = models.CharField(verbose_name='常用手机', max_length=12,
-                                   help_text='')
+                              verbose_name='常用邮箱',
+                              help_text='验证账号，找会密码用')
+
     spare_phone = models.CharField(blank=True, null=True, max_length=12,
                                    verbose_name='备用手机',
+                                   max_length=20,
                                    help_text='')
     qq = models.CharField(verbose_name='QQ号',
                           max_length=20,
@@ -34,7 +37,6 @@ class User(AbstractUser):
     remark = models.TextField(blank=True, null=True,
                               verbose_name='管理员备注',
                               help_text='管理员记录备注信息')
-
     # 登录次数
     login_times = models.IntegerField(verbose_name='登录次数',
                                       default=0,
@@ -168,12 +170,11 @@ class User(AbstractUser):
             super(User, self).__setattr__(item, value)
 
 
-#个人资料
+# choices
 
-#choices
 SEX_CHOICES = (
     ('MAN', '男'),
-    ('MOMAN', '女'),
+    ('WOMAN', '女'),
 )
 MARITAL_CHOICES = (
     ('SINGLE', '单身'),
@@ -193,6 +194,7 @@ EDUCATION_CHOICES = (
 class Personal(models.Model):
 
     user=models.OneToOneField(User, blank=True)
+    #不可修改
     previous_name = models.CharField(verbose_name='曾用名',
                                      max_length=20,
                                      help_text='无则填“无”')
@@ -209,16 +211,16 @@ class Personal(models.Model):
     ID_number = models.CharField(verbose_name='身份证号',
                                  max_length=20,
                                  help_text='唯一性，提交后不可更改')
-
+    #志愿者可修改，
     age = models.IntegerField(verbose_name='年龄',
                               help_text='')
 
     birthday = models.DateField(verbose_name='生日',
                                 help_text='',
                                 blank=True, null=True)
-
+#个人捐赠者可修改
     nationality = models.CharField(verbose_name='民族',
-                                   max_length=20,
+                                       max_length=20,
                                    help_text='选，汉族，少数民族',
                                    blank=True, null=True)
 
@@ -243,9 +245,8 @@ class Personal(models.Model):
                                       blank=True, null=True)
 
     bear_status = models.BooleanField(verbose_name='是否生育',
-                                      choices=(),
-                                      help_text='',
-                                      blank=True)
+                                      max_length=20, help_text='',
+                                      default=False)
 
     home_phone = models.CharField(verbose_name='家庭电话',
                                   max_length=20,
@@ -339,13 +340,7 @@ class Unit(models.Model):
                                      verbose_name='年收入',
                                      help_text='',
                                      blank=True, null=True)
-    #is_hospital = models.BooleanField(verbose_name='是否位医院',
-    #                                  help_text='是则填写等级',
-    #                                  blank=True)
-    #hospital_lv = models.IntegerField(choices=HOSPITAL_LV_SHOICES,
-    #                                  verbose_name='医院等级',
-    #                                  help_text='',
-    #                                  blank=True, null=True)
+
     name = models.CharField(max_length=20,
                             verbose_name='单位名称',
                             help_text='',

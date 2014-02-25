@@ -28,11 +28,11 @@ class Donate(models.Model):
              update_fields=None)
 
 class Itemized(models.Model):
-    time = models.DateTimeField(verbose_name='使用时间')
+    time = models.DateTimeField(verbose_name='使用时间', auto_now_add=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     cast = models.IntegerField(max_length='10', verbose_name='花费')
     residue = models.IntegerField(max_length='10', verbose_name='剩余', blank=True)
-    number = models.ForeignKey(Donate, verbose_name='账单')
+    number = models.ForeignKey(Donate, verbose_name='账单',blank=True)
     detail = models.TextField(verbose_name='使用详情')
 
     def check_residue(self):

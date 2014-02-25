@@ -163,7 +163,12 @@ class VltFirstFillForm(forms.ModelForm):
 
     class Meta:
         model = Personal
-        exclude = ('user')
+        fields = ('nickname','nationality','belief','height',
+                  'weight','marital_status','bear_status',
+                  'home_phone','domicile','permanent_residence',
+                  'address','education','school','major',
+                  'qualification','specialty','personal_profile',
+                  'story')
 
 
     def __init__(self, user=None,*args, **kwargs):
@@ -183,6 +188,7 @@ class VltFillForm(forms.ModelForm):
                   'weight','marital_status','bear_status','home_phone')
 
 
+
 class UnitForm(forms.ModelForm):
 
     class Meta:
@@ -197,6 +203,7 @@ class UnitForm(forms.ModelForm):
         ret = super(UnitForm, self).save(commit=False)
         ret.user = self._user
         ret.save()
+
 
 
 class BankForm(forms.ModelForm):
