@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     url(r'^medical/', include('pahchina.apps.medical.urls')),
     url(r'^site/', include('pahchina.apps.website.urls')),
     url(r'news/', include('pahchina.apps.news.urls')),
+    url(r'region/', include('pahchina.apps.region.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

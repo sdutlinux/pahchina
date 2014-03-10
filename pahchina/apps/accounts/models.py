@@ -251,7 +251,7 @@ class Personal(models.Model):
                                   max_length=20,
                                   blank=True, null=True)
 
-    domicile = models.CharField(verbose_name='户籍所在地',
+    domicile = models.CharField(verbose_name='户籍所在地', choices=(('',''),),
                                 max_length=20,
                                 help_text='省，市／县',
                                 blank=True, null=True)

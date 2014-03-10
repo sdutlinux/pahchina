@@ -164,6 +164,9 @@ class VltFirstFillForm(forms.ModelForm):
     class Meta:
         model = Personal
         exclude = ('user')
+        #widgets = {
+        #    'domicile': forms.Select(choices=((0,'--'))),
+        #}
 
 
     def __init__(self, user=None,*args, **kwargs):
@@ -213,3 +216,5 @@ class BankForm(forms.ModelForm):
         ret = super(BankForm, self).save(commit=False)
         ret.user = self._user
         ret.save()
+
+

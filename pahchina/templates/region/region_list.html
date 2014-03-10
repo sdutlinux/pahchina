@@ -1,5 +1,7 @@
 {% extends 'base-admin.html' %}
 
+ {% load pagination_tags %}
+
 {% block title %}省市列表{% endblock %}
 
 {% block content %}
@@ -15,6 +17,8 @@
 </thead>
     <tbody>
 
+    {% autopaginate object_list 20 %}
+
     {% for region in object_list %}
         <tr>
             <td>{{ region.name }}</td>
@@ -25,10 +29,9 @@
             </td>
         </tr>    
     {% endfor %}
-    
-
-
     </tbody>
 </table>
+
+    {% paginate %}
 
 {% endblock %}

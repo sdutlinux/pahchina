@@ -104,6 +104,7 @@
                         <li><a href="{% url 'admin-list-donate' %}">捐赠管理</a></li>
                         <li><a href="{% url 'admin-list-itemized' %}">捐赠使用管理</a></li>
                         <li class="nav-header">高级功能</li>
+                        <li><a href="{% url 'admin-list' 'region' %}">管理省市</a></li>
                         <li><a href="{% url 'admin-create' 'permission' %}">添加权限</a></li>
                         {% elif user.is_staff %}
                         <li class="nav-header">站点管理</li>

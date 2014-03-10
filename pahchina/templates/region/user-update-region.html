@@ -1,0 +1,65 @@
+{% extends 'base-index.html' %}
+{% load bootstrap_tags %}
+
+{% block title %}更新居住信息{% endblock %}
+
+{% block content %}
+
+<h2>居住信息</h2>
+<p class="lead">系统根据居住信息分配用户所在分站</p>
+
+<form action="" method="post" id="city">{% csrf_token %}
+
+    <div id="div_id_province" class="control-group  ">
+        <label for="id_province" class="control-label required-field province">省份</label>
+        <div class="controls">
+            <select id="id_province" class="province" name="province" data-val="{{ form.province.value }}">
+                <option value=""></option>
+            </select>
+        </div>
+        {% if  form.province.errors %}
+        <p class="text-warning">{{ form.province.errors }}</p>
+        {% endif %}
+    </div>
+    <div id="div_id_city" class="control-group  ">
+        <label for="id_city" class="control-label required-field city">城市</label>
+        <div class="controls">
+            <select id="id_city" class="city" name="city" data-val="{{ form.city.value }}" disabled>
+                <option value=""></option>
+            </select>
+        </div>
+        {% if  form.city.errors %}
+        <p class="text-warning">{{ form.city.errors }}</p>
+        {% endif %}
+    </div>
+    <div id="div_id_area" class="control-group">
+        <label for="id_area" class="control-label required-field">地区</label>
+        <div class="controls">
+            <select id="id_area" class="area" name="area"  data-val="{{ form.area.value }}" disabled>
+                <option value=""></option>
+            </select>
+        </div>
+        {% if  form.area.errors %}
+        <p class="text-warning">{{ form.area.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-actions">
+        <a class="btn" onclick="location.href=document.referrer;">返回</a>
+        <input class="btn btn-primary" type="submit" value="提交"/>
+    </div>
+
+</form>
+
+
+{% endblock %}
+
+{% block foot %}
+    {{ form.media }}
+    <script>
+        $.cxSelect.defaults.url="/region/response/city.js";
+        $("#city").cxSelect({
+            selects:["province","city","area"]
+        });
+    </script>
+{% endblock %}
