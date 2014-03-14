@@ -176,3 +176,5 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
         if self.check_permit():
             return HttpResponseRedirect(reverse('admin-list', kwargs={'model': self.kwargs['model']}))
         return super(Delete, self).post(*args, **kwargs)
+
+

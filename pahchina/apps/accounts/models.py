@@ -135,6 +135,11 @@ class User(AbstractUser):
             return self.volunteer
         return self
 
+    def get_huji_addr(self):
+        return self.livingregion_set.get(cate='huji')
+    def get_juzhu_addr(self):
+        return self.livingregion_set.get(cate='juzhu')
+
     def get_full_name(self):
         """ 符合中文姓名风格
         """
@@ -249,15 +254,6 @@ class Personal(models.Model):
     home_phone = models.CharField(verbose_name='家庭电话',
                                   max_length=20,
                                   blank=True, null=True)
-
-    domicile = models.CharField(verbose_name='户籍所在地',
-                                max_length=20,
-                                help_text='省，市／县',
-                                blank=True, null=True)
-
-    permanent_residence = models.CharField(verbose_name='常住地',
-                                           max_length=20,
-                                           help_text='省，市／县')
 
     address = models.CharField(verbose_name='通信地址',
                                max_length=20,

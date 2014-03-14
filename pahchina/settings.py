@@ -20,6 +20,12 @@ DOMAIN=''
 
 SITE_ID = 1
 
+CACHE_BACKEND = 'locmem:///'
+
+# develop
+#CACHE_BACKEND = 'simple:///'
+#CACHE_BACKEND = 'dummy:///'
+
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -112,6 +118,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     'pahchina.apps.website.middleware.SubSiteMiddleWare',
 )
 
@@ -147,6 +154,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
+    "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "pahchina.apps.website.context_processors.site",
 )
@@ -167,6 +175,7 @@ INSTALLED_APPS = (
     ## Third-party packages
     'django_forms_bootstrap',
     'mptt',
+    'pagination',
     #'datetimewidget',
 
     ## apps

@@ -6,6 +6,7 @@ __author__ = 'zhwei'
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.views import password_reset
 from django.core.urlresolvers import reverse_lazy, reverse
+from ..region import views as region_views
 
 from . import views
 import generic
@@ -23,6 +24,10 @@ urlpatterns = patterns('',
     url(r'^update/profile/$', views.UpdateProfile.as_view(), name='update-profile'),
 
     url(r'^show/(?P<pk>\d+)/$', views.Show.as_view(), name='show'),
+
+    # region
+    url(r'region/(?P<cate>\w+)/$', region_views.UserSetRegion.as_view(), name='user-region'),
+
 
     # generic
     url(r'^update/(?P<model>\w+)/(?P<pk>\d+)/$', generic.Update.as_view(), name='admin-update'),

@@ -1,0 +1,25 @@
+{% if is_paginated %}
+<div class="pagination pagenav cleatfix ">
+  <ul>
+    <li><a href="?page=1" class="pagenav-cell pagenav-cell-next">首页</a></li>
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}" class="pagenav-cell pagenav-cell-next">&lsaquo;&lsaquo; 上一页</a></li>
+    {% else %}
+
+  <li><span class="disabled pagenav-cell">&lsaquo;&lsaquo; 上一页</span></li>
+
+    {% endif %}
+      <li><span class="active pagenav-cell pagenav-cell-current">{{ page_obj.number }}</span></li>
+
+    {% if page_obj.has_next %}
+  <li>
+        <a href="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}" class="pagenav-cell pagenav-cell-next">下一页 &rsaquo;&rsaquo;</a>
+  </li>
+    {% else %}
+  <li>
+        <span class="disabled pagenav-cell">下一页 &rsaquo;&rsaquo;</span>
+  </li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
