@@ -7,8 +7,10 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response as r2r, get_object_or_404
+from django.contrib import messages
 
-from ..utils import LoginRequiredMixin
+
+from ..utils import LoginRequiredMixin, SuperRequiredMixin
 import forms
 from .models import Region, LivingRegion
 
@@ -47,4 +49,22 @@ class UserSetRegion(LoginRequiredMixin ,generic.FormView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, '更新信息成功！')
         return super(UserSetRegion, self).form_valid(form)
+
+
+class ListSubCity(SuperRequiredMixin, generic.TemplateView):
+
+    template_name = 'region/list-city-admin.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListSubCity, self).get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        if pk == '0':
+            context['region'] = {'name':''}
+            context['object_list'] = Region.objects.filter(parent=None)
+        else:
+            region = Region.objects.get(id=pk)
+            context['region'] = region
+            context['object_list'] = Region.objects.filter(parent=region)
+        return context

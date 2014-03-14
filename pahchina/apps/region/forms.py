@@ -23,12 +23,11 @@ class UserUpdateRegionForm(forms.ModelForm):
         self._cate = cate # 地址信息类型， 户籍地还是居住地
 
     def save(self, commit=True):
-        if self._user is not None:
-            ret = super(UserUpdateRegionForm, self).save(commit=False)
-            ret.user = self._user
-            ret.cate = self._cate
-            ret.save()
-        else:
+        try:
             _region = LivingRegion.objects.get(user=self._user, cate=self._cate)
-            _region.save()
-            return super(UserUpdateRegionForm, self).save(commit=True)
+        except LivingRegion.DoesNotExist:
+            _region =LivingRegion(user=self._user, cate=self._cate)
+        _region.province = self.cleaned_data['province']
+        _region.city = self.cleaned_data['city']
+        _region.area = self.cleaned_data['area']
+        _region.save()
