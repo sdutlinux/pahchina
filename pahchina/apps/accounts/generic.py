@@ -26,6 +26,7 @@ from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
 from ..accounts.models import User
 from ..accounts import forms as account_form
+from ..news import forms as news_form
 
 
 class GenericOperateMixin(ModelFormMixin):
@@ -103,14 +104,24 @@ class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
     template_name = 'admin-update.html'
     operate = '添加'
 
+    _form_dict = {
+        'user': account_form.RegisterForm,
+        'news': news_form.NewsForm
+
+    }
+
+
     def get_success_url(self):
         return reverse('admin-list', kwargs=self.kwargs)
 
+
     def get_form_class(self):
-        if self.kwargs['model'] == 'user':
-            return account_form.RegisterForm
-        else:
+
+        try:
+            return self._form_dict[self.kwargs['model']]
+        except KeyError:
             return super(Create, self).get_form_class()
+
 
 class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
     """
@@ -122,9 +133,7 @@ class List(SuperRequiredMixin, GenericOperateMixin, generic.ListView):
 
 
 class Detail(SuperRequiredMixin, GenericOperateMixin, generic.DetailView):
-
     operate = '查看'
-
 
 
 class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
@@ -141,7 +150,7 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
         """ 获取删除成功后跳转的地址
         """
         if self.kwargs['model'] == 'record':
-            return reverse('admin-list', kwargs={'model':'patient'})
+            return reverse('admin-list', kwargs={'model': 'patient'})
         self.kwargs.pop('pk')
         return reverse('admin-list', kwargs=self.kwargs)
 

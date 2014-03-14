@@ -21,12 +21,10 @@ class User(AbstractUser):
                               verbose_name='备用邮箱',
                               help_text='')
     cellphone = models.CharField(verbose_name='常用手机', max_length=12,
-                              verbose_name='常用邮箱',
                               help_text='验证账号，找会密码用')
 
     spare_phone = models.CharField(blank=True, null=True, max_length=12,
                                    verbose_name='备用手机',
-                                   max_length=20,
                                    help_text='')
     qq = models.CharField(verbose_name='QQ号',
                           max_length=20,

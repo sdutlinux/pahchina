@@ -4,7 +4,7 @@
 from django.views import generic
 from django.core.urlresolvers import reverse_lazy, reverse
 from .models import News, Sorts
-from .form import NewsForm
+from .forms import NewsForm
 from ..utils.views import SuperRequiredMixin
 
 class ListNews(SuperRequiredMixin, generic.ListView):
@@ -27,9 +27,12 @@ class CreateNews(SuperRequiredMixin, generic.FormView):
     template_name = 'update-news-admin.html'
     success_url = reverse_lazy('admin-list-news')
 
+
     def get_form_kwargs(self):
         kwargs = super(CreateNews, self).get_form_kwargs()
         kwargs['author'] = self.request.user
+        print self.request.SITE
+        kwargs['site'] = self.request.SITE
         return kwargs
 
     def form_valid(self, form):

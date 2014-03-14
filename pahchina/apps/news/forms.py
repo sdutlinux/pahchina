@@ -10,11 +10,15 @@ class NewsForm(forms.ModelForm):
         model = News
         fields = ('title','content','is_draft','is_push','is_top','img','sort')
 
-    def __init__(self, author=None, *args, **kwargs):
+    def __init__(self, author=None, site = None, *args, **kwargs):
         super(NewsForm, self).__init__(*args, **kwargs)
-        self._user = author
+        self._author = author
+        self._site = site
+        print "hello world!"
 
     def save(self, commit=False):
             news = super(NewsForm, self).save(commit=False)
-            news.author = self._user
+            news.author = self._author
+            news.save()
+            news.site.add(self._site)
             news.save()
