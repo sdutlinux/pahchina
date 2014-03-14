@@ -1,15 +1,14 @@
 {% extends 'base-index.html' %}
 {% load bootstrap_tags %}
 
-{% block title %}更新居住信息{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 
-<h2>居住信息</h2>
+<h2>{{ title }}</h2>
 <p class="lead">系统根据居住信息分配用户所在分站</p>
 
-<form action="" method="post" id="city">{% csrf_token %}
-
+<form action="" method="post" id="city" class="form-inline">{% csrf_token %}
     <div id="div_id_province" class="control-group  ">
         <label for="id_province" class="control-label required-field province">省份</label>
         <div class="controls">

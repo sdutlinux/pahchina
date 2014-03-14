@@ -22,6 +22,13 @@ class UserSetRegion(LoginRequiredMixin ,generic.FormView):
     template_name = 'region/user-update-region.html'
     success_url = reverse_lazy('profile')
 
+    def get_context_data(self, **kwargs):
+        context = super(UserSetRegion, self).get_context_data(**kwargs)
+        cate = self.kwargs['cate']
+        if cate == 'huji': context['title']='修改户籍地'
+        if cate == 'juzhu': context['title']='修改居住地'
+        return context
+
     def get_form_kwargs(self):
         # 传递 user, cate 到form
         kwargs = super(UserSetRegion, self).get_form_kwargs()
@@ -31,20 +38,13 @@ class UserSetRegion(LoginRequiredMixin ,generic.FormView):
                        'cate': self.kwargs['cate'],})
         return kwargs
 
+    def get_initial(self):
+        try:
+            obj=LivingRegion.objects.get(user=self.request.user, cate=self.kwargs['cate'])
+            return obj.__dict__.copy()
+        except LivingRegion.DoesNotExist:
+            return {}
+
     def form_valid(self, form):
         form.save()
         return super(UserSetRegion, self).form_valid(form)
-
-
-class UserUpdateRegion(LoginRequiredMixin, generic.UpdateView):
-
-    model = LivingRegion
-    form_class = forms.UserUpdateRegionForm
-    template_name = 'region/user-update-region.html'
-    success_url = reverse_lazy('profile')
-
-    def get_object(self, queryset=None):
-        cate = self.kwargs['cate']
-        if self.kwargs['cate'] not in ('huji', 'juzhu'): raise Http404
-        obj = LivingRegion.objects.get(user=self.request.user, cate=cate)
-        return obj

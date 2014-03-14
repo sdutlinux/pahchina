@@ -12,9 +12,8 @@ import views
 
 urlpatterns = patterns('',
 
-    url(r'set/(?P<cate>\w+)/$', views.UserSetRegion.as_view(), name='user-update-region'),
-    url(r'update/(?P<cate>\w+)/$', views.UserUpdateRegion.as_view(), name='user-update-region'),
-
+    #url(r'set/(?P<cate>\w+)/$', views.UserSetRegion.as_view(), name='user-update-region'),
+    #url(r'update/(?P<cate>\w+)/$', views.UserSetRegion.as_view(), name='user-update-region'),
 
     # response content some thing like json and so on
     url(r'response/get/(?P<parent_id>\d+)/$', response.get_region),

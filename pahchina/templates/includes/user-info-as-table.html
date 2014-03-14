@@ -17,7 +17,11 @@
         </tr>
         <tr>
             <th>户籍所在地</th>
-            <td>{{ object_user.get }}</td>
+            <td>{{ object_user.get_huji_addr.get_location }}&nbsp;<a href="{% url 'user-region' 'huji' %}">修改</a></td>
+        </tr>
+        <tr>
+            <th>当前居住地</th>
+            <td>{{ object_user.get_juzhu_addr.get_location }}&nbsp;<a href="{% url 'user-region' 'juzhu' %}">修改</a></td>
         </tr>
         <tr>
             <th>Email</th>

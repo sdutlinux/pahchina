@@ -163,11 +163,7 @@ class VltFirstFillForm(forms.ModelForm):
 
     class Meta:
         model = Personal
-        exclude = ('user')
-        #widgets = {
-        #    'domicile': forms.Select(choices=((0,'--'))),
-        #}
-
+        exclude = ('user',)
 
     def __init__(self, user=None,*args, **kwargs):
         super(VltFirstFillForm, self).__init__(*args, **kwargs)
