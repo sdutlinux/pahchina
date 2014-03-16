@@ -2,3 +2,4 @@ Django==1.5.1
 #PIL==1.1.7
 django-forms-bootstrap
 django-mptt
+django-pagination
