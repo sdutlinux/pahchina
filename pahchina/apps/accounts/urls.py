@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
     url(r'^update/profile/$', views.UpdateProfile.as_view(), name='update-profile'),
 
-    url(r'^show/(?P<pk>\d+)/$', views.Show.as_view(), name='show'),
+    url(r'^show/(?P<username>.*)/$', views.Show.as_view(), name='show'),
 
     # region
     url(r'region/(?P<cate>\w+)/$', region_views.UserSetRegion.as_view(), name='user-region'),

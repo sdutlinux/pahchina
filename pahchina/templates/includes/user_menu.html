@@ -1,6 +1,7 @@
 {% if user.is_authenticated %}
 
   <ul class="breadcrumb">
+      <li><a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a><span class="divider">/</span></li>
       <li><a href="{% url 'profile' %}">账户信息</a> <span class="divider">/</span></li>
       <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
       {% if user.is_staff %}

@@ -177,23 +177,28 @@ class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
         return context
 
 
-class Show(generic.DetailView):
+class Show(generic.TemplateView):
     """ 用户个人展示页面
     """
 
-    model = User
+    #model = User
+    context_object_name = 'object_user'
+    template_name = 'show-user.html'
 
-    def get_template_names(self):
+    def get_context_data(self, **kwargs):
+        context = super(Show, self).get_context_data(**kwargs)
+        context['object_user'] = get_object_or_404(User, username=self.kwargs['username'])
+        return context
 
-        return 'show-{}.html'.format(self.request.user.get_identity_label())
+    #def get_template_names(self):
+    #
+    #    return 'show-user.html'.format(self._user.get_identity_label())
 
-    def get_context_object_name(self, obj):
+    #def get_context_object_name(self, obj):
+    #
+    #    return self._user.get_identity_label()
 
-        return self.request.user.get_identity_label()
 
-    def get_object(self, queryset=None):
-
-        return self.request.user.get_identity_model()
 
 
 class UpdateProfile(LoginRequiredMixin, generic.UpdateView):

@@ -96,7 +96,7 @@ class User(AbstractUser):
     def get_show_url(self):
         """ 获取展示页面URL
         """
-        return reverse('show', kwargs={'pk': self.id})
+        return reverse('show', kwargs={'username': self.username})
 
     def get_identity_label(self):
         """ 返回角色代号
