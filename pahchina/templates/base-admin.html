@@ -64,6 +64,7 @@
               </a>
               <ul class="dropdown-menu">
                 <!-- dropdown menu links -->
+                  <li><a href="{% url 'update-password' %}">修改密码</a></li>
                   <li><a href="{% url 'logout' %}"><i class="icon-off"></i>注销</a></li>
               </ul>
             </div>
@@ -125,8 +126,15 @@
                 {% block content %}
                 {% endblock %}
             </div>
+
         </div>
+        <div class="clearfix"><hr/></div>
+        <p align="center">©2014 PAH &nbsp;技术支持：
+            <a href="mailto:zhwei@gotit.asia"><i class="icon-envelope"></i>张卫</a>&nbsp;
+            <a href="mailto:tanglnan1994@gmail.com"><i class="icon-envelope"></i>汤奇峰</a></p>
+
     </div> <!-- /container -->
+
 
     <!-- Le javascript
     ================================================== -->
