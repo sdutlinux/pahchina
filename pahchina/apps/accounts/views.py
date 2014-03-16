@@ -91,7 +91,7 @@ class Profile(LoginRequiredMixin, generic.DetailView):
 
     def get_template_names(self):
 
-        return 'profile-{}.html'.format(self.request.user.get_identity_label())
+        return 'profile-user.html'.format(self.request.user.get_identity_label())
 
     def get_context_object_name(self, obj):
 

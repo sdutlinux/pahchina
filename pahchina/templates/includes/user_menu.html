@@ -1,35 +1,13 @@
 {% if user.is_authenticated %}
 
   <ul class="breadcrumb">
-      <li><a href="{{ user.get_show_url }}">个人展示</a> <span class="divider">/</span></li>
       <li><a href="{% url 'profile' %}">账户信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'user-info' 'personal' %}">个人信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'user-info' 'unit' %}">单位信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'user-info' 'bank' %}">银行信息</a> <span class="divider">/</span></li>
-
-      {% if user.is_patient %}
-      <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'create-dosage' %}">创建用药记录</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'patient-list-doctor-record' %}">就医记录</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'patient-start-doctor-record' %}">创建就医记录</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
-
-      {% elif user.is_doctor %}
-      <li><a href="{% url 'doctor-update-profile' %}">修改医生信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'doctor-list-patient' %}">我的病人</a> <span class="divider">/</span></li>
-
-      {% elif user.is_hospital %}
-      <li><a href="{% url 'update-hospital' %}">修改医院信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'hospital-list-doctor' %}">本院医生</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'doctor-list-patient' %}">本院病人</a> <span class="divider">/</span></li>
-
-      {% elif user.is_volunteer %}
-      <li><a href="{% url 'detail-dosage' %}">我的活动</a> <span class="divider">/</span></li>
-      {% endif %}
-
       <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'list-donate' %}">我的捐赠</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'update-password' %}">修改密码</a> <span class="divider">/</span></li>
+      {% if user.is_staff %}
+          <li><a href="{% url 'admin-index' %}">网站后台</a> <span class="divider">/</span></li>
+      {% endif %}
+      <li><a href="{% url 'logout' %}">注销</a> <span class="divider">/</span></li>
+
   </ul>
 
 {% endif %}

@@ -1,6 +1,7 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
 {% block title %}{{ operate }}{{ verbose_name }}{{ title }}{% endblock %}
+{% block h3title %}{{ operate }}{{ verbose_name }}{{ title }}{% endblock %}
 
 {% block head %}
     <style>
@@ -30,28 +31,22 @@
 
 {% endblock %}
 
-{% block content %}
+{% block side-content %}
 
-    <h2>{{ operate }}{{ verbose_name }}{{ title }}</h2>
-    <p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a></p>
-{#<div class="hero-unit">#}
 
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <table class="table table-bordered">
+            {{ form.as_table }}
+            <tr>
+                <th></th>
+                <td>
+                    <a class="btn" onclick="location.href=document.referrer;">返回</a>&nbsp;
+                    <input class="btn btn-primary" type="submit" value="提交"/>
+                </td>
+            </tr>
+        </table>
+        </form>
 
-<table class="table table-bordered">
-    {{ form.as_table }}
-    <tr>
-        <th></th>
-        <td>
-            <a class="btn" onclick="location.href=document.referrer;">返回</a>&nbsp;
-            <input class="btn btn-primary" type="submit" value="提交"/>
-        </td>
-    </tr>
-</table>
-
-</form>
-
-{#</div>#}
 {% endblock %}
 
 {% block foot %}

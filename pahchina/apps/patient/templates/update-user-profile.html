@@ -1,9 +1,10 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 {% load bootstrap_tags %}
 
-{% block title %}个人主页{% endblock %}
+{% block title %}修改{% endblock %}
+{% block h3title %}修改{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
 
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}

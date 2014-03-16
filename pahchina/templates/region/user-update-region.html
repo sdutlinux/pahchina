@@ -1,11 +1,11 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 {% load bootstrap_tags %}
 
 {% block title %}{{ title }}{% endblock %}
+{% block h3title %}{{ title }}{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
-<h2>{{ title }}</h2>
 <p class="lead">系统根据居住信息分配用户所在分站</p>
 
 <form action="" method="post" id="city" class="form-inline">{% csrf_token %}

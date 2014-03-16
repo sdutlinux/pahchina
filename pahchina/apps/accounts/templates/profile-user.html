@@ -1,12 +1,19 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
 {% block title %}个人主页{% endblock %}
+{% block h3title %}个人主页{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
-    <h3>我的个人页面</h3>
     <p><a href="{% url 'update-profile' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
     <table class="table table-bordered">
+    {% if user.is_doctor %}
+        {% include 'includes/doctor-info-as-table.html' %}
+    {% elif user.is_patient %}
+        {% include 'includes/patient-info-as-table.html' %}
+    {% elif user.is_hospital %}
+        {% include 'includes/hospital-info-as-table.html' %}
+    {% endif %}
     {% include 'includes/user-info-as-table.html' %}
 
     </table>

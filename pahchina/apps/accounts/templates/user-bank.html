@@ -1,8 +1,9 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
 {% block title %}银行信息页{% endblock %}
+{% block h3title %}银行信息页{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
     <h3>银行信息页面</h3>
     <p><a href="{% url 'update-info' 'bank' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
