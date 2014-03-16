@@ -10,6 +10,7 @@ from mptt.models import MPTTModel
 
 from ..accounts.models import User
 from ..utils.models import TimeStampedModel
+from ..website.models import Website
 
 class Region(MPTTModel):
     """ 用于标注省市县三级联动
@@ -18,8 +19,12 @@ class Region(MPTTModel):
     name = models.CharField(verbose_name='名称', max_length=30)
     parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
 
+    website = models.ForeignKey(Website, verbose_name='所属网站', blank=True, null=True)
+
     def __unicode__(self):
         return self.name
+
+    #def website_count(self):
 
     class Meta:
         verbose_name='地区'

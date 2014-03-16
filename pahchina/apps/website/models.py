@@ -9,6 +9,8 @@ from django.core.validators import RegexValidator
 
 from ..utils import TimeStampedModel
 from ..accounts.models import User
+#from ..region.models import LivingRegion
+
 
 class Website(TimeStampedModel):
     """ 站点必要信息
@@ -27,7 +29,7 @@ class Website(TimeStampedModel):
 
     admin = models.OneToOneField(User, verbose_name='站点管理员',
                                  #choices=[(u.id,u.username) for u in User.objects.filter(is_staff=True)],
-                                 help_text='只有管理员用户可选<a href="/accounts/user/list">添加管理员</a>')
+                                 help_text='只有管理员用户可选<a href="/accounts/list/user">添加管理员</a>')
 
     address = models.CharField(verbose_name='地址', max_length=200)
     description = models.TextField(verbose_name='网站简介', max_length=300,
@@ -43,7 +45,6 @@ class Website(TimeStampedModel):
 
     class Meta:
         verbose_name = '站点'
-
 
     def __unicode__(self):
         return "%s(%s)"%(self.name,self.domain)
@@ -71,6 +72,15 @@ class Website(TimeStampedModel):
         """ 返回联系电话
         """
         return self.telephone or self.admin.telephone
+
+    #def get_users(self):
+    #    """站点获取属于当前站点的用户
+    #    通过用户的户籍地或者居住地获取
+    #    暂时使用居住地
+    #    """
+    #    region_list = self.region_set.all()
+    #    user_list =
+
 
 #def get_current_site(request):
 #    """

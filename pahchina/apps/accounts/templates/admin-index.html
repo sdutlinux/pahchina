@@ -7,7 +7,36 @@
 {% block content %}
 
     <div class="hero-unit">
-        <h3>这里是网站后台，请谨慎操作！</h3>
-    </div>
+        <p><strong>{{ SITE.name }}</strong> 后台首页</p>
+        <hr/>
+        <div>
+            <ul>
+                <li>请谨慎操作</li>
+                <li>请维护用户的隐私数据</li>
+                <li>记录必要的操作记录</li>
+                <li>未知操作请询问技术支持！</li>
+            </ul>
+        </div>
 
+        <div class="clearfix">
+            <br/><hr/>
+        </div>
+        <div class="progress progress-info progress-striped active">
+            <div class="bar" style="width: 20%"></div>
+        </div>
+        <div class="progress progress-success progress-striped active">
+            <div class="bar" style="width: 40%"></div>
+        </div>
+        <div class="progress progress-warning progress-striped active">
+            <div class="bar" style="width: 60%"></div>
+        </div>
+        <div class="progress progress-danger progress-striped active">
+            <div class="bar" style="width: 80%"></div>
+        </div>
+
+    </div>
+        <div class="clearfix"><hr/></div>
+        <p>技术支持：
+            <a href="mailto:zhwei@gotit.asia"><i class="icon-envelope"></i>张卫</a>&nbsp;
+            <a href="mailto:tanglnan1994@gmail.com"><i class="icon-envelope"></i>汤奇峰</a></p>
 {% endblock %}

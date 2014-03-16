@@ -6,7 +6,7 @@
 
 {% block content %}
     <h2>站点详情页面</h2>
-    <p><a href="{% url 'admin-list-sites' %}" class="btn"><i class="icon-arrow-left"></i></a></p>
+{#    <p><a href="{% url 'admin-list-sites' %}" class="btn"><i class="icon-arrow-left"></i></a></p>#}
     <div class="form-actions">
         <a href="http://{{ site.domain }}" target="_blank" class="btn">查看站点</a>
         {% if user.is_superuser %}
