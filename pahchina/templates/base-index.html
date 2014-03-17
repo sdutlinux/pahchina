@@ -49,6 +49,7 @@
                   <input name="password" type="password" class="input-mini" placeholder="密码">
                   <button type="submit" class="btn btn-success btn-mini">登录</button>
                   <a href="{% url 'register' %}" class="btn btn-mini">注册</a>
+                  <a href="{% url 'create-donate' %}" class="btn btn-mini btn-info">捐赠</a>
                 </form>
             {% endif %}
             </div>
@@ -83,7 +84,7 @@
     <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+{#    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>#}
     {% block foot %}
     {% endblock %}
 

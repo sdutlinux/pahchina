@@ -12,6 +12,7 @@
         <div class="span3">
             <div class="well sidebar-nav">
                 <ul class="nav nav-list">
+                {% if user.is_authenticated %}
                     <li><a href="{{ user.get_show_url }}">个人展示</a></li>
                     <li class="nav-header">个人信息</li>
                     <li><a href="{% url 'profile' %}">账户信息</a></li>
@@ -47,10 +48,15 @@
                     <li><a href="{% url 'list-donate' %}">我的捐赠</a></li>
                     <li class="nav-header">账户相关</li>
                     <li><a href="{% url 'update-password' %}">修改密码</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                    <li><a href="{% url 'register' %}">注册</a></li>
+                {% endif %}
                 </ul>
             </div>
             <!--/.well -->
         </div>
+
         <!--/span-->
         <div class="span8">
             {% block side-content %}
