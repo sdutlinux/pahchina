@@ -98,9 +98,8 @@
                         <li class="nav-header">活动管理</li>
                         <li><a href="{% url 'admin-list-activity' %}"><i class="icon-calendar"></i>活动管理</a></li>
                         <li class="nav-header">新闻管理</li>
-                        <li><a href="{% url 'admin-list' 'news' %}"><i class="icon-bullhorn"></i>新闻管理</a></li>
-{#                        <li><a href="#">分类管理</a></li>#}
-                        <li><a href="{% url 'admin-list' 'sorts' %}">分类管理</a></li>
+                        <li><a href="{% url 'admin-list-news'%}">新闻管理</a></li>
+                        <li><a href="{% url 'admin-list-sorts' %}">分类管理</a></li>
                         <li class="nav-header">捐赠管理</li>
                         <li><a href="{% url 'admin-list-donate' %}"><i class="icon-leaf"></i>捐赠管理</a></li>
                         <li><a href="{% url 'admin-list-itemized' %}"><i class="icon-folder-open"></i>捐赠使用管理</a></li>

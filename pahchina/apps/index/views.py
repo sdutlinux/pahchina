@@ -13,13 +13,14 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm
 
 #from ..website.models import get_current_site
+from ..news.models import News
 
 
 class Index(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
-        context['test'] = self.request.SITE
+        context['news_list'] = News.objects.all()
         return context
 
     template_name = 'index.html'

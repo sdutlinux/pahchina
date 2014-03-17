@@ -8,7 +8,7 @@ from .models import News
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ('title','content','is_draft','is_push','is_top','img','sort')
+        fields = ('title','content','published_date','is_draft','is_push','is_top','img','sort')
 
     def __init__(self, author=None, site = None, *args, **kwargs):
         super(NewsForm, self).__init__(*args, **kwargs)
