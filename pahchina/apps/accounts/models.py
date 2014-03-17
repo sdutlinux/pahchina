@@ -63,6 +63,12 @@ class User(AbstractUser):
         'is_druggist': 5,
     }
 
+    def get_avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        else:
+            return "/static/img/default_avatar.png"
+
     def count_login_time(self):
         from django.utils import timezone
         _timedelta = timezone.now() - self.last_login
