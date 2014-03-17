@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block content %}
+    <span>{{ object_news.sort }}</span>
     <h2 style="text-align: center">{{ object_news.title }}</h2>
     <p style="text-align: center">作者:{{ object_news.author }}  分类:{{ object_news.sort }}  发布时间:{{ object_news.published_date |date:"Y年m月d日" }}</p>
 
 
-    内容{{ object_news.content }}
+    <p>{{ object_news.content }}</p>
 
 {% endblock %}

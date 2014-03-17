@@ -1,6 +1,16 @@
-{% for news in news_list %}
+<table class="table border">
+    <thead>
     <tr>
-        <td><a href="{% url 'detail-news' news.id %}">{{ news.title }}</a></td>
-        <td>{{ news.published_date }}</td>
+        <th>标题</th>
+        <th>时间</th>
     </tr>
-{% endfor %}
+    </thead>
+    <tbody>
+    {% for news in news_list %}
+        <tr>
+            <td><a href="{% url 'detail-news' news.id %}">{{ news.title }}</a></td>
+            <td>{{ news.published_date }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
