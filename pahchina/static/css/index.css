@@ -68,8 +68,27 @@ body {
     border-right: 0;
     border-radius: 0 3px 3px 0;
 }
-/*#carousel-index-1 {*/
-    /*margin-left: 0;*/
-/*}*/
+.menu .accordion-heading {  position: relative; }
+.menu .accordion-heading .edit {
+    position: absolute;
+    top: 8px;
+    right: 30px;
+}
+.menu .area { border-left: 4px solid #f38787; }
+.menu .equipamento { border-left: 4px solid #65c465; }
+.menu .ponto { border-left: 4px solid #98b3fa; }
+.menu .collapse.in { overflow: visible; }
 
-.box-
+
+.box {
+    margin-bottom: 20px;
+}
+
+.box-title {
+    background: #dddddd;
+}
+.box-title h3{
+    font-size: 14px;
+    color: grey;
+    margin: 0 0 0 26px;
+}

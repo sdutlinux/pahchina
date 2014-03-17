@@ -6,12 +6,9 @@
     <div class="container">
         <div class="span8 carousel slide" id="carousel-index-1">
 				<ol class="carousel-indicators">
-					<li data-slide-to="0" data-target="#carousel-index-1"  class="active">
-					</li>
-					<li data-slide-to="1" data-target="#carousel-index-1">
-					</li>
-					<li data-slide-to="2" data-target="#carousel-index-1">
-					</li>
+					<li data-slide-to="0" data-target="#carousel-index-1"  class="active"></li>
+					<li data-slide-to="1" data-target="#carousel-index-1"></li>
+					<li data-slide-to="2" data-target="#carousel-index-1"></li>
 				</ol>
 				<div class="carousel-inner">
 					<div class="item">
@@ -37,13 +34,21 @@
             <a data-slide="next" href="#carousel-index-1" class="right carousel-control">›</a>
 			</div>
         {#轮播图#}
-        <div class="span5 thumbnail">
-            <h3 class="box-title">最新通知</h3>
-            <div class="caption">
-                <p>zhe shi con tent </p>
-                <p>zhe shi con tent </p>
-                <p>zhe shi con tent </p>
-                <p>zhe shi con tent </p>
+        <div class="span5 accordion-group box">
+            <div class="accordion-heading area box-title">
+                <h3>最新通知</h3>
+            </div>
+            <div class="accordion-inner">
+                {{ SITE.description }}
+            </div>
+        </div>
+
+        <div class="span5 accordion-group box">
+            <div class="accordion-heading area box-title">
+                <h3>站点描述</h3>
+            </div>
+            <div class="accordion-inner">
+                {{ SITE.description }}
             </div>
         </div>
     </div>
