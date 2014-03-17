@@ -3,7 +3,7 @@
     "model": "website.Website",
     "pk":1,
     "fields": {
-        "name": "PAH肺动脉高压联盟",
+        "name": "中国PAH关爱联盟",
         "domain": "example.com",
         "logo": "/static/img/logo.png",
         "admin": "1",

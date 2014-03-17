@@ -1,14 +1,14 @@
   <ul class="breadcrumb">
   {% if user.is_authenticated %}
       <li><a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a><span class="divider">/</span></li>
-      <li><a href="{% url 'profile' %}">账户信息</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
+      <li><a href="{% url 'profile' %}"><i class="icon-cog"></i>账户信息</a> <span class="divider">/</span></li>
+      <li><a href="{% url 'create-donate' %}"><i class="icon-thumbs-up"></i>捐赠</a> <span class="divider">/</span></li>
       {% if user.is_staff %}
-          <li><a href="{% url 'admin-index' %}">网站后台</a> <span class="divider">/</span></li>
+          <li><a href="{% url 'admin-index' %}"><i class="icon-wrench"></i>网站后台</a> <span class="divider">/</span></li>
       {% endif %}
-      <li><a href="{% url 'logout' %}">注销</a> <span class="divider">/</span></li>
+      <li><a href="{% url 'logout' %}"><i class="icon-off"></i>注销</a> <span class="divider">/</span></li>
   {% else %}
-      <li><a href="{% url 'login' %}">登录</a> <span class="divider">/</span></li>
-      <li><a href="{% url 'register' %}">注册</a> <span class="divider">/</span></li>
+      <li><a href="{% url 'login' %}"><i class="icon-asterisk"></i>登录</a><span class="divider">/</span></li>
+      <li><a href="{% url 'register' %}"><i class="icon-plus"></i>注册</a> <span class="divider">/</span></li>
   {% endif %}
   </ul>
