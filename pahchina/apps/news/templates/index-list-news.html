@@ -1,0 +1,6 @@
+{% for news in news_list %}
+    <tr>
+        <td><a href="{% url 'detail-news' news.id %}">{{ news.title }}</a></td>
+        <td>{{ news.published_date }}</td>
+    </tr>
+{% endfor %}

@@ -14,6 +14,13 @@ class ListNews(SuperRequiredMixin, generic.ListView):
     template_name = 'list-news-admin.html'
 
 
+class DetailNewsUser(generic.DetailView):
+
+    model = News
+    context_object_name = 'object_news'
+    template_name = 'detail-news.html'
+
+
 class DetailNews(SuperRequiredMixin, generic.DetailView):
 
     model = News

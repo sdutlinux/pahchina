@@ -27,6 +27,7 @@ class News(TimeStampedModel):
     title = models.CharField(max_length=50, verbose_name='标题', unique=True)
     content = models.TextField(verbose_name='内容')
     author = models.ForeignKey(User, verbose_name='作者')
+    published_date = models.DateField(verbose_name='发布时间', help_text='用于显示新闻的发布时间。')
     site = models.ManyToManyField(Website, verbose_name='所属站点')
     is_draft = models.BooleanField(verbose_name='草稿', default=False)
     is_push = models.BooleanField(verbose_name='推送', default=False)
