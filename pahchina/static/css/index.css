@@ -68,8 +68,8 @@ body {
     border-right: 0;
     border-radius: 0 3px 3px 0;
 }
+/*#carousel-index-1 {*/
+    /*margin-left: 0;*/
+/*}*/
 
-
-.navbar-xs { min-height:22px; border-radius:0}
-.navbar-xs .navbar-brand{ padding: 2px 8px;font-size: 14px;line-height: 14px; }
-.navbar-xs .navbar-nav > li > a { border-right:1px solid #ddd; padding-top: 2px; padding-bottom: 2px; line-height: 16px }
+.box-

@@ -25,25 +25,28 @@
   <body>
     <div class="container">
       <div class="masthead">
-        <div class="muted">
+        <div>
             <a href="/"><img src="{{ SITE.logo.url }}" class="pull-left" alt="站点LOGO"/></a>
-            <div class="span3 pull-right">
+            <div class="span4 pull-right">
             {% if user.is_authenticated %}
-                <div class="text-left">
-                    <a href="{{ user.get_show_url }}"><img src="{{ user.get_avatar_url }}" alt="用户头像"
+                <div class="media text-left">
+                    <a href="{{ user.get_show_url }}"><img src="{{ user.get_avatar_url }}" alt="用户头像" class="media-object img-rounded"
                          style="float: left;max-width: 60px; max-height: 60px;"/></a>
-                    <span>&nbsp;<a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a></span><br/>
-                    <span>&nbsp;<a href="{% url 'profile' %}"><i class="icon-cog"></i>&nbsp;我的信息</a></span>
-                    {% if user.is_staff %}
-                    <span>&nbsp;<a href="{% url 'admin-index' %}"><i class="icon-wrench"></i>&nbsp;网站后台</a></span>
-                    {% endif %}<br/>
-                    <span>&nbsp;<a href="{% url 'create-donate' %}"><i class="icon-thumbs-up"></i>&nbsp;捐赠</a></span>
-                    <span>&nbsp;<a href="{% url 'logout' %}"><i class="icon-off"></i>&nbsp;注销</a></span>
+                    <div class="media-body">
+                        <span>&nbsp;<a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a></span><br/>
+                        <span>&nbsp;<a href="{% url 'profile' %}"><i class="icon-cog"></i>&nbsp;我的信息</a></span>
+                        {% if user.is_staff %}
+                        <span>&nbsp;<a href="{% url 'admin-index' %}"><i class="icon-wrench"></i>&nbsp;网站后台</a></span>
+                        {% endif %}<br/>
+                        <span>&nbsp;<a href="{% url 'create-donate' %}"><i class="icon-thumbs-up"></i>&nbsp;捐赠</a></span>
+                        <span>&nbsp;<a href="{% url 'logout' %}"><i class="icon-off"></i>&nbsp;注销</a></span>
+                    </div>
                 </div>
             {% else %}
                 <form class="form-inline" action="{% url 'login' %}" method="POST">{% csrf_token %}
+                    <br/>
                   <input name="username" type="text" class="input-mini" placeholder="用户名">
-                  <input name="password" type="password" class="input-mini" placeholder="密码"><br/>
+                  <input name="password" type="password" class="input-mini" placeholder="密码">
                   <button type="submit" class="btn btn-success btn-mini">登录</button>
                   <a href="{% url 'register' %}" class="btn btn-mini">注册</a>
                 </form>
@@ -78,6 +81,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% block foot %}
