@@ -1,16 +1,11 @@
-<table class="table border">
-    <thead>
-    <tr>
-        <th>标题</th>
-        <th>时间</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for news in news_list %}
-        <tr>
-            <td><a href="{% url 'detail-news' news.id %}">{{ news.title }}</a></td>
-            <td>{{ news.published_date }}</td>
-        </tr>
+<ul class="unstyled">
+     {% for news in news_list %}
+        <li>
+            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+            <span style="float:right;">
+            {{ news.published_date | date:"Y-m-d" }}
+            </span>
+        </li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>
+
