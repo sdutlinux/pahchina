@@ -88,12 +88,13 @@
 
     {% endblock %}
 
-      <hr>
-      <div class="footer">
-        <p>PAH &copy; 2013</p>
-      </div>
-
     </div> <!-- /container -->
+
+    <footer class="footer">
+        <div class="container">
+        <p>中国PAH关爱联盟 &copy; 2014</p>
+        </div>
+    </footer>
 
     <!-- Le javascript
     ================================================== -->
@@ -101,16 +102,13 @@
     <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
-{#    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>#}
     {% block foot %}
     {% endblock %}
     {% if not user.is_authenticated %}
-        {# 顶部登录窗口，登录后自动跳转到当前页面#}
         <script>
             var next = "?next=" + location.href.split('/').slice(3).join('/');
             document.getElementById('nav-login').action += next;
         </script>
     {% endif %}
-
   </body>
 </html>
