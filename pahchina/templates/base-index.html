@@ -36,14 +36,14 @@
                         <span>&nbsp;<a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a></span><br/>
                         <span>&nbsp;<a href="{% url 'profile' %}"><i class="icon-cog"></i>&nbsp;我的信息</a></span>
                         {% if user.is_staff %}
-                        <span>&nbsp;<a href="{% url 'admin-index' %}"><i class="icon-wrench"></i>&nbsp;网站后台</a></span>
+                        <span>&nbsp;<a href="{% url 'admin-index' %}" target="_blank"><i class="icon-wrench"></i>&nbsp;网站后台</a></span>
                         {% endif %}<br/>
                         <span>&nbsp;<a href="{% url 'create-donate' %}"><i class="icon-thumbs-up"></i>&nbsp;捐赠</a></span>
                         <span>&nbsp;<a href="{% url 'logout' %}"><i class="icon-off"></i>&nbsp;注销</a></span>
                     </div>
                 </div>
             {% else %}
-                <form class="form-inline" action="{% url 'login' %}" method="POST">{% csrf_token %}
+                <form class="form-inline" action="{% url 'login' %}" method="POST" id="nav-login">{% csrf_token %}
                     <br/>
                   <input name="username" type="text" class="input-mini" placeholder="用户名">
                   <input name="password" type="password" class="input-mini" placeholder="密码">
@@ -59,7 +59,24 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
-                {% include 'includes/navbar.html' %}
+                <ul class="nav">
+                    <li><a href="{% url 'index' %}">首页</a></li>
+                    {% for sort in sort_list %}
+                    <li {% if sort.get_children %}class='dropdown'{% endif %} >
+                        <a {% if sort.get_children %}
+                            class="dropdown-toggle" data-toggle="dropdown" href="#"
+                        {% else %}href="#"{% endif %}>{{ sort.name }}</a>
+                        {% if sort.get_children %}
+                            <ul class="dropdown-menu">
+                                {% for child in sort.get_children %}
+                                    <li><a href="#">{{ child.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    <li><a href="http://pahchina.org/">社区</a></li>
+                </ul>
             </div>
           </div>
         </div><!-- /.navbar -->
@@ -87,6 +104,13 @@
 {#    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>#}
     {% block foot %}
     {% endblock %}
+    {% if not user.is_authenticated %}
+        {# 顶部登录窗口，登录后自动跳转到当前页面#}
+        <script>
+            var next = "?next=" + location.href.split('/').slice(3).join('/');
+            document.getElementById('nav-login').action += next;
+        </script>
+    {% endif %}
 
   </body>
 </html>

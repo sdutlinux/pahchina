@@ -157,6 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "pahchina.apps.website.context_processors.site",
+    "pahchina.apps.index.context_processors.index",
 )
 
 #TEMPLATE_CONTEXT_PROCESSORS +=

@@ -58,7 +58,7 @@
                 <h3>热点公告</h3>
             </div>
             <div class="accordion-inner">
-                <p class="text-error">明天放假！！！！！</p>
+                {{ SITE.notice }}
             </div>
         </div>
         <div class="clearfix"></div>
@@ -106,60 +106,42 @@
                 <h3>新闻动态</h3>
             </div>
             <div class="accordion-inner">
-{#                <ul class="unstyled">#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                    <li>跟踪国内外PAH肺动 ...</li>#}
-{#                </ul>#}
-                {% include 'index-list-news.html' %}
+                <ul class="unstyled">
+                     {% for news in news_list %}
+                        <li>
+                            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+                            <span style="float:right;">
+                            {{ news.published_date | date:"Y-m-d" }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div> <!--span accordion-group box -->
         <div class="clearfix"></div>
-        <div class="span5 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>认识PAH</h3>
-            </div>
-            <div class="accordion-inner">
-                <ul class="unstyled">
-                    <li>跟踪国内外PAH肺动 ...</li>
-                    <li>跟踪国内外PAH肺动 ...</li>
-                </ul>
-            </div>
-        </div> <!--span accordion-group box -->
-        <div class="span4 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>视频</h3>
-            </div>
-            <div class="accordion-inner">
-                <ul class="unstyled">
-                    <li>跟踪国内外PAH肺动 ...</li>
-                    <li>跟踪国内外PAH肺动 ...</li>
-                </ul>
-            </div>
-        </div> <!--span accordion-group box -->
-        <div class="span4 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>图片</h3>
-            </div>
-            <div class="accordion-inner">
-                <ul class="unstyled">
-                    <li>跟踪国内外PAH肺动 ...</li>
-                    <li>跟踪国内外PAH肺动 ...</li>
-                </ul>
-            </div>
-        </div> <!--span accordion-group box -->
+        {% for sort in sort_is_index %}
+            <div class="{% cycle 'span5' 'span4' 'span4' as rowcolors %} accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>{{ sort.name }}</h3>
+                </div>
+                <div class="accordion-inner">
+                    <ul class="unstyled">
+                        {% for news in sort.news_set.all %}
+                        <li>
+                            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+                            <span style="float:right;">
+                            {{ news.published_date | date:"Y-m-d" }}
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div> <!--span accordion-group box -->
+            {% if forloop.counter|divisibleby:"3" %}
+            <div class="clearfix"></div>
+            {% endif %} 
+        {% endfor %}
+
     </div><!-- container -->
 
 {% endblock %}

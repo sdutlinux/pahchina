@@ -20,6 +20,10 @@ PROJECT_NAME_IN_SUPERVISOR = 'pahchina'
 DEPLOY_BARNCH = 'zhwei'
 
 
+def restart_project(project_name):
+    sudo('supervisorctl restart %s' % project_name)
+    print(green('Restart Supervisor project [%s] Successfully !!') % project_name)
+
 @roles('py-ubuntu')
 def deploy(branch=DEPLOY_BARNCH):
     """远程部署
@@ -33,9 +37,16 @@ def deploy(branch=DEPLOY_BARNCH):
             run('git status')
             abort(red('Aborting at pull from origin'))
         print(green('Pull from branch %s successfully') % branch)
-        sudo('supervisorctl restart %s' % PROJECT_NAME_IN_SUPERVISOR)
-        print(green('Deploy Successfully !!'))
+        restart_project(PROJECT_NAME_IN_SUPERVISOR)
 
+@roles('py-ubuntu')
+def re_db():
+    with cd(PROJECT_HOME):
+        if confirm(red("Are you sure to recreate your database ? this can not be undo !!")):
+            abort('Do Nothing ... ')
+        run('rm pahchina/db/mysite.db')
+        run('python manage.py syncdb')
+        restart_project(PROJECT_NAME_IN_SUPERVISOR)
 
 def put_sshkey():
     """push ssh key to server

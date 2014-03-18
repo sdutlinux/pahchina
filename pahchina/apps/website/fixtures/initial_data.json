@@ -4,10 +4,11 @@
     "pk":1,
     "fields": {
         "name": "中国PAH关爱联盟",
-        "domain": "example.com",
+        "domain": "pah.zhangweide.cn",
         "logo": "/static/img/logo.png",
         "admin": "1",
-        "description": "总站",
+        "description": "这里是中国PAH关爱联盟",
+        "notice": "中国PAH关爱联盟正式开放，欢迎大家使用！",
         "created_date":"2014-02-25T07:32:08.912Z",
         "updated_date":"2014-02-25T07:32:08.912Z"
     }
