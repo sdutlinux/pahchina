@@ -39,7 +39,7 @@
                 <h3>最新通知</h3>
             </div>
             <div class="accordion-inner">
-                {{ SITE.description }}
+                {{ SITE.description|safe }}
             </div>
         </div>
 
@@ -58,7 +58,7 @@
                 <h3>热点公告</h3>
             </div>
             <div class="accordion-inner">
-                {{ SITE.notice }}
+                {{ SITE.notice|safe }}
             </div>
         </div>
         <div class="clearfix"></div>

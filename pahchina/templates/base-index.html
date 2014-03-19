@@ -106,8 +106,10 @@
     {% endblock %}
     {% if not user.is_authenticated %}
         <script>
-            var next = "?next=" + location.href.split('/').slice(3).join('/');
-            document.getElementById('nav-login').action += next;
+            var pwd = location.href.split('/').slice(3).join('/');
+            if (pwd != 'accounts/login/'){
+                document.getElementById('nav-login').action += "?next=/" + pwd;
+            }
         </script>
     {% endif %}
   </body>

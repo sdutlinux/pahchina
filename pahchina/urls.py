@@ -20,11 +20,9 @@ urlpatterns = patterns('',
     url(r'^$', views.Index.as_view(), name='index'),
     url(r'^about/$', views.About.as_view(), name='about'),
 
-    # url(r'^pahchina/', include('pahchina.foo.urls')),
-    # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    # Uncomment the next line to enable the admin:
+    # apps
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^tinymce/', include('tinymce.urls')),
 
     # include accounts
     url(r'^accounts/', include('pahchina.apps.accounts.urls')),

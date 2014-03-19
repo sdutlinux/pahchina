@@ -36,8 +36,6 @@
     <hr/>
 <p><a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a></p>
 
-{#<div class="hero-unit">#}
-
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 
 <table class="table table-bordered">
@@ -47,9 +45,21 @@
     <input class="btn btn-primary" type="submit" value="提交"/>
 </form>
 
-{#</div>#}
 {% endblock %}
 
 {% block foot %}
+    {% if form.media %}
     {{ form.media }}
+    <script>
+    tinyMCE.init({
+        mode: "textareas",
+        theme: "advanced",
+        plugins: "directionality,paste,searchreplace",
+        language: "{{ language }}",
+        directionality: "{{ directionality }}",
+        spellchecker_languages : "{{ spellchecker_languages }}",
+        spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
+    });
+    </script>
+    {% endif %}
 {% endblock %}

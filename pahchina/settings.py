@@ -177,6 +177,7 @@ INSTALLED_APPS = (
     'django_forms_bootstrap',
     'mptt',
     'pagination',
+    'tinymce',
     #'datetimewidget',
 
     ## apps
@@ -223,6 +224,17 @@ LOGGING = {
         },
     }
 }
+
+# tinymce settings
+#TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
+#TINYMCE_DEFAULT_CONFIG = {
+#    'plugins': "table,spellchecker,paste,searchreplace",
+#    'theme': "advanced",
+#    'cleanup_on_startup': True,
+#    'custom_undo_redo_levels': 10,
+#}
+#TINYMCE_SPELLCHECKER = True
+#TINYMCE_COMPRESSOR = True
 
 try:
     from local_settings import *

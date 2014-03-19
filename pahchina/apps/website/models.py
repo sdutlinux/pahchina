@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-#from django.contrib.sites.models import Site, RequestSite
-from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
 from django.core.validators import RegexValidator
+
+from tinymce import models as tiny_models
 
 from ..utils import TimeStampedModel
 from ..accounts.models import User
@@ -39,9 +39,10 @@ class Website(TimeStampedModel):
     # 展示使用
     description = models.TextField(verbose_name='网站简介', max_length=300,
                                    help_text='联盟、地方病友会简介')
-    notice = models.TextField(verbose_name='站点公告', max_length=300,
+    #notice = models.TextField(verbose_name='站点公告', max_length=300,
+    #                          help_text='网站最新动态或活动')
+    notice = tiny_models.HTMLField(verbose_name='站点公告', max_length=300,
                               help_text='网站最新动态或活动')
-
 
 
 

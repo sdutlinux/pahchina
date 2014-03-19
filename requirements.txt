@@ -3,3 +3,4 @@ Django==1.5.1
 django-forms-bootstrap
 django-mptt
 django-pagination
+django-tinymce
