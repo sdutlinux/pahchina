@@ -5,16 +5,28 @@
 {% endblock %}
 
 {% block content %}
-<div class="hero-unit">
-<form action="" method="post">{% csrf_token %}
-    {{ form|as_bootstrap }}
-    <div class="form-actions">
-    <a class="btn" onclick="location.href=document.referrer;">返回</a>
-    <input class="btn btn-inverse" type="submit" value="提交"/>
-    </div>
-</form>
+    <form action="" method="post">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        <div class="form-actions">
+        <a class="btn" onclick="location.href=document.referrer;">返回</a>
+        <input class="btn btn-inverse" type="submit" value="提交"/>
+        </div>
+    </form>
+{% endblock %}
 
-</div>
-
-
+{% block foot %}
+    {% if form.media %}
+    {{ form.media }}
+    <script>
+    tinyMCE.init({
+        mode: "textareas",
+        theme: "advanced",
+        plugins: "directionality,paste,searchreplace",
+        language: "{{ language }}",
+        directionality: "{{ directionality }}",
+        spellchecker_languages : "{{ spellchecker_languages }}",
+        spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
+    });
+    </script>
+    {% endif %}
 {% endblock %}

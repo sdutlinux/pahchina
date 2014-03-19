@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+
+from tinymce import models as tiny_models
+
 from ...apps.utils.models import TimeStampedModel
 from ...apps.accounts.models import User
 from ...apps.website.models import Website
@@ -32,7 +35,7 @@ class Sorts(MPTTModel):
 class News(TimeStampedModel):
 
     title = models.CharField(max_length=50, verbose_name='标题', unique=True)
-    content = models.TextField(verbose_name='内容')
+    content = tiny_models.HTMLField(verbose_name='内容')
 
     author = models.ForeignKey(User, verbose_name='作者')
 
