@@ -52,3 +52,9 @@ class ItemizedForm(forms.ModelForm):
         residue = temp[0].residue - self.cast
         if residue < 0 :
             raise forms.ValidationError('填写错误，余额将小于零！')
+
+# class ItemizedUpdateForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Itemized
+#         exclude = ('number')
