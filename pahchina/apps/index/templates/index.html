@@ -67,6 +67,12 @@
             <p style="text-align: center;">广告位 1</p>
         </div>
 {#        轮播图下方#}
+        <div class="clearfix"></div>
+        <div>
+            <ul class="breadcrumb">
+              <li><strong>热点信息</strong><span class="divider">/</span></li>
+            </ul>
+        </div>
         <div class="span9 pull-left">
             <ul class="thumbnails">
                 <li class="span3">
@@ -126,6 +132,9 @@
             <p style="text-align: center;">广告位 2</p>
         </div>
         <div class="clearfix"></div>
+        <ul class="breadcrumb">
+          <li><strong>分类新闻</strong><span class="divider">/</span></li>
+        </ul>
         {% for sort in sort_is_index %}
             <div class="{% cycle 'span5' 'span4' 'span4' as rowcolors %} accordion-group box">
                 <div class="accordion-heading area box-title">
