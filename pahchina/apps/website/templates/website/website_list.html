@@ -22,7 +22,7 @@
         <td>
             <a href="{% url 'admin-update' 'website' site.id %}">{{ site.name }}</a>
         </td>
-        <td>{{ site.domain }}</td>
+        <td><a href="{{ site.link }}">{{ site.domain }}</a></td>
         <td>{{ site.get_level }}</td>
         <td>
         <a href="{% url 'admin-update' 'website' site.id %}" class="btn btn-mini"><i class="icon-edit"></i>详细</a>

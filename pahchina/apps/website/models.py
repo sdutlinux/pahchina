@@ -53,7 +53,7 @@ class Website(TimeStampedModel):
         return "%s(%s)"%(self.name,self.domain)
 
     def link(self):
-        return "http://{}".format(self.do)
+        return "http://{}".format(self.domain)
 
     def get_level(self):
         """ 获取网站等级
