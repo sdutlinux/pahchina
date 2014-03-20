@@ -23,7 +23,7 @@ class Index(generic.TemplateView):
         context = super(Index, self).get_context_data(**kwargs)
         context['news_list'] = News.objects.all()
         context['sort_is_index'] = Sorts.objects.filter(is_index=True).order_by("-weight")
-        context['sub_sites'] = Website.objects.filter(id__gt=1)
+        context['websites'] = Website.objects.all()
         return context
 
     template_name = 'index.html'

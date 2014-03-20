@@ -152,8 +152,10 @@
             <hr/>
             <ul class="breadcrumb">
               <li><strong>其他站点</strong><span class="divider">/</span></li>
-              {% for sub_site in sub_sites %}
-              <li><a href="{{ sub_site.link }}">{{ sub_site.name }}</a> <span class="divider">/</span></li>
+              {% for st in websites %}
+                  {% if st.id != SITE.id %}
+                  <li><a href="{{ st.link }}">{{ st.name }}</a> <span class="divider">/</span></li>
+                  {% endif %}
               {% endfor %}
             </ul>
             <ul class="breadcrumb">
