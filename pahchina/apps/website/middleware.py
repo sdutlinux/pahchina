@@ -3,6 +3,7 @@
 
 __author__ = 'zhwei'
 
+import logging
 
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
@@ -14,7 +15,7 @@ class SubSiteMiddleWare:
     """
     def process_request(self, request):
         host = request.META["HTTP_HOST"].split(":")[0]
-        print host
+        logging.info(host)
         try:
             request.SITE = Site.objects.get(domain=host)
         except Site.DoesNotExist:
