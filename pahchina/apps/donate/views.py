@@ -16,11 +16,20 @@ class ListDonate(SuperRequiredMixin, generic.ListView):
     template_name = 'list-donate-admin.html'
 
 
+
+
 class DetailDonate(SuperRequiredMixin, generic.DetailView):
 
     model = Donate
     context_object_name = 'object_donate'
     template_name = 'detail-donate-admin.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailDonate, self).get_context_data( **kwargs)
+        donate = Donate.objects.get(id=self.kwargs['pk'])
+        context['itemized_list'] = Itemized.objects.filter(number=donate)
+        return context
+
 
 
 class CreateDonate(SuperRequiredMixin, generic.CreateView):
