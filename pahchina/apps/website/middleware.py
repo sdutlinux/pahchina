@@ -15,7 +15,6 @@ class SubSiteMiddleWare:
     """
     def process_request(self, request):
         host = request.META["HTTP_HOST"].split(":")[0]
-        logging.error(host)
         try:
             request.SITE = Site.objects.get(domain=host)
         except Site.DoesNotExist:

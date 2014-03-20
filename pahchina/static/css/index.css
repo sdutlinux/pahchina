@@ -79,6 +79,13 @@ body {
 .menu .collapse.in { overflow: visible; }
 
 
+#site-logo {
+    max-height: 70px;
+    max-width: 248px;
+    margin-bottom: 10px;
+}
+
+
 .box {
     margin-bottom: 20px;
 }
