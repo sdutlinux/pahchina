@@ -30,7 +30,11 @@
         </tr>
         <tr>
             <th>网站简介</th>
-            <td>{{ site.description }}</td>
+            <td>{{ site.description|safe }}</td>
+        </tr>
+        <tr>
+            <th>网站公告</th>
+            <td>{{ site.notice|safe }}</td>
         </tr>
         <tr>
             <th>联系人</th>

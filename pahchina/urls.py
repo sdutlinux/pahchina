@@ -18,6 +18,7 @@ from .apps.index import views
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', views.Index.as_view(), name='index'),
+    url(r'^i/', include('pahchina.apps.index.urls')),
     url(r'^about/$', views.About.as_view(), name='about'),
 
     # apps

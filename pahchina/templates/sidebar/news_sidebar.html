@@ -1,0 +1,15 @@
+<div class="well sidebar-nav">
+    <h5 class="offset1"><i class="icon-tags"></i>相关链接</h5>
+    <hr/>
+    <ul class="nav nav-list">
+        <li class="nav-header">信息分类</li>
+        {% for sort in sort_list %}
+        <li><a href="{% url 'index-sorts-news' sort.id %}"><i class="icon-tag"></i>{{ sort.name }}</a></li>
+        {% endfor %}
+        <hr/>
+        <li class="nav-header">最新信息</li>
+        {% for news in news_list %}
+            <li><a href="{% url 'detail-news' news.id %}"><i class="icon-fire"></i>{{ news.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div><!--/.well -->

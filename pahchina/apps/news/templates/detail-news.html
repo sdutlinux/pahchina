@@ -8,8 +8,10 @@
 
 <ul class="breadcrumb">
   <li><a href="/">首页</a> <span class="divider">/</li>
-  <li><a href="#">新闻</a> <span class="divider">/</li>
-  <li class="active">{{ object_news.sort }}</li>
+  <li><a href="/">新闻</a> <span class="divider">/</li>
+  <li><a href="{% url 'index-sorts-news' object_news.sort.id %}">{{ object_news.sort }}</a>
+      <span class="divider">/</li>
+  <li class="active">{{ object_news.title }}</li>
 </ul>
 
 <div class="row-fluid">
@@ -28,25 +30,7 @@
     </div><!--#news-->
 
     <div class="span3  offset1">
-        <div class="well sidebar-nav">
-            <h5 class="offset1"><i class="icon-tags"></i>相关链接</h5>
-            <hr/>
-            <ul class="nav nav-list">
-                <li class="nav-header">信息分类</li>
-                {% for sort in sort_list %}
-                <li><a href="#"><i class="icon-tag"></i>{{ sort.name }}</a></li>
-                {% endfor %}
-                <hr/>
-                <li class="nav-header">最新信息</li>
-                {% for news in news_list %}
-                    <li><a href="#"><i class="icon-fire"></i>{{ news.title }}</a></li>
-                {% endfor %}
-            </ul>
-{#            <hr/>#}
-{#            <div class="well" style="background-color: #ffffff">#}
-{#                <p>广告块</p>#}
-{#            </div>#}
-        </div><!--/.well -->
+        {% include 'sidebar/news_sidebar.html' %}
     </div><!--.span3-->
 </div>
 

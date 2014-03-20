@@ -1,0 +1,38 @@
+{% extends 'base-index.html' %}
+
+{% block title %}{{ sort }}列表{% endblock %}
+
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="/">首页</a> <span class="divider">/</li>
+  <li><a href="#">新闻</a> <span class="divider">/</li>
+  <li class="active">{{ sort.name }}</li>
+</ul>
+
+<div class="row-fluid">
+    <div class="span8" id="news">
+        <table class="table table-hover">
+        <thead><tr><td>标题</td><td>发布日期</td></tr></thead>
+        <tbody>
+        {% for news in sort_news_list %}
+        <tr>
+            <th><a href="{% url 'detail-news' news.id %}">{{ news.title }}</a></th>
+            <td>{{ news.published_date | date:"Y-m-d" }}</td>
+        </tr>
+        {% empty %}
+            <tr><td>此分类还没有发布过文章</td><td></td></tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div><!--#news-->
+
+    <div class="span3  offset1">
+        {% include 'sidebar/news_sidebar.html' %}
+    </div><!--.span3-->
+</div>
+
+
+
+{% endblock %}
