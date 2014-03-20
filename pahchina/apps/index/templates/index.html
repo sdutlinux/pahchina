@@ -62,15 +62,18 @@
             </div>
         </div>
         <div class="clearfix"></div>
+
+        <div class="span12 well well-large" style="width: 90%;">
+            <p style="text-align: center;">广告位 1</p>
+        </div>
 {#        轮播图下方#}
         <div class="span9 pull-left">
-            <p>欢迎在此版块发表自己日常生活中的感悟，PAH给我们的生活造成许多不便，但我们从来没有放弃。</p>
             <ul class="thumbnails">
                 <li class="span3">
                     <div class="thumbnail">
                         <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
                         <div class="caption">
-                            <h3>Thumbnail label</h3>
+                            <h3>路人甲</h3>
                             <p>Cras justo odio ultricies vehicula ut id elit.</p>
                             <p><a href="#" class="btn btn-primary">阅读</a>
                                 <a href="#" class="btn">捐赠</a></p>
@@ -81,7 +84,7 @@
                     <div class="thumbnail">
                         <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
                         <div class="caption">
-                            <h3>Thumbnail label</h3>
+                            <h3>路人乙</h3>
                             <p>Cras justo odio ultricies vehicula ut id elit.</p>
                             <p><a href="#" class="btn btn-primary">阅读</a>
                                 <a href="#" class="btn">捐赠</a></p>
@@ -92,7 +95,7 @@
                     <div class="thumbnail">
                         <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
                         <div class="caption">
-                            <h3>Thumbnail label</h3>
+                            <h3>路人丙</h3>
                             <p>Cras justo odio ultricies vehicula ut id elit.</p>
                             <p><a href="#" class="btn btn-primary">阅读</a>
                                 <a href="#" class="btn">捐赠</a></p>
@@ -119,6 +122,10 @@
             </div>
         </div> <!--span accordion-group box -->
         <div class="clearfix"></div>
+        <div class="span12 well well-large" style="width: 90%;">
+            <p style="text-align: center;">广告位 2</p>
+        </div>
+        <div class="clearfix"></div>
         {% for sort in sort_is_index %}
             <div class="{% cycle 'span5' 'span4' 'span4' as rowcolors %} accordion-group box">
                 <div class="accordion-heading area box-title">
@@ -141,7 +148,20 @@
             <div class="clearfix"></div>
             {% endif %} 
         {% endfor %}
-
+        <div id="foot-content">
+            <hr/>
+            <ul class="breadcrumb">
+              <li><strong>其他站点</strong><span class="divider">/</span></li>
+              {% for sub_site in sub_sites %}
+              <li><a href="{{ sub_site.link }}">{{ sub_site.name }}</a> <span class="divider">/</span></li>
+              {% endfor %}
+            </ul>
+            <ul class="breadcrumb">
+              <li><strong>友情链接</strong><span class="divider">/</span></li>
+              <li><a href="">Library</a> <span class="divider">/</span></li>
+              <li class="active">Data</li>
+            </ul>
+        </div>
     </div><!-- container -->
 
 {% endblock %}

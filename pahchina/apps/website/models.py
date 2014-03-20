@@ -52,6 +52,9 @@ class Website(TimeStampedModel):
     def __unicode__(self):
         return "%s(%s)"%(self.name,self.domain)
 
+    def link(self):
+        return "http://{}".format(self.domain)
+
     def get_level(self):
         """ 获取网站等级
         ret: 总站、分站
