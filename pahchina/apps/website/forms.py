@@ -8,7 +8,7 @@ from django.forms.models import model_to_dict, fields_for_model
 from django.contrib.sites.models import Site
 from django.db.models import Q
 
-from .models import Website
+from .models import Website, Links
 from ..accounts.models import User
 from ..region.models import Region
 
@@ -59,3 +59,19 @@ class RegionWebsiteForm(forms.ModelForm):
     class Meta:
         model = Website
         fields = ('name',)
+
+class MyFreLinkForm(forms.ModelForm):
+    """ 友情链接Form
+    """
+    def __init__(self, user=None,*args, **kwargs):
+        super(MyFreLinkForm, self).__init__(*args, **kwargs)
+        self._user = user
+
+    def save(self, commit=True):
+        ret = super(MyFreLinkForm, self).save(commit=False)
+        ret.site = self._user.website
+        ret.save()
+
+    class Meta:
+        model = Links
+        fields = ('name', 'url')

@@ -85,6 +85,8 @@
                         <li class="nav-header">站点管理</li>
                         <li><a href="{% url 'admin-create-website' %}"><i class="icon-globe"></i>添加站点</a></li>
                         <li><a href="{% url 'admin-list' 'website' %}"><i class="icon-globe"></i>管理站点</a></li>
+                        <li><a href="{% url 'staff-list-links' %}"><i class="icon-globe"></i>本站友情链接</a></li>
+                        <li><a href="{% url 'admin-list' 'links' %}"><i class="icon-globe"></i>全部友情链接</a></li>
                         <li class="nav-header">新闻管理</li>
                         <li><a href="{% url 'admin-list-news'%}"><i class="icon-calendar"></i>新闻管理</a></li>
                         <li><a href="{% url 'admin-list' 'sorts' %}"><i class="icon-tag"></i>分类管理</a></li>
@@ -110,9 +112,9 @@
                         <li class="nav-header">站点管理</li>
                         <li><a href="{% url 'staff-detail-mysite' %}"><i class="icon-globe"></i>我的站点</a></li>
                         <li><a href="{% url 'staff-update-mysite' %}"><i class="icon-cog"></i>管理我的站点</a></li>
+                        <li><a href="{% url 'staff-list-links' %}"><i class="icon-globe"></i>本站友情链接</a></li>
                         <li><a href="{% url 'staff-list-users' %}"><i class="icon-user"></i>我的站点用户</a></li>
                         {% endif %} {# is superuser #}
-
                         <li class="nav-header">个人信息</li>
                         <li><a href="{% url 'update-password' %}"><i class="icon-qrcode"></i>修改密码</a></li>
                     </ul>

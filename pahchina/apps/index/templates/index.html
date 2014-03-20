@@ -34,38 +34,40 @@
             <a data-slide="next" href="#carousel-index-1" class="right carousel-control">›</a>
 			</div>
         {#轮播图#}
-        <div class="span5 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>最新通知</h3>
+        <div class="offset8">
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>最新通知</h3>
+                </div>
+                <div class="accordion-inner">
+                    {{ SITE.description|safe }}
+                </div>
             </div>
-            <div class="accordion-inner">
-                {{ SITE.description|safe }}
-            </div>
-        </div>
 
-        <div class="span5 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>紫蝶计划</h3>
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>紫蝶计划</h3>
+                </div>
+                <div class="accordion-inner">
+                    <p>
+                        一个旨在帮助PAH患者树立自尊、自信、自强、自立的公益计划，通过各种形式的宣传和活动组织，扩大社会对PAH疾病的认知，推动提高PAH病患人群的社会福利。
+                    </p>
+                </div>
             </div>
-            <div class="accordion-inner">
-                <p>
-                    一个旨在帮助PAH患者树立自尊、自信、自强、自立的公益计划，通过各种形式的宣传和活动组织，扩大社会对PAH疾病的认知，推动提高PAH病患人群的社会福利。
-                </p>
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>热点公告</h3>
+                </div>
+                <div class="accordion-inner">
+                    {{ SITE.notice|safe }}
+                </div>
             </div>
-        </div>
-        <div class="span5 accordion-group box">
-            <div class="accordion-heading area box-title">
-                <h3>热点公告</h3>
-            </div>
-            <div class="accordion-inner">
-                {{ SITE.notice|safe }}
-            </div>
-        </div>
+        </div><!--.offset8 side bar-->
         <div class="clearfix"></div>
 
-        <div class="span12 well well-large" style="width: 90%;">
-            <p style="text-align: center;">广告位 1</p>
-        </div>
+{#        <div class="span12 well well-large" style="width: 90%;">#}
+{#            <p style="text-align: center;">广告位 1</p>#}
+{#        </div>#}
 {#        轮播图下方#}
         <div class="clearfix"></div>
         <div>
@@ -112,24 +114,32 @@
         </div> <!-- span9 pull-right -->
         <div class="span4 accordion-group box">
             <div class="accordion-heading area box-title">
-                <h3>新闻动态</h3>
+                <h3>最新新闻</h3>
             </div>
             <div class="accordion-inner">
                 <ul class="unstyled">
                      {% for news in news_list %}
                         <li>
-                            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
-                            <span style="float:right;">
+                            [{{ news.sort }}]<a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+                            <span class="published_date">
                             {{ news.published_date | date:"Y-m-d" }}
                             </span>
                         </li>
                     {% endfor %}
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
+                    <li>[病友活动]<a href="/news/2/">测试新闻2</a><span class="published_date">2012-12-13</span></li>
                 </ul>
             </div>
         </div> <!--span accordion-group box -->
         <div class="clearfix"></div>
         <div class="span12 well well-large" style="width: 90%;">
-            <p style="text-align: center;">广告位 2</p>
+            <p style="text-align: center;">广告位</p>
         </div>
         <div class="clearfix"></div>
         <ul class="breadcrumb">
@@ -145,11 +155,14 @@
                         {% for news in sort.news_set.all %}
                         <li>
                             <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
-                            <span style="float:right;">
+                            <span class="published_date">
                             {{ news.published_date | date:"Y-m-d" }}
                             </span>
                         </li>
                         {% endfor %}
+                        <li><a href="/news/1/">测试新闻</a><span class="published_date">2012-12-12</span></li>
+                        <li><a href="/news/1/">测试新闻</a><span class="published_date">2012-12-12</span></li>
+                        <li><a href="/news/1/">测试新闻</a><span class="published_date">2012-12-12</span></li>
                     </ul>
                 </div>
             </div> <!--span accordion-group box -->
@@ -169,8 +182,10 @@
             </ul>
             <ul class="breadcrumb">
               <li><strong>友情链接</strong><span class="divider">/</span></li>
-              <li><a href="">Library</a> <span class="divider">/</span></li>
-              <li class="active">Data</li>
+              {% for link in SITE.links_set.all %}
+              <li><a href="{{ link.url }}" target="_blank">{{ link.name }}</a><span class="divider">/</span></li>
+              {% endfor %}
+
             </ul>
         </div>
     </div><!-- container -->

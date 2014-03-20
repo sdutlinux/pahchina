@@ -20,7 +20,6 @@ class Index(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
-        context['news_list'] = News.objects.filter().order_by('published_date')
         context['sort_is_index'] = Sorts.objects.filter(is_index=True).order_by("-weight")
         context['websites'] = Website.objects.all().order_by('id')
         return context

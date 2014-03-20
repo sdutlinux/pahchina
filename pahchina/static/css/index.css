@@ -89,6 +89,14 @@ body {
     margin-bottom: 20px;
 }
 
+.box li {
+    line-height: 29px;
+}
+
+.box .published_date {
+    float: right;
+}
+
 .box-title {
     background: #dddddd;
 }
@@ -104,4 +112,8 @@ body {
     margin-top: 70px;
     border-top: 1px solid #e5e5e5;
     background-color: #f5f5f5;
+}
+
+.news-sidebar {
+    float: right;
 }

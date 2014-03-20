@@ -11,7 +11,7 @@
 <h3>删除{{ verbose_name }}</h3>
     <p><strong>注意！</strong></p>
 
-    <p>你确定要删除 {{ verbose_name }}&nbsp;
+    <p>你确定要删除 {{ object.verbose_name }}&nbsp;
         <span class="badge badge-important">{{ object }}</span>&nbsp;吗?</p>
 
 <form action="" method="post">{% csrf_token %}

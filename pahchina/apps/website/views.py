@@ -16,7 +16,7 @@ from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.contrib.sites.models import Site, SiteManager
 
-from .models import Website
+from .models import Website, Links
 from ..region.models import Region
 from ..utils import SuperRequiredMixin, StaffRequiredMixin
 import forms
@@ -113,3 +113,47 @@ class WebsiteListUsers(generic.TemplateView):
         website = Website.objects.get(admin=self.request.user)
         context['user_list'] = get_my_users(website)
         return context
+
+# 友情链接相关，普通站点管理员修改分站的友情链接
+# 管理员修改主站的友情链接
+class ListMyFriLink(StaffRequiredMixin, generic.ListView):
+
+    model = Links
+
+    def get_queryset(self):
+        queryset = Links.objects.filter(site=self.request.user.website)
+        return queryset
+
+class CreateMyFriLink(StaffRequiredMixin, generic.FormView):
+
+    model = Links
+    form_class = forms.MyFreLinkForm
+    success_url = reverse_lazy('staff-list-links')
+    template_name = 'admin-update.html'
+
+    def get_context_data(self, **kwargs):
+        con = super(CreateMyFriLink, self).get_context_data(**kwargs)
+        con['title'] = "创建友情链接"
+        return con
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateMyFriLink, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(CreateMyFriLink, self).form_valid(form)
+
+class DeleteMyFreLink(StaffRequiredMixin, generic.DeleteView):
+
+    model = Links
+    success_url = reverse_lazy('staff-list-links')
+    template_name = 'confirm_delete.html'
+
+    def get_object(self, queryset=None):
+        # 判断是否是当前用户的站点
+        obj = super(DeleteMyFreLink, self).get_object()
+        if obj.website != self.request.user.website:
+            raise Http404
+        return obj

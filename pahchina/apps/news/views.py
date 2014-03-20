@@ -20,6 +20,11 @@ class DetailNewsUser(generic.DetailView):
     context_object_name = 'object_news'
     template_name = 'detail-news.html'
 
+    #def get_context_data(self, **kwargs):
+    #    context = super(DetailNewsUser, self).get_context_data()
+    #    context['news_list'] = News.objects.all().order_by('-published_date')[:6]
+    #    return context
+
 
 class DetailNews(SuperRequiredMixin, generic.DetailView):
 

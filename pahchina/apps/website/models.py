@@ -53,7 +53,7 @@ class Website(TimeStampedModel):
         return "%s(%s)"%(self.name,self.domain)
 
     def link(self):
-        return "http://{}".format(self.domain)
+        return "http://{}".format(self.do)
 
     def get_level(self):
         """ 获取网站等级
@@ -79,30 +79,19 @@ class Website(TimeStampedModel):
         """
         return self.telephone or self.admin.telephone
 
-    #def get_users(self):
-    #    """站点获取属于当前站点的用户
-    #    通过用户的户籍地或者居住地获取
-    #    暂时使用居住地
-    #    """
-    #    region_list = self.region_set.all()
-    #    user_list =
 
 
-#def get_current_site(request):
-#    """
-#    Checks if contrib.sites is installed and returns either the current
-#    ``Site`` object or a ``RequestSite`` object based on the request.
-#    """
-#    #if Site._meta.installed:
-#    domain=request.get_host().split(":")[0]
-#    print domain
-#    if domain in ('127.0.0.1', '0.0.0.0'):
-#        current_site=get_object_or_404(Site, id=1)
-#    else:
-#        current_site = get_object_or_404(Site, domain=domain)
-#    #print site
-#    #current_site = get_object_or_404(SiteProfile, site=site)
-#    #current_site = site.siteprofile
-#    #else:
-#    #    current_site = RequestSite(request)
-#    return current_site
+class Links(models.Model):
+    """ 友情链接
+    """
+    site = models.ForeignKey(Website, verbose_name='所属站点')
+
+    name = models.CharField(max_length=20,verbose_name='站点名称', help_text='最长20个字符')
+
+    url = models.URLField(verbose_name='站点网址',max_length=64)
+
+    class Meta:
+        verbose_name = "友情链接"
+
+    def __unicode__(self):
+        return "{}[{}]".format(self.name, self.url)
