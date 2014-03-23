@@ -6,16 +6,11 @@ from django import forms
 from .models import Donate, Itemized
 
 
-#class DonateForm(forms.ModelForm):
-#    class Meta:
-#        model = Donate
-#        fields =
-
 class DonateFormUser(forms.ModelForm):
 
     class Meta:
         model = Donate
-        exclude = ('number','user','istrue','true_time')
+        exclude = ('number','user','is_true','mark_true_date', 'residue')
 
     def __init__(self, user=None, *args, **kwargs):
         super(DonateFormUser, self).__init__(*args, **kwargs)
@@ -33,25 +28,30 @@ class ItemizedForm(forms.ModelForm):
 
     class Meta:
         model = Itemized
-        exclude = ('residue','number')
+        exclude = ('donate', 'created_user')
 
-    def __init__(self, donate=None, *args, **kwargs):
+    def __init__(self, donate=None, user=None, *args, **kwargs):
         super(ItemizedForm, self).__init__(*args, **kwargs)
-        self._number = donate
-
-    def save(self, commit=True):
-        if self._number:
-            itemized = super(ItemizedForm, self).save(commit=False)
-            itemized.number = self._number
-            itemized.save()
-        else:
-            super(ItemizedForm, self).save(commit=True)
+        self._donate = donate
+        self._user = user
 
     def clean_residue(self):
-        temp = Itemized.objects.filter(number=self.number).order_by('-time')
-        residue = temp[0].residue - self.cast
-        if residue < 0 :
+        if self._donate.residue - self.cast < 0:
             raise forms.ValidationError('填写错误，余额将小于零！')
+
+    def save(self, commit=True):
+        if self.instance.id:
+            # 后来修改时，同步修改donate余额
+            self._donate.residue += (self.instance.cast - self.cleaned_data['cast'])
+            super(ItemizedForm, self).save(commit=True)
+        else:
+            itemized = super(ItemizedForm, self).save(commit=False)
+            itemized.donate = self._donate
+            itemized.created_user = self._user
+            itemized.save()
+            self._donate.residue -= self.cleaned_data['cast']
+        self._donate.save()
+
 
 # class ItemizedUpdateForm(forms.ModelForm):
 #

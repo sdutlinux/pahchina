@@ -5,13 +5,13 @@
     <tr>
         <th>捐赠单号</th>
         <th>此次使用</th>
-        <th>剩余</th>
+        <th>使用日期</th>
     </tr>
     </thead>
     <tbody>
     {% for itemized in itemized_list %}
         <tr>
-            <td><a href="#{{ itemized.id }}" role="button" data-toggle="modal" title="点击查看详情">{{ itemized.number }}</a></td>
+            <td><a href="#{{ itemized.id }}" role="button" data-toggle="modal" title="点击查看详情">{{ itemized.donate.number }}</a></td>
             <div id="{{ itemized.id }}" class="modal hide fade" tabindex="-1" role="dialog"
                  aria-labelledby="{{ itemized.id }}Label" aria-hidden="true">
                 <div class="modal-header">
@@ -21,14 +21,17 @@
                 <div class="modal-body">
                     <dl>
                         <dt>单号</dt>
-                        <dd><strong><code>{{ itemized.number }}</code></strong></dd>
+                        <dd><strong><code>{{ itemized.donate.number }}</code></strong></dd>
+                        <hr/>
                         <dt>此次花费</dt>
                         <dd><span class="label label-info">{{ itemized.cast }}</span>&nbsp;元</dd>
                         <dt>使用时间</dt>
-                        <dd>{{ itemized.create_time|date:"Y年m月d日 H:i:s" }}</dd>
-                        <dt>剩余</dt>
-                        <dd><span class="label label-info">{{ itemized.residue }}</span>&nbsp;元</dd>
+                        <dd>{{ itemized.created_date|date:"Y年m月d日 H:i:s" }}</dd>
+                        <hr/>
+                        <dt>使用细节</dt>
+                        <dd>{{ itemized.detail }}</dd>
                         {% if user.is_superuser %}
+                            <hr/>
                             <dt>操作</dt>
                             <dd>
                                 <a class="btn" href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i>修改</a>
@@ -42,7 +45,7 @@
                 </div>
             </div>
             <td><span class="label label-info">{{ itemized.cast }}</span>&nbsp;元</td>
-            <td><span class="label label-info">{{ itemized.residue }}</span>&nbsp;元</td>
+            <td>{{ itemized.created_date|date:"Y年m月d日 H:i:s" }}</td>
         </tr>
         {% empty %}
         <tr>

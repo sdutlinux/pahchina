@@ -11,7 +11,7 @@ class DonateAdmin(admin.ModelAdmin):
     list_display = ('number', 'money','create_time')
 
 class ItemizedAdmin(admin.ModelAdmin):
-    list_display = ('number', 'time','cast','residue')
+    list_display = ('donate', 'created_date','cast')
 
 admin.site.register(Donate, DonateAdmin)
 admin.site.register(Itemized, ItemizedAdmin)

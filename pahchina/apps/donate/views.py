@@ -3,8 +3,12 @@
 
 from django.views import generic
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.shortcuts import get_list_or_404, get_object_or_404
+from django.http.response import HttpResponseRedirect
+
+
 from ...apps.donate.models import Donate, Itemized
-from ..utils.views import SuperRequiredMixin
+from ..utils.views import SuperRequiredMixin, GetOr404View
 from .form import DonateFormUser, ItemizedForm
 from ...apps.accounts.models import User
 
@@ -22,8 +26,8 @@ class ListDonate(SuperRequiredMixin, generic.ListView):
         neg = self.request.GET.get('neg')
         _dic = {
             'date':'-create_time',
-            'anyone': '-isanonymous',
-            'status': '-istrue',
+            'anyone': '-is_anonymous',
+            'status': '-is_true',
             'money' : '-money',
         }
         if order in _dic:
@@ -36,16 +40,31 @@ class ListDonate(SuperRequiredMixin, generic.ListView):
 
 
 
-class DetailDonate(SuperRequiredMixin, generic.DetailView):
+class DetailDonate(SuperRequiredMixin, GetOr404View, generic.DetailView):
 
     model = Donate
     context_object_name = 'object_donate'
     template_name = 'detail-donate-admin.html'
 
+    def get(self, request, *args, **kwargs):
+        """ 确认到帐或者未到帐
+        """
+        _mark = request.GET.get('mark')
+        if _mark is None:
+            return super(DetailDonate, self).get(request, *args, **kwargs)
+        if _mark == 'true':
+            self.get_object().mark_true()
+        elif _mark == 'false':
+            self.get_object().mark_true(False)
+        return HttpResponseRedirect(reverse('admin-detail-donate', kwargs=self.kwargs))
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(self.model, id=self.kwargs['pk'])
+
     def get_context_data(self, **kwargs):
         context = super(DetailDonate, self).get_context_data( **kwargs)
         donate = Donate.objects.get(id=self.kwargs['pk'])
-        context['itemized_list'] = Itemized.objects.filter(number=donate)
+        context['itemized_list'] = Itemized.objects.filter(donate=donate)
         return context
 
 
@@ -67,7 +86,7 @@ class UpdateDonate(SuperRequiredMixin, generic.UpdateView):
 class DeleteDonate(SuperRequiredMixin, generic.DeleteView):
     model = Donate
     success_url = reverse_lazy('admin-list-donate')
-    template_name = 'user_confirm_delete.html'
+    template_name = 'confirm_delete.html'
 
 
 class CreateDonateUser(generic.FormView):
@@ -99,7 +118,7 @@ class ListDonateUser(generic.DetailView):
     def get_object(self, queryset=None):
         return self.request.user
 
-class DetailDonateUser(generic.DetailView):
+class DetailDonateUser(GetOr404View, generic.DetailView):
     """ 用户查看自己的某一条捐赠记录
     以及该捐赠的使用详情
     """
@@ -110,19 +129,19 @@ class DetailDonateUser(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailDonateUser, self).get_context_data( **kwargs)
         donate = Donate.objects.get(id=self.kwargs['pk'])
-        context['itemized_list'] = Itemized.objects.filter(number=donate)
+        context['itemized_list'] = Itemized.objects.filter(donate=donate)
         return context
 
-class ListItemizedId(SuperRequiredMixin, generic.DetailView):
-
-    model = Donate
-    template_name = 'list-itemized-admin.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ListItemizedId, self).get_context_data( **kwargs)
-        donate = Donate.objects.get(id=self.kwargs['pk'])
-        context['itemized_list'] = Itemized.objects.filter(number=donate)
-        return context
+#class ListItemizedId(SuperRequiredMixin, generic.DetailView):
+#
+#    model = Donate
+#    template_name = 'list-itemized-admin.html'
+#
+#    def get_context_data(self, **kwargs):
+#        context = super(ListItemizedId, self).get_context_data( **kwargs)
+#        donate = Donate.objects.get(id=self.kwargs['pk'])
+#        context['itemized_list'] = Itemized.objects.filter(number=donate)
+#        return context
 
 
 
@@ -159,18 +178,25 @@ class CreateItemizedId(generic.CreateView):
     def get_form_kwargs(self):
         kwargs = super(CreateItemizedId, self).get_form_kwargs()
         kwargs['donate'] = Donate.objects.get(id = self.kwargs["pk"])
+        kwargs['user'] = self.request.user
         return kwargs
 
 class UpdateItemized(SuperRequiredMixin, generic.UpdateView):
     model = Itemized
-    #form_class = ItemizedForm
-    #success_url = reverse_lazy('admin-list-itemized')
     template_name = 'update-itemized-admin.html'
+
     def get_success_url(self):
-        return reverse('admin-detail-itemized',kwargs=self.kwargs)
+
+        return reverse('admin-detail-donate', kwargs={'pk': self.object.donate.id})
 
 
 class DeleteItemized(SuperRequiredMixin, generic.DeleteView):
+
     model = Itemized
     success_url = reverse_lazy('admin-list-itemized')
-    template_name = 'user_confirm_delete.html'
+    context_object_name = 'object'
+    template_name = 'confirm_delete.html'
+
+    def get_success_url(self):
+
+        return reverse('admin-detail-donate', kwargs={'pk': self.object.donate.id})

@@ -10,17 +10,35 @@
     {% include 'includes/in_detail_donate.html' %}
 
     <p>
-        {% if object_donate.istrue %}
-            <a href="#UseDnate" role="button" class="btn btn-info" data-toggle="modal">使用</a>
+        {% if object_donate.is_true %}
+            <a href="#UseDnate" role="button" class="btn btn-large btn-info" data-toggle="modal">使用</a>
+            <a href="#MarkDnate" class="btn btn-small btn-danger" role="button" data-toggle="modal">尚未到帐</a>
         {% else %}
-            <a href="#" class="btn btn-info disabled">使用(未到帐)</a>
-            <a href="#" class="btn btn-primary">确认到帐</a>
+            <a href="#" class="btn btn-large btn-info disabled">使用(未到帐)</a>
+            <a href="?mark=true" class="btn btn-primary">确认到帐</a>
         {% endif %}
-        <a class="btn" href="{% url 'admin-update-donate' object_donate.id %}"><i class="icon-edit"></i>修改</a>
-        <a class="btn btn-danger" href="{% url 'admin-delete' 'donate' object_donate.id %}"><i class="icon-remove"></i>删除</a>
+    <a class="btn btn-small" href="{% url 'admin-update-donate' object_donate.id %}"><i class="icon-edit"></i>修改</a>
+    <a class="btn btn-small btn-danger" href="{% url 'admin-delete' 'donate' object_donate.id %}"><i
+            class="icon-remove"></i>删除</a>
     </p>
-    {% if object_donate.istrue %}
+    {% if object_donate.is_true %}
         <!-- Modal -->
+        <div id="MarkDnate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="MarkDnateLabel"
+             aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="MarkDnateLabel">修改捐赠状态</h3>
+            </div>
+            <div class="modal-body">
+                <p>将改条捐赠记录修改为<strong>尚未到帐</strong>状态将 <strong>删除所有使用记录</strong>，请慎重操作！</p>
+
+                <p>是否确认修改 ？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a href="?mark=false" class="btn btn-danger">确认修改</a>
+            </div>
+        </div>
         <div id="UseDnate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="UseDnateLabel"
              aria-hidden="true">
             <div class="modal-header">
@@ -35,7 +53,7 @@
                             <td><input id="id_cast" name="cast" type="text"/></td>
                         </tr>
                         <tr>
-                            <th><label for="id_detail">使用详情:</label></th>
+                            <th><label for="id_detail">使用细节:</label></th>
                             <td>
                                 <textarea cols="40" id="id_detail" name="detail" rows="10"></textarea>
                             </td>

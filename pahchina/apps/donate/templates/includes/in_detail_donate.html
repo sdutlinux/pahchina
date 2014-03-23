@@ -12,12 +12,16 @@
         <td><span class="label label-info">{{ object_donate.money }}</span>&nbsp;元(&#65509;)</td>
     </tr>
     <tr>
+        <th>剩余金额</th>
+        <td><span class="label label-info">{{ object_donate.residue }}</span>&nbsp;元(&#65509;)</td>
+    </tr>
+    <tr>
         <th>用户选择方式</th>
         <td>{{ object_donate.get_anyone }}</td>
     </tr>
     <tr>
-        <th>捐赠详情</th>
-        <td>{{ object_donate.details }}</td>
+        <th>捐赠细节</th>
+        <td>{{ object_donate.detail }}</td>
     </tr>
     <tr>
         <th>状态</th>
