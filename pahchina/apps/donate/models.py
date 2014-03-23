@@ -5,34 +5,51 @@ from django.db import models
 from ..accounts.models import User
 # Create your models here.
 class Donate(models.Model):
-    number = models.CharField(max_length=15, unique=True,verbose_name='编号', blank=True)
-    money = models.IntegerField(max_length=10, verbose_name='金额')
+    number = models.CharField(max_length=15, unique=True, verbose_name='编号', blank=True)
+    money = models.IntegerField(max_length=10, verbose_name='金额', help_text="单位: 元")
     create_time = models.DateTimeField(verbose_name='捐赠时间', auto_now_add=True)
     true_time = models.DateTimeField(verbose_name='核实时间', blank=True, null=True)
     isanonymous = models.BooleanField(verbose_name='是否匿名')
     istrue = models.BooleanField(verbose_name='是否核实')
-    user = models.ForeignKey(User,blank=True, null=True, verbose_name='捐赠用户')
-    details = models.TextField(max_length=500, help_text='请不要超过500字。', verbose_name='捐赠详情', blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, verbose_name='捐赠用户')
+    details = models.TextField(max_length=500, help_text='指明使用对象或地区，请不要超过500字。',
+                               verbose_name='捐赠详情', blank=True, null=True)
+
+    class Meta:
+        verbose_name = '捐赠记录'
 
     def __unicode__(self):
-        return self.number
+        return "{} ({})".format(self.number, self.user)
 
     def get_anyone(self):
-        if self.isanonymous:return '匿名'
-        else:return '非匿名'
+        if self.isanonymous:
+            return '匿名'
+        else:
+            return '非匿名'
+
+    def get_status(self):
+        return "已到帐" if self.istrue else "未到帐"
+
+    def mark_true(self):
+        """ 修改到帐
+        """
+        self.istrue = True
+        self.save()
+        return True
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.number = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         super(Donate, self).save(force_insert=False, force_update=False, using=None,
-             update_fields=None)
+                                 update_fields=None)
+
 
 class Itemized(models.Model):
     time = models.DateTimeField(verbose_name='使用时间', auto_now_add=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     cast = models.IntegerField(max_length='10', verbose_name='花费')
     residue = models.IntegerField(max_length='10', verbose_name='剩余', blank=True)
-    number = models.ForeignKey(Donate, verbose_name='账单',blank=True)
+    number = models.ForeignKey(Donate, verbose_name='账单', blank=True)
     detail = models.TextField(verbose_name='使用详情')
 
     def check_residue(self):
@@ -47,4 +64,4 @@ class Itemized(models.Model):
              update_fields=None):
         self.residue = self.check_residue()
         super(Itemized, self).save(force_insert=False, force_update=False, using=None,
-             update_fields=None)
+                                   update_fields=None)

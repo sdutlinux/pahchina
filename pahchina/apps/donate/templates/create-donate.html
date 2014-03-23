@@ -10,9 +10,11 @@
 <table class="table border">
     {{ form.as_table }}
 </table>
-
-    <a class="btn btn-inverse" onclick="location.href=document.referrer;">返回</a>
-    <input class="btn btn-warning" type="submit" value="提交"/>
+    <p><input class="btn btn-block btn-primary" type="submit" value="提交"/></p>
+    <p>
+        <a class="btn btn-info" href="{% url 'list-donate' %}">我的捐赠</a>
+        <a class="btn" onclick="location.href=document.referrer;">返回</a>
+    </p>
 </form>
 
 

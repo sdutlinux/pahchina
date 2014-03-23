@@ -7,7 +7,27 @@
     <h3>{{ object_user.get_identity }}{{ object_user.username }}的个人页面</h3>
     <table class="table table-bordered">
 
-        {% include 'includes/user-info-as-table.html' %}
+        <tr>
+            <th>用户名</th>
+            <td><b>{{ object_user.username }}</b></td>
+        </tr>
+        <tr>
+            <th>照片</th>
+            <td>
+                {% if object_user.avatar %}
+                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}" class="img-polaroid"
+                        style="max-height: 100px; max-width: 100px;"/>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <td>{{ object_user.get_full_name }}</td>
+        </tr>
+        <tr class="warning">
+            <td><strong>帮助Ta</strong></td>
+            <td><a class="btn btn-primary" href="{% url 'create-donate' %}">为Ta捐赠</a></td>
+        </tr>
 
         {% if object_user.is_patient %}
             {% include 'includes/patient-info-as-table.html' %}

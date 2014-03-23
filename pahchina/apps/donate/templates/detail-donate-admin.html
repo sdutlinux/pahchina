@@ -1,70 +1,53 @@
 {% extends 'base-admin.html' %}
 
-{% block title %}
-捐赠详情 {{ object_donate.number }}
-{% endblock %}
+{% block title %}捐赠详情 {{ object_donate.number }}{% endblock %}
 
 
 {% block content %}
 
-<h2>捐赠-{{ object_donate.number }}</h2>
-    <table class="table bordered" border="0">
-    <tr>
-    <th>单号</th>
-    <td>{{ object_donate.number }}</td>
-    </tr>
-    <tr>
-    <th>捐赠时间</th>
-    <td>{{ object_donate.create_time }}</td>
-    </tr>
-    <tr>
-    <th>捐赠金额</th>
-    <td>{{ object_donate.money }}</td>
-    </tr>
-    <tr>
-    <th>用户选择方式</th>
-    <td>{{ object_donate.get_anyone }}</td>
-    </tr>
-    <tr>
-        <th>捐赠帐号</th>
-        {% if object_donate.user.id %}
-        <td><a href="{% url "admin-detail" "user" object_donate.user.id %}">{{ object_donate.user.username }}</a></td>
+    <h2>捐赠-{{ object_donate.number }}</h2>
+
+    {% include 'includes/in_detail_donate.html' %}
+
+    <p>
+        {% if object_donate.istrue %}
+            <a href="#UseDnate" role="button" class="btn btn-info" data-toggle="modal">使用</a>
         {% else %}
-        <td>{{ object_donate.user.username }}</td>
+            <a href="#" class="btn btn-info disabled">使用(未到帐)</a>
+            <a href="#" class="btn btn-primary">确认到帐</a>
         {% endif %}
-    </tr>
-    </table>
-
-
-
-
-{#    <a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a>#}
-    <a class="btn btn-info" href="{% url "admin-create-itemized-id" object_donate.id %}">使用此捐赠</a>
-    <h6 style="text-align: center">捐赠详情</h6>
-{#    <div><pre>{{ object_donate.details }}</pre></div>#}
-<table class="table border">
-<thead>
-<tr>
-    <th>捐赠单号</th>
-    <th>此次使用</th>
-    <th>使用时间</th>
-    <th>余额</th>
-    <th>操作</th>
-</tr>
-</thead>
-    <tbody>
-    {% for itemized in itemized_list %}
-    <tr>
-        <td><a href="{% url 'admin-detail-itemized' itemized.id %}">{{ itemized.number }}</a></td>
-        <td>{{ itemized.cast }}</td>
-        <td>{{ itemized.create_time }}</td>
-        <td>{{ itemized.residue }}</td>
-        <td>
-        <a href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete-itemized' itemized.id %}"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <a class="btn" href="{% url 'admin-update-donate' object_donate.id %}"><i class="icon-edit"></i>修改</a>
+        <a class="btn btn-danger" href="{% url 'admin-delete' 'donate' object_donate.id %}"><i class="icon-remove"></i>删除</a>
+    </p>
+    {% if object_donate.istrue %}
+        <!-- Modal -->
+        <div id="UseDnate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="UseDnateLabel"
+             aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="UseDnateLabel">创建使用记录</h3>
+            </div>
+            <div class="modal-body">
+                <form action="{% url "admin-create-itemized-id" object_donate.id %}" method="post">{% csrf_token %}
+                    <table class="table border">
+                        <tr>
+                            <th><label for="id_cast">花费:</label></th>
+                            <td><input id="id_cast" name="cast" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <th><label for="id_detail">使用详情:</label></th>
+                            <td>
+                                <textarea cols="40" id="id_detail" name="detail" rows="10"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                        <input class="btn btn-primary" type="submit" value="提交"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% include 'includes/in_list_itemized.html' %}
 {% endblock %}

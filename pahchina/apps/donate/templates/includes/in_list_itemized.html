@@ -1,0 +1,57 @@
+<p class="lead">帐务公开</p>
+<hr/>
+<table class="table border">
+    <thead>
+    <tr>
+        <th>捐赠单号</th>
+        <th>此次使用</th>
+        <th>剩余</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for itemized in itemized_list %}
+        <tr>
+            <td><a href="#{{ itemized.id }}" role="button" data-toggle="modal" title="点击查看详情">{{ itemized.number }}</a></td>
+            <div id="{{ itemized.id }}" class="modal hide fade" tabindex="-1" role="dialog"
+                 aria-labelledby="{{ itemized.id }}Label" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="{{ itemized.id }}Label">详细信息</h3>
+                </div>
+                <div class="modal-body">
+                    <dl>
+                        <dt>单号</dt>
+                        <dd><strong><code>{{ itemized.number }}</code></strong></dd>
+                        <dt>此次花费</dt>
+                        <dd><span class="label label-info">{{ itemized.cast }}</span>&nbsp;元</dd>
+                        <dt>使用时间</dt>
+                        <dd>{{ itemized.create_time|date:"Y年m月d日 H:i:s" }}</dd>
+                        <dt>剩余</dt>
+                        <dd><span class="label label-info">{{ itemized.residue }}</span>&nbsp;元</dd>
+                        {% if user.is_superuser %}
+                            <dt>操作</dt>
+                            <dd>
+                                <a class="btn" href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i>修改</a>
+                                <a class="btn btn-danger" href="{% url 'admin-delete-itemized' itemized.id %}"><i class="icon-remove"></i>删除</a>
+                            </dd>
+                        {% endif %}
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-block btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </div>
+            <td><span class="label label-info">{{ itemized.cast }}</span>&nbsp;元</td>
+            <td><span class="label label-info">{{ itemized.residue }}</span>&nbsp;元</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td>尚无使用记录</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
