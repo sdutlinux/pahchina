@@ -59,10 +59,11 @@ def install_require(package=None):
 def deploy(do='app'):
 
     with cd(PROJECT_HOME):
-        if 'app' == do:
-            git_pull(DEPLOY_BARNCH)
-            install_require()
-        elif 'db' == do:
+
+        git_pull(DEPLOY_BARNCH)
+        install_require()
+
+        if 'db' == do:
             if not confirm(red("Are you sure to recreate your database ? this can not be undo !!")):
                 abort('Do Nothing ... ')
             run('rm pahchina/db/mysite.db')
