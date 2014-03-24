@@ -182,12 +182,20 @@ class CreateItemizedId(generic.CreateView):
         return kwargs
 
 class UpdateItemized(SuperRequiredMixin, generic.UpdateView):
+
     model = Itemized
+    form_class = ItemizedForm
     template_name = 'update-itemized-admin.html'
+    
+    def get_form_kwargs(self):
+        kwargs = super(UpdateItemized, self).get_form_kwargs()
+        kwargs['donate'] = self.object.donate
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_success_url(self):
 
-        return reverse('admin-detail-donate', kwargs={'pk': self.object.donate.id})
+        return reverse('admin-detail-donate', kwargs={'pk': self.get_object().donate.id})
 
 
 class DeleteItemized(SuperRequiredMixin, generic.DeleteView):

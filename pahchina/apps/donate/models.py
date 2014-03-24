@@ -86,7 +86,8 @@ class Itemized(models.Model):
     #def save(self, force_insert=False, force_update=False, using=None,
     #         update_fields=None):
     #    # 修改剩余金额
-    #    self.donate.residue -= self.cast
-    #    self.donate.save()
+    #    #self.donate.residue -= self.cast
+    #    #self.donate.save()
+    #    print update_fields
     #    super(Itemized, self).save(force_insert=False, force_update=False, using=None,
     #                               update_fields=None)
