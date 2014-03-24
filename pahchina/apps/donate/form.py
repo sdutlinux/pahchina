@@ -10,19 +10,22 @@ class DonateFormUser(forms.ModelForm):
 
     class Meta:
         model = Donate
-        exclude = ('number','user','is_true','mark_true_date', 'residue')
+        exclude = ('number','user','is_true','mark_true_date', 'residue', 'target_user')
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, user=None, target_user=None, *args, **kwargs):
         super(DonateFormUser, self).__init__(*args, **kwargs)
         self._user = user
-        
+        self._target_user = target_user
+
     def save(self, commit=False):
-        if  self._user:
-            donate = super(DonateFormUser, self).save(commit=False)
+        donate = super(DonateFormUser, self).save(commit=False)
+        if self._user:
             donate.user = self._user
             donate.save()
-        else:
-            super(DonateFormUser, self).save(commit=True)
+        if self._target_user:
+            donate.target_user = self._target_user
+            donate.save()
+        super(DonateFormUser, self).save(commit=True)
 
 class ItemizedForm(forms.ModelForm):
 

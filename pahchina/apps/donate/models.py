@@ -5,9 +5,10 @@ from django.db import models
 from django.utils import timezone
 
 from ..accounts.models import User
-# Create your models here.
-class Donate(models.Model):
 
+class Donate(models.Model):
+    """ 捐款细节
+    """
     number = models.CharField(max_length=15, unique=True, verbose_name='编号', blank=True)
 
     money = models.IntegerField(max_length=10, verbose_name='金额', help_text="单位: 元")
@@ -18,9 +19,10 @@ class Donate(models.Model):
     is_true = models.BooleanField(verbose_name='是否核实')
     mark_true_date = models.DateTimeField(verbose_name='核实时间', blank=True, null=True)
 
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name='捐赠用户')
+    user = models.ForeignKey(User, related_name='donate_user', blank=True, null=True, verbose_name='捐赠用户')
     is_anonymous = models.BooleanField(verbose_name='是否匿名')
 
+    target_user = models.ForeignKey(User, related_name='target_user', blank=True, null=True, verbose_name='受捐用户')
     detail = models.TextField(max_length=500, help_text='指明使用对象或地区，请不要超过500字。',
                                verbose_name='捐赠详情', blank=True, null=True)
 
@@ -48,8 +50,7 @@ class Donate(models.Model):
         else:
             self.is_true = False
             self.mark_true_date = None
-            for _i in self.itemized_set.all():
-                _i.delete()
+            for _i in self.itemized_set.all(): _i.delete()
             self.residue = self.money
         self.save()
         return True
@@ -82,12 +83,3 @@ class Itemized(models.Model):
         self.donate.residue += self.cast
         self.donate.save()
         super(Itemized, self).delete()
-
-    #def save(self, force_insert=False, force_update=False, using=None,
-    #         update_fields=None):
-    #    # 修改剩余金额
-    #    #self.donate.residue -= self.cast
-    #    #self.donate.save()
-    #    print update_fields
-    #    super(Itemized, self).save(force_insert=False, force_update=False, using=None,
-    #                               update_fields=None)

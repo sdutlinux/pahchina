@@ -64,6 +64,8 @@ class User(AbstractUser):
     }
 
     def get_avatar_url(self):
+        """ 返回头像链接，无则返回默认头像链接
+        """
         if self.avatar:
             return self.avatar.url
         else:
@@ -141,10 +143,11 @@ class User(AbstractUser):
             return self.volunteer
         return self
 
+    # 地址信息
     def get_huji_addr(self):
-        return self.livingregion_set.get(cate='huji')
+        return self.livingregion_set.get(cate='huji').get_location()
     def get_juzhu_addr(self):
-        return self.livingregion_set.get(cate='juzhu')
+        return self.livingregion_set.get(cate='juzhu').get_location()
 
     def get_full_name(self):
         """ 符合中文姓名风格

@@ -87,6 +87,7 @@ class Update(SuperRequiredMixin, GenericOperateMixin, generic.UpdateView):
 
     def get_success_url(self):
         self.kwargs.pop('pk')
+        messages.success(self.request, '修改成功！')
         return reverse('admin-list', kwargs=self.kwargs)
 
     def get_form_class(self):
@@ -112,6 +113,7 @@ class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
 
 
     def get_success_url(self):
+        messages.success(self.request, '创建成功！')
         return reverse('admin-list', kwargs=self.kwargs)
 
 
@@ -152,6 +154,7 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
         if self.kwargs['model'] == 'record':
             return reverse('admin-list', kwargs={'model': 'patient'})
         self.kwargs.pop('pk')
+        messages.success(self.request, '删除成功！')
         return reverse('admin-list', kwargs=self.kwargs)
 
     def check_permit(self):

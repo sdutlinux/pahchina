@@ -6,6 +6,11 @@
 {% block side-content %}
 
     <h2>我的捐赠</h2>
+    <p><code>红色条目为未到帐的捐赠</code></p>
+    <a class="btn btn-small" href="?order=date">按日期</a>
+    <a class="btn btn-small" href="?order=money">按金额</a>
+    <a class="btn btn-small" href="?order=status">是否到帐</a>
+    <a class="btn btn-small" href="?order=anyone">是否匿名</a>
 <table class="table border">
 <thead>
 <tr>
@@ -17,7 +22,7 @@
 </thead>
     <tbody>
     {% for donate in donate_list %}
-    <tr>
+    <tr {% if not donate.is_true %}class="error"{% endif %} >
         <td><a href="{% url 'detail-donate' donate.id %}">{{ donate.number }}</a></td>
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>

@@ -24,11 +24,12 @@
             <th>姓名</th>
             <td>{{ object_user.get_full_name }}</td>
         </tr>
+        {% if object_user.is_patient %}
         <tr class="warning">
             <td><strong>帮助Ta</strong></td>
-            <td><a class="btn btn-primary" href="{% url 'create-donate' %}">为Ta捐赠</a></td>
+            <td><a class="btn btn-primary" href="{% url 'create-donate' %}?target={{ object_user.username }}">为Ta捐赠</a></td>
         </tr>
-
+        {% endif %}
         {% if object_user.is_patient %}
             {% include 'includes/patient-info-as-table.html' %}
         {% endif %}

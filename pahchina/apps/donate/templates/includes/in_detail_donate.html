@@ -1,4 +1,4 @@
-<table class="table bordered" border="0">
+<table class="table table-bordered" border="0">
     <tr>
         <th>单号</th>
         <td><strong><code>{{ object_donate.number }}</code></strong></td>
@@ -37,6 +37,14 @@
         {% else %}
             <td>{{ object_donate.user.username }}</td>
         {% endif %}
+    </tr>
+    {% endif %}
+    {% if object_donate.target_user %}
+    <tr>
+        <th>受捐患者</th>
+            <td>
+                <a href="{% url "show" object_donate.target_user.id %}">{{ object_donate.target_user.username }}</a>
+            </td>
     </tr>
     {% endif %}
 </table>
