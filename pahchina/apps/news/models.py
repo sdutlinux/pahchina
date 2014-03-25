@@ -53,26 +53,17 @@ class News(TimeStampedModel):
     class Meta:
         verbose_name = '新闻'
 
-    def get_draft(self):
-        if self.is_draft:
-            return '草稿'
-        else:
-            return '非草稿'
-
-    def get_push(self):
-        if self.is_push:
-            return '推送'
-        else:
-            return '不推送'
-
-    def get_top(self):
-        if self.is_top:
-            return '置顶'
-        else:
-            return '非置顶'
-
     def __unicode__(self):
         return self.title
+
+    def get_draft(self):
+        return '草稿' if self.is_draft else '非草稿'
+
+    def get_push(self):
+        return '推送' if self.is_push else '不推送'
+
+    def get_top(self):
+        return '置顶' if self.is_top else '非置顶'
 
 
 

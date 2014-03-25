@@ -10,7 +10,7 @@ from django.utils.html import mark_safe
 
 from ...apps.donate.models import Donate, Itemized
 from ..utils.views import SuperRequiredMixin, GetOr404View
-from .form import DonateFormUser, ItemizedForm
+from .form import UserDonateForm, ItemizedForm, AdminDonateForm
 from ...apps.accounts.models import User
 
 
@@ -70,42 +70,11 @@ class DetailDonate(SuperRequiredMixin, GetOr404View, generic.DetailView):
         context['itemized_list'] = Itemized.objects.filter(donate=donate)
         return context
 
-
-class CreateDonate(SuperRequiredMixin, generic.CreateView):
-    model = Donate
-    success_url = reverse_lazy('admin-list-donate')
-    template_name = 'update-donate-admin.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateDonate, self).get_context_data(**kwargs)
-        target = self.request.GET.get["target"]
-        if target is not None:
-            try:
-                target_user = User.objects.get(username=target)
-                context['target_user'] = target_user
-            except User.DoesNotExist:
-                pass
-        return context
-
-
-class UpdateDonate(SuperRequiredMixin, generic.UpdateView):
-    model = Donate
-    template_name = 'update-donate-admin.html'
-
-    def get_success_url(self):
-        return reverse('admin-detail-donate', kwargs=self.kwargs)
-
-
-class DeleteDonate(SuperRequiredMixin, generic.DeleteView):
-    model = Donate
-    success_url = reverse_lazy('admin-list-donate')
-    template_name = 'confirm_delete.html'
-
-
-class CreateDonateUser(generic.FormView):
-    """ 用户创建捐赠
+class BaseCreateDonate(generic.FormView):
+    """ 基类
+    用于创建捐赠
     """
-    form_class = DonateFormUser
+    form_class = UserDonateForm
     template_name = 'create-donate.html'
     success_url = reverse_lazy('list-donate')
 
@@ -122,7 +91,7 @@ class CreateDonateUser(generic.FormView):
         return None
 
     def get_form_kwargs(self):
-        kwargs = super(CreateDonateUser, self).get_form_kwargs()
+        kwargs = super(BaseCreateDonate, self).get_form_kwargs()
         if self.request.user.is_authenticated():
             kwargs['user'] = self.request.user
         if self.get_target_user():
@@ -130,15 +99,45 @@ class CreateDonateUser(generic.FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = super(CreateDonateUser, self).get_context_data(**kwargs)
+        context = super(BaseCreateDonate, self).get_context_data(**kwargs)
         if self.get_target_user():
             context['target_user'] = self._target_user
         return context
 
-
     def form_valid(self, form):
         form.save()
-        return super(CreateDonateUser, self).form_valid(form)
+        return super(BaseCreateDonate, self).form_valid(form)
+
+class CreateDonate(SuperRequiredMixin, BaseCreateDonate):
+    """ 管理员创建捐赠
+    """
+    form_class = AdminDonateForm
+    success_url = reverse_lazy('admin-list-donate')
+    template_name = 'update-donate-admin.html'
+
+class CreateDonateUser(BaseCreateDonate):
+    """ 用户创建捐赠
+    """
+    form_class = UserDonateForm
+    template_name = 'create-donate.html'
+    success_url = reverse_lazy('list-donate')
+
+
+class UpdateDonate(SuperRequiredMixin, generic.UpdateView):
+    model = Donate
+    template_name = 'update-donate-admin.html'
+
+    def get_success_url(self):
+        return reverse('admin-detail-donate', kwargs=self.kwargs)
+
+
+class DeleteDonate(SuperRequiredMixin, generic.DeleteView):
+    model = Donate
+    success_url = reverse_lazy('admin-list-donate')
+    template_name = 'confirm_delete.html'
+
+
+
 
 
 class ListDonateUser(generic.DetailView):

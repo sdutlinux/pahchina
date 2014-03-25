@@ -5,27 +5,48 @@ __author__ = 'paomian'
 from django import forms
 from .models import Donate, Itemized
 
-
-class DonateFormUser(forms.ModelForm):
-
+class BaseDonateForm(forms.ModelForm):
+    """ 捐赠Form基类
+    需要添加 Meta(BaseDonateForm.Meta): 中的 fields or excludes
+    就像下面的 AdminDonateForm and UserDonateForm
+    """
     class Meta:
         model = Donate
-        exclude = ('number','user','is_true','mark_true_date', 'residue', 'target_user')
 
     def __init__(self, user=None, target_user=None, *args, **kwargs):
-        super(DonateFormUser, self).__init__(*args, **kwargs)
+        super(BaseDonateForm, self).__init__(*args, **kwargs)
         self._user = user
         self._target_user = target_user
 
     def save(self, commit=False):
-        donate = super(DonateFormUser, self).save(commit=False)
+        donate = super(BaseDonateForm, self).save(commit=False)
         if self._user:
             donate.user = self._user
             donate.save()
         if self._target_user:
             donate.target_user = self._target_user
             donate.save()
-        super(DonateFormUser, self).save(commit=True)
+        super(BaseDonateForm, self).save(commit=True)
+
+class AdminDonateForm(BaseDonateForm):
+    """ 管理员创建捐赠条目
+    """
+    username = forms.CharField(label='捐赠者',)
+
+    class Meta(BaseDonateForm.Meta):
+        #model = Donate
+        exclude = ('number','user', 'target_user', 'is_true','mark_true_date',)
+
+
+class UserDonateForm(BaseDonateForm):
+    """ 用户捐赠
+    """
+    class Meta(BaseDonateForm.Meta):
+        exclude = ('number','user','is_true','mark_true_date', 'residue', 'target_user')
+
+
+
+
 
 class ItemizedForm(forms.ModelForm):
 
@@ -61,10 +82,3 @@ class ItemizedForm(forms.ModelForm):
             form_data.save()
             self._donate.residue -= self.cleaned_data['cast']
         self._donate.save()
-
-
-        # class ItemizedUpdateForm(forms.ModelForm):
-        #
-        #     class Meta:
-        #         model = Itemized
-        #         exclude = ('number')

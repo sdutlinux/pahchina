@@ -17,7 +17,7 @@
     <th>捐赠单号</th>
     <th>捐赠金额</th>
     <th>捐赠时间</th>
-    <th>是否匿名</th>
+    <th>状态</th>
 </tr>
 </thead>
     <tbody>
@@ -26,7 +26,7 @@
         <td><a href="{% url 'detail-donate' donate.id %}">{{ donate.number }}</a></td>
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>
-        <td>{{ donate.get_anyone }}</td>
+        <td><span class="label label-info">{{ donate.get_status }}</span></td>
     </tr>
     {% endfor %}
     </tbody>

@@ -22,7 +22,7 @@ class Donate(models.Model):
     user = models.ForeignKey(User, related_name='donate_user', blank=True, null=True, verbose_name='捐赠用户')
     is_anonymous = models.BooleanField(verbose_name='是否匿名')
 
-    target_user = models.ForeignKey(User, related_name='target_user', blank=True, null=True, verbose_name='受捐用户')
+    target_user = models.ForeignKey(User, verbose_name='受捐用户', related_name='target_user', blank=True, null=True,)
     detail = models.TextField(max_length=500, help_text='指明使用对象或地区，请不要超过500字。',
                                verbose_name='捐赠详情', blank=True, null=True)
 
@@ -33,13 +33,21 @@ class Donate(models.Model):
         return "{} ({})".format(self.number, self.user)
 
     def get_anyone(self):
-        if self.is_anonymous:
-            return '匿名'
-        else:
-            return '非匿名'
+        """是否匿名
+        """
+        return '匿名' if self.is_anonymous else '非匿名'
+
 
     def get_status(self):
-        return "已到帐" if self.is_true else "未到帐"
+        """ 捐赠状态
+        """
+        if self.is_true:
+            if self.residue == 0: status = "已用完"
+            elif self.money == self.residue:
+                status = "未使用"
+            else: status = '使用中'
+        else: status = "未到帐"
+        return status
 
     def mark_true(self, status=True):
         """ 修改到帐
@@ -58,6 +66,7 @@ class Donate(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if not self.id:
+            # 创建时初始化必要字段
             self.number = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             self.residue = self.money
         super(Donate, self).save(force_insert=False, force_update=False, using=None,
@@ -65,7 +74,8 @@ class Donate(models.Model):
 
 
 class Itemized(models.Model):
-
+    """ 捐款的使用详情
+    """
     donate = models.ForeignKey(Donate, verbose_name='所属捐赠条目', blank=True)
 
     created_user = models.ForeignKey(User, verbose_name='创建人', blank=True)

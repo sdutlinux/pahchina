@@ -23,7 +23,7 @@
 </thead>
     <tbody>
     {% for donate in donate_list %}
-    <tr>
+    <tr {% if not donate.is_true %}class="error"{% endif %}>
         <td><a href="{% url 'admin-detail-donate' donate.id %}">{{ donate.number }}</a></td>
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time|date:"Y-m-d H:i"}}</td>
