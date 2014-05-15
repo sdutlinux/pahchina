@@ -9,20 +9,21 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from ..region import views as region_views
 
 from . import views
+import response
 import generic
-
 
 urlpatterns = patterns('',
 
     url(r'^$', views.admin_index, name='admin-index'),
 
     url(r'^login/$', views.pah_login, name='login'),
-    url(r'^register/$', views.pah_register, name='register'),
     url(r'^logout$', views.pah_logout, name='logout'),
+
+    url(r'^register/$', views.pah_register, name='register'),
+    url(r'^register/username/(?P<username>\w+)/$', response.check_username),
 
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
     url(r'^update/profile/$', views.UpdateProfile.as_view(), name='update-profile'),
-
     url(r'^show/(?P<username>.*)/$', views.Show.as_view(), name='show'),
 
     # region
@@ -42,6 +43,7 @@ urlpatterns = patterns('',
 
     url(r'^password/update/$', views.UpdatePassword.as_view(), name='update-password'),
 )
+
 
 urlpatterns += patterns('',
 

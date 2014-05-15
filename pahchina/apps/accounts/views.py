@@ -37,7 +37,7 @@ def pah_register(request):
                 form.save()
                 messages.success(request, '注册成功, 请登录！')
                 return HttpResponseRedirect(reverse('login'))
-
+    if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
     return r2r('register.html', locals(), context_instance=RequestContext(request))
 
 def pah_login(request):
@@ -67,6 +67,7 @@ def pah_login(request):
             messages.error(request, '用户名与密码不匹配！')
 
     form = AuthenticationForm
+    if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
     return r2r('login.html', locals(), context_instance = RequestContext(request))
 
 def pah_logout(request):

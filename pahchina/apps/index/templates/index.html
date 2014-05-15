@@ -130,8 +130,10 @@
             </div>
         </div> <!--span accordion-group box -->
         <div class="clearfix"></div>
-        <div class="span12 well well-large" style="width: 90%;">
-            <p style="text-align: center;">广告位</p>
+        <div class="span12" style="width: 100%">
+            <p style="text-align: center;">
+                <img style="min-width: 95%;max-height: 60px;" src="{{ STATIC_URL }}img/default-ad.jpg" alt="test"/>
+            </p>
         </div>
         <div class="clearfix"></div>
         <ul class="breadcrumb">
@@ -165,7 +167,7 @@
               <li><strong>其他站点</strong><span class="divider">/</span></li>
               {% for st in websites %}
                   {% if st.id != SITE.id %}
-                  <li><a href="{{ st.link }}">{{ st.name }}</a> <span class="divider">/</span></li>
+                  <li><a href="{{ st.link }}" {% if st.id == 1 %} style="color: red;{% endif %}">{{ st.name }}</a><span class="divider">/</span></li>
                   {% endif %}
               {% endfor %}
             </ul>
