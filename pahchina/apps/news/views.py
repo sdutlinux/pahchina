@@ -10,7 +10,7 @@ from ..utils.views import SuperRequiredMixin
 class ListNews(SuperRequiredMixin, generic.ListView):
 
     model = News
-    context_object_name = 'news_list'
+    context_object_name = 'newes_list'
     template_name = 'list-news-admin.html'
 
 
