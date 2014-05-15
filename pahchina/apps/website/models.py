@@ -6,6 +6,7 @@ from django.forms.models import model_to_dict
 from django.core.validators import RegexValidator
 
 from tinymce import models as tiny_models
+from ckeditor.fields import RichTextField
 
 from ..utils import TimeStampedModel
 from ..accounts.models import User
@@ -37,11 +38,11 @@ class Website(TimeStampedModel):
     address = models.CharField(verbose_name='地址', max_length=200)
 
     # 展示使用
-    description = models.TextField(verbose_name='网站简介', max_length=300,
+    description = RichTextField(verbose_name='网站简介', max_length=300, config_name="low",
                                    help_text='联盟、地方病友会简介')
     #notice = models.TextField(verbose_name='站点公告', max_length=300,
     #                          help_text='网站最新动态或活动')
-    notice = tiny_models.HTMLField(verbose_name='站点公告', max_length=300,
+    notice = RichTextField(verbose_name='站点公告', max_length=300, config_name="low",
                               help_text='网站最新动态或活动')
 
 

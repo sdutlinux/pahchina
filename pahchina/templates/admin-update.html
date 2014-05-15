@@ -3,6 +3,7 @@
 {% block title %}{{ operate }}{{ verbose_name }}{{ title }}{% endblock %}
 
 {% block head %}
+    {% if form.media %}{{ form.media }}{% endif %}
     <style>
     input[type="password"] {
         background: #fff;
@@ -14,6 +15,7 @@
         padding: 4px 9px;
         margin: 1px;
     }
+    input{width: 60%;}
     select[multiple]{
           height: 200px;
       }
@@ -45,21 +47,4 @@
     <input class="btn btn-primary" type="submit" value="提交"/>
 </form>
 
-{% endblock %}
-
-{% block foot %}
-    {% if form.media %}
-    {{ form.media }}
-    <script>
-    tinyMCE.init({
-        mode: "textareas",
-        theme: "advanced",
-        plugins: "directionality,paste,searchreplace",
-        language: "{{ language }}",
-        directionality: "{{ directionality }}",
-        spellchecker_languages : "{{ spellchecker_languages }}",
-        spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
-    });
-    </script>
-    {% endif %}
 {% endblock %}

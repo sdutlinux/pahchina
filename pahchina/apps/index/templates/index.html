@@ -120,7 +120,7 @@
                 <ul class="unstyled">
                      {% for news in news_list %}
                         <li>
-                            [{{ news.sort }}]<a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+                            [{{ news.sort }}]<a href="{% url 'detail-news' news.id %}">{{ news.title|slice:"8" }}</a>
                             <span class="published_date">
                             {{ news.published_date | date:"Y-m-d" }}
                             </span>
@@ -154,7 +154,7 @@
                     <ul class="unstyled">
                         {% for news in sort.news_set.all %}
                         <li>
-                            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+                            <a href="{% url 'detail-news' news.id %}">{{ news.title|slice:"8" }}</a>
                             <span class="published_date">
                             {{ news.published_date | date:"Y-m-d" }}
                             </span>
