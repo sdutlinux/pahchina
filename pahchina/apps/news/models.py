@@ -4,6 +4,7 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
 from tinymce import models as tiny_models
+from ckeditor.fields import RichTextField
 
 from ...apps.utils.models import TimeStampedModel
 from ...apps.accounts.models import User
@@ -35,7 +36,7 @@ class Sorts(MPTTModel):
 class News(TimeStampedModel):
 
     title = models.CharField(max_length=50, verbose_name='标题', unique=True)
-    content = tiny_models.HTMLField(verbose_name='内容')
+    content = RichTextField(verbose_name='内容', config_name="default")
 
     author = models.ForeignKey(User, verbose_name='作者')
 

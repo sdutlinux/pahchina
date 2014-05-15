@@ -178,6 +178,7 @@ INSTALLED_APPS = (
     'mptt',
     'pagination',
     'tinymce',
+    'ckeditor',
     #'datetimewidget',
 
     ## apps
@@ -235,6 +236,18 @@ LOGGING = {
 #}
 #TINYMCE_SPELLCHECKER = True
 #TINYMCE_COMPRESSOR = True
+
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ckeditor')
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Basic',
+    },
+    'default': {
+        'toolbar': 'Full',
+        'height': 400,
+        'width': '100%',
+    },
+}
 
 try:
     from local_settings import *

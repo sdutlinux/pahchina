@@ -1,6 +1,8 @@
 Django==1.5.1
-#PIL==1.1.7
+pillow
 django-forms-bootstrap
 django-mptt
 django-pagination
 django-tinymce
+fabric
+#django-ckeditor

@@ -14,19 +14,6 @@
     </form>
 {% endblock %}
 
-{% block foot %}
-    {% if form.media %}
-    {{ form.media }}
-    <script>
-    tinyMCE.init({
-        mode: "textareas",
-        theme: "advanced",
-        plugins: "directionality,paste,searchreplace",
-        language: "{{ language }}",
-        directionality: "{{ directionality }}",
-        spellchecker_languages : "{{ spellchecker_languages }}",
-        spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
-    });
-    </script>
-    {% endif %}
+{% block head %}
+    {% if form.media %}{{ form.media }}{% endif %}
 {% endblock %}

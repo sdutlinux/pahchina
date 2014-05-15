@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     # apps
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^ckeditor/', include('ckeditor.urls')),
 
     # include accounts
     url(r'^accounts/', include('pahchina.apps.accounts.urls')),
