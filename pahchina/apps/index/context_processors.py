@@ -13,7 +13,7 @@ def index(request):
     """ 首页菜单栏
     """
     sort_list = Sorts.objects.filter(is_navbar=True).order_by('-weight')
-    news_list = News.objects.all().order_by('-published_date')[:6]
+    news_list = News.objects.all().order_by('-published_date')[:11]
 
     return {
         'sort_list': sort_list,
