@@ -108,7 +108,6 @@ class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
     _form_dict = {
         'user': account_form.AdminCreateUserForm,
         'news': news_form.NewsForm
-
     }
 
     def get_success_url(self):
