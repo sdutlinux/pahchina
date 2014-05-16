@@ -116,7 +116,7 @@ class Profile(LoginRequiredMixin, generic.DetailView):
 
     def get_template_names(self):
 
-        return 'profile-user.html'.format(self.request.user.get_identity_label())
+        return 'profile-user.html'#.format(self.request.user.get_identity_label())
 
     def get_context_object_name(self, obj):
 
@@ -153,7 +153,8 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
         except self.get_obj().DoesNotExist:
             messages.info(self.request, '您尚未创建该信息！')
 
-class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
+# class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
+class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
     """ 修改个人信息
     包括个人信息、单位信息、银行信息
     """
@@ -172,20 +173,20 @@ class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
         except KeyError:
             raise Http404
 
+    def get_object(self, queryset=None):
+        obj = self.get_tu()[1].objects.get(user=self.request.user)
+        return obj
+
     def get_form_class(self):
 
         return self.get_tu()[0]
 
-    def get_initial(self):
+    def get_queryset(self):
         try:
             obj=self.get_tu()[1].objects.get(user=self.request.user)
             return obj.__dict__.copy()
         except self.get_tu()[1].DoesNotExist:
             return {}
-
-    def form_valid(self, form):
-        form.save()
-        return super(UpdateUserInfo, self).form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, '修改成功！')

@@ -224,7 +224,8 @@ class UnitForm(forms.ModelForm):
     def save(self, commit=True):
         ret = super(UnitForm, self).save(commit=False)
         ret.user = self._user
-        ret.save()
+        if commit: ret.save()
+        return ret
 
 
 
