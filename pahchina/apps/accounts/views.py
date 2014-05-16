@@ -102,11 +102,12 @@ def pah_logout(request):
     return HttpResponseRedirect(reverse('login'))
 
 
-#def first_login(request):
-#    """ 用户第一次登录
-#    """
-#    if request.user.is_patient:
-#
+@login_required()
+def first_login(request):
+   """ 用户第一次登录
+   """
+   return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
+
 
 
 
@@ -174,7 +175,11 @@ class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
             raise Http404
 
     def get_object(self, queryset=None):
-        obj = self.get_tu()[1].objects.get(user=self.request.user)
+        _model = self.get_tu()[1]
+        try:
+            obj = _model.objects.get(user=self.request.user)
+        except _model.DoesNotExist:
+            obj = _model.objects.create(user=self.request.user)
         return obj
 
     def get_form_class(self):

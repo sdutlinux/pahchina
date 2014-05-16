@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^logout$', views.pah_logout, name='logout'),
 
     url(r'^register/$', views.pah_register, name='register'),
+    url(r'^register/choices$', views.first_login, name='first_login'),
     url(r'^register/username/(?P<username>\w+)/$', response.check_username),
     url(r'^register/email/$', response.check_email),
     url(r'^register/confirm$', views.register_confirm_email, name="confirm_mail"),

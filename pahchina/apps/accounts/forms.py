@@ -191,7 +191,7 @@ class VltFirstFillForm(forms.ModelForm):
 
     class Meta:
         model = Personal
-        exclude = ('user',)
+        exclude = ('user', 'age', 'birthday')
 
     def __init__(self, user=None,*args, **kwargs):
         super(VltFirstFillForm, self).__init__(*args, **kwargs)

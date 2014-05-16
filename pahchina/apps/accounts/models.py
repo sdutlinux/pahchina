@@ -246,7 +246,7 @@ class Personal(models.Model):
                                  max_length=20,
                                  help_text='唯一性，提交后不可更改')
     #志愿者可修改，
-    age = models.IntegerField(verbose_name='年龄',
+    age = models.IntegerField(verbose_name='年龄', default=0,
                               help_text='')
 
     birthday = models.DateField(verbose_name='生日',
