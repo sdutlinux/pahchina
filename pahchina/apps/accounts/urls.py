@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^register/$', views.pah_register, name='register'),
     url(r'^register/username/(?P<username>\w+)/$', response.check_username),
     url(r'^register/email/$', response.check_email),
+    url(r'^register/confirm$', views.register_confirm_email, name="confirm_mail"),
 
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
     url(r'^update/profile/$', views.UpdateProfile.as_view(), name='update-profile'),

@@ -20,7 +20,8 @@ DOMAIN=''
 
 SITE_ID = 1
 
-CACHE_BACKEND = 'locmem:///'
+
+
 
 # develop
 #CACHE_BACKEND = 'simple:///'
@@ -241,6 +242,13 @@ CKEDITOR_CONFIGS = {
         'height': 190,
         'width': '100%',
     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
+    }
 }
 
 try:

@@ -55,7 +55,7 @@
     email.blur(function() {
       var reg;
       if (email.val() != null) {
-        reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;
         if (reg.test(email.val()) === false) {
           return form_alert(email, 'email', "邮箱格式错误！");
         } else {

@@ -32,7 +32,7 @@ $(document).ready ->
   email = $("#id_email")
   email.blur ->
     if email.val()?
-      reg =  /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+      reg =  /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;
       if reg.test(email.val()) is false
         form_alert email, 'email', "邮箱格式错误！"
       else

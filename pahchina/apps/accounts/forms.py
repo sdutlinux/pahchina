@@ -5,13 +5,16 @@ __author__ = 'zhwei'
 
 from django import forms
 from django.template import loader
+from django.core.mail import send_mail
 from django.utils.http import int_to_base36
+from django.utils.safestring import mark_safe
 from django.contrib.sites.models import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
+from .mails import send_confirm_email
 
 class RegisterForm(UserCreationForm):
     """ 用户注册表单
@@ -27,6 +30,13 @@ class RegisterForm(UserCreationForm):
     class Media:
 
         js = ('js/register.js',)
+
+    def __init__(self, *args, **kwargs):
+        try:
+            self.request = kwargs.pop("view_request")
+        except KeyError:
+            pass
+        super(RegisterForm, self).__init__(*args, **kwargs)
 
     def clear_identity(self):
         identity = self.cleaned_data.get("identity")
@@ -57,6 +67,8 @@ class RegisterForm(UserCreationForm):
         user.identity = int(self.cleaned_data["identity"]) # 修改身份
         if commit:
             user.save()
+        user.set_mark('email', False)
+        send_confirm_email(user.email, self.request.SITE)
         return user
 
 class UpdateUserForm(forms.ModelForm):
@@ -135,7 +147,6 @@ class PasswordResetForm(forms.Form):
         Generates a one-use only link for resetting password and sends to the
         user.
         """
-        from django.core.mail import send_mail
         for user in self.users_cache:
             if not domain_override:
                 current_site = get_current_site(request)

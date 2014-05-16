@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
+from django.core.cache import cache
 from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.utils.safestring import mark_safe
@@ -22,7 +23,9 @@ from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
 
 from .models import User, Personal, Unit, Bank
+from .mails import send_confirm_email
 import forms
+
 
 
 
@@ -30,15 +33,30 @@ def pah_register(request):
     """ 网站注册
     注册后同步创建其他身份
     """
-    form = forms.RegisterForm
     if request.method == "POST":
-            form = forms.RegisterForm(request.POST.copy())
-            if form.is_valid():
-                form.save()
-                messages.success(request, '注册成功, 请登录！')
-                return HttpResponseRedirect(reverse('login'))
+        form = forms.RegisterForm(request.POST.copy(), view_request=request)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '注册成功, 请前往注册邮箱激活帐号！')
+            return HttpResponseRedirect(reverse('login'))
     if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
+    form = forms.RegisterForm
     return r2r('register.html', locals(), context_instance=RequestContext(request))
+
+def register_confirm_email(request):
+    """验证邮箱"""
+    token = request.GET.get('token')
+    if token == "send_email":
+        send_confirm_email(request.session['user_email'], request.SITE)
+        messages.info(request, "验证邮件已重新发送，请前往邮箱检查，十分钟内有效！")
+        return HttpResponseRedirect(reverse_lazy("index"))
+    user_email = cache.get(token)
+    cache.delete(token)
+    if user_email is None: raise Http404
+    target_user = get_object_or_404(User, email=user_email)
+    target_user.set_mark('email', True)
+    messages.success(request, "用户已激活， 谢谢您的注册， 请登录！")
+    return HttpResponseRedirect(reverse_lazy("index"))
 
 def pah_login(request):
     """ 网站登录
@@ -50,6 +68,12 @@ def pah_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
+                if user.get_mark('email') is False:
+                    request.session['user_email'] = user.email
+                    _msg = '''您的邮箱尚未通过验证<a class="btn btn-mini" href="{0}?token=send_email">
+                    &nbsp;发送验证邮件</a>'''.format(reverse_lazy("confirm_mail"))
+                    messages.info(request, mark_safe(_msg))
+                    return HttpResponseRedirect(reverse_lazy('index'))
                 login(request, user)
                 user.count_login_time() # 修改登录次数
                 messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
@@ -62,7 +86,7 @@ def pah_login(request):
                     else:
                         return HttpResponseRedirect(reverse_lazy('profile'))
             else:
-                messages.error(request, '用户暂停使用，请联系管理员！')
+                messages.error(request, '用户暂停使用，尚未激活！')
         else:
             messages.error(request, '用户名与密码不匹配！')
 

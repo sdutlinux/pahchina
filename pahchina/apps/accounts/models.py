@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -17,6 +18,9 @@ class User(AbstractUser):
     """
 
     #基本信息
+    mark = models.TextField(verbose_name="标记信息", default="{}",null=True, blank=True)
+    # 用作标记必要信息，可能会保存成JSON或其他格式
+
     spare = models.EmailField(blank=True, null=True,
                               verbose_name='备用邮箱',
                               help_text='')
@@ -149,11 +153,29 @@ class User(AbstractUser):
     def get_juzhu_addr(self):
         return self.livingregion_set.get(cate='juzhu').get_location()
 
+    def set_active(self):
+        self.is_active = True
+        self.save()
+
     def get_full_name(self):
         """ 符合中文姓名风格
         """
         full_name = '%s%s' % (self.last_name, self.first_name)
         return full_name.strip()
+
+    def set_mark(self, key, value):
+        """数据库中的键值对"""
+        obj=json.loads(self.mark)
+        if value=="delete": obj.pop(key)
+        else: obj[key]=value
+        self.mark=json.dumps(obj)
+        self.save()
+
+    def get_mark(self, key):
+        """获取值"""
+        obj = json.loads(self.mark)
+        return obj.get(key, None)
+
 
     def __getattr__(self, item):
         """ 用来判断身份
@@ -190,7 +212,7 @@ SEX_CHOICES = (
 )
 MARITAL_CHOICES = (
     ('SINGLE', '单身'),
-    ('MARRIED', '已婚'),
+    ('MARRIED', '有配偶'),
     ('WIDOWED', '丧偶'),
     ('DIVORCE', '离异'),
 )
