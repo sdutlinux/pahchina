@@ -106,11 +106,10 @@ class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
     operate = '添加'
 
     _form_dict = {
-        'user': account_form.RegisterForm,
+        'user': account_form.AdminCreateUserForm,
         'news': news_form.NewsForm
 
     }
-
 
     def get_success_url(self):
         messages.success(self.request, '创建成功！')
