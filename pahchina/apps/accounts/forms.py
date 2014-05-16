@@ -16,13 +16,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
 from .mails import send_confirm_email
 
-class RegisterForm(UserCreationForm):
+class BaseRegisterForm(UserCreationForm):
     """ 用户注册表单
     重写了save方法，用于注册后修改身份
     """
-    #identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
-    #                             help_text='请正确选择身份')
-
     class Meta:
         model = User
         fields=('username', 'identity', 'email')
@@ -34,9 +31,9 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         try:
             self.request = kwargs.pop("view_request")
-        except KeyError:
+        except (KeyError,AttributeError):
             pass
-        super(RegisterForm, self).__init__(*args, **kwargs)
+        super(BaseRegisterForm, self).__init__(*args, **kwargs)
 
     def clear_identity(self):
         identity = self.cleaned_data.get("identity")
@@ -67,9 +64,29 @@ class RegisterForm(UserCreationForm):
         user.identity = int(self.cleaned_data["identity"]) # 修改身份
         if commit:
             user.save()
+        return user
+
+class AdminCreateUserForm(BaseRegisterForm):
+    """ 用户注册表单
+    重写了save方法，用于注册后修改身份
+    """
+    #identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
+    #                             help_text='请正确选择身份')
+    # def save(self, commit=True):
+    #     user = super(AdminCreateUserForm, self).save(commit=False)
+    #     return user
+
+class RegisterForm(BaseRegisterForm):
+    """ 用户注册form
+    """
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
         user.set_mark('email', False)
         send_confirm_email(user.email, self.request.SITE)
         return user
+
+
+
 
 class UpdateUserForm(forms.ModelForm):
 
