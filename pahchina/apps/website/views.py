@@ -121,7 +121,10 @@ class ListMyFriLink(StaffRequiredMixin, generic.ListView):
     model = Links
 
     def get_queryset(self):
-        queryset = Links.objects.filter(site=self.request.user.website)
+        if self.request.user.is_superuser:
+            queryset = Links.objects.filter(site_id=1)
+        else:
+            queryset = Links.objects.filter(site=self.request.user.website)
         return queryset
 
 class CreateMyFriLink(StaffRequiredMixin, generic.FormView):
