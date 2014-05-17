@@ -16,6 +16,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
 from .mails import send_confirm_email
 
+# class IdentityChoiceForm(forms.Form):
+#
+#     identity = forms.ChoiceField(label="身份选择", choices=IDENTITY_CHOICES)
+
 class BaseRegisterForm(UserCreationForm):
     """ 用户注册表单
     重写了save方法，用于注册后修改身份

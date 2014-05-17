@@ -1,24 +1,97 @@
 {% extends 'base-index.html' %}
-
+{% load bootstrap_tags %}
 {% block title %}选择角色{% endblock %}
+{% block head %}
+    <style>
+        .tab-pane {
+            margin-left: 55px;
+        }
 
+        .step {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 
-    <div class="span9">
+    <div class="span9 center">
         <div class="tabbable"> <!-- Only required for left/right tabs -->
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab">Section 1</a></li>
-                <li><a href="#tab2" data-toggle="tab">Section 2</a></li>
+                <li class="active"><a href="#tab1" data-toggle="tab">设置基本信息</a></li>
             </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab1">
-                    <p>I'm in Section 1.</p>
+            <form action="" method="post" class="form-horizontal">{% csrf_token %}
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div class="control-group">
+                            <label class="control-label" for="inputEmail"><strong>身份选择</strong></label>
+                            <div class="controls">
+                                <select class="form-control not_blank" id="id_identity" name="identity">
+                                    <option value="0">普通用户</option>
+                                    <option value="1">患者</option>
+                                    <option value="2">医生</option>
+                                    <option value="3">医院</option>
+                                    <option value="4">志愿者</option>
+                                    <option value="5">药商</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div id="div_id_province" class="control-group">
+                            <label for="id_province" class="control-label required-field province">省份</label>
+                            <div class="controls">
+                                <select id="id_province" class="province not_blank" name="province"
+                                        data-val="{{ region_form.province.value }}">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            {% if  region_form.province.errors %}
+                                <p class="text-warning">{{ region_form.province.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div id="div_id_city" class="control-group  ">
+                            <label for="id_city" class="control-label required-field city">城市</label>
+
+                            <div class="controls">
+                                <select id="id_city" class="city" name="city" data-val="{{ region_form.city.value }}"
+                                        disabled>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            {% if  region_form.city.errors %}
+                                <p class="text-warning">{{ region_form.city.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div id="div_id_area" class="control-group">
+                            <label for="id_area" class="control-label required-field">地区</label>
+
+                            <div class="controls">
+                                <select id="id_area" class="area" name="area" data-val="{{ region_form.area.value }}"
+                                        disabled>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            {% if  region_form.area.errors %}
+                                <p class="text-warning">{{ region_form.area.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-pane" id="tab2">
-                    <p>Howdy, I'm in Section 2.</p>
-                </div>
-            </div>
+                <hr/>
+                <input class="btn btn-block" type="submit" value="下一步">
+            </form>
+
         </div>
     </div>
 
+{% endblock %}
+
+{% block foot %}
+    {{ region_form.media }}
+    <script>
+        $.cxSelect.defaults.url = "/region/response/city.js";
+        $("#tab1").cxSelect({
+            selects: ["province", "city", "area"]
+        });
+    </script>
 {% endblock %}

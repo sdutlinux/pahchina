@@ -17,16 +17,15 @@ from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.utils.safestring import mark_safe
 
-from ..utils import  SuperRequiredMixin, LoginRequiredMixin
+from ..utils import SuperRequiredMixin, LoginRequiredMixin
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
+from ..region.forms import UserUpdateRegionForm
 
 from .models import User, Personal, Unit, Bank
 from .mails import send_confirm_email
 import forms
-
-
 
 
 def pah_register(request):
@@ -43,6 +42,7 @@ def pah_register(request):
     form = forms.RegisterForm
     return r2r('register.html', locals(), context_instance=RequestContext(request))
 
+
 def register_confirm_email(request):
     """验证邮箱"""
     token = request.GET.get('token')
@@ -57,6 +57,7 @@ def register_confirm_email(request):
     target_user.set_mark('email', True)
     messages.success(request, "用户已激活， 谢谢您的注册， 请登录！")
     return HttpResponseRedirect(reverse_lazy("index"))
+
 
 def pah_login(request):
     """ 网站登录
@@ -75,7 +76,7 @@ def pah_login(request):
                     messages.info(request, mark_safe(_msg))
                     return HttpResponseRedirect(reverse_lazy('index'))
                 login(request, user)
-                user.count_login_time() # 修改登录次数
+                user.count_login_time()  # 修改登录次数
                 messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
                 redirect_to = request.REQUEST.get('next', False)
                 if redirect_to:
@@ -92,7 +93,8 @@ def pah_login(request):
 
     form = AuthenticationForm
     if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
-    return r2r('login.html', locals(), context_instance = RequestContext(request))
+    return r2r('login.html', locals(), context_instance=RequestContext(request))
+
 
 def pah_logout(request):
     """ 网站登出
@@ -104,11 +106,22 @@ def pah_logout(request):
 
 @login_required()
 def first_login(request):
-   """ 用户第一次登录
-   """
-   return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
+    """ 用户第一次登录
+    """
+    identity_form = forms.IdentityChoiceForm
+    region_form = UserUpdateRegionForm
+    if request.method == "POST":
 
+        province = request.POST.get("province")
+        city = request.POST.get("city")
+        area = request.POST.get("area")
+        identity_num = request.POST.get("identity")
+        if province or identity_num is not None:
+            if identity_num in range(0, 6):
+                # self.request.user
+                pass
 
+    return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
 
 
 class Profile(LoginRequiredMixin, generic.DetailView):
@@ -116,19 +129,16 @@ class Profile(LoginRequiredMixin, generic.DetailView):
     """
 
     def get_template_names(self):
-
-        return 'profile-user.html'#.format(self.request.user.get_identity_label())
+        return 'profile-user.html'  #.format(self.request.user.get_identity_label())
 
     def get_context_object_name(self, obj):
-
         return self.request.user.get_identity_label()
 
     def get_object(self, queryset=None):
-
         return self.request.user.get_identity_model()
 
-class UserInfoView(LoginRequiredMixin, generic.DetailView):
 
+class UserInfoView(LoginRequiredMixin, generic.DetailView):
     #model = Personal
     #template_name = 'user-personal.html'
 
@@ -137,6 +147,7 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
         'unit': Unit,
         'bank': Bank,
     }
+
     def get_obj(self):
         try:
             return self._dic[self.kwargs['model']]
@@ -153,6 +164,7 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
             return _obj
         except self.get_obj().DoesNotExist:
             messages.info(self.request, '您尚未创建该信息！')
+
 
 # class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
 class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
@@ -188,7 +200,7 @@ class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
 
     def get_queryset(self):
         try:
-            obj=self.get_tu()[1].objects.get(user=self.request.user)
+            obj = self.get_tu()[1].objects.get(user=self.request.user)
             return obj.__dict__.copy()
         except self.get_tu()[1].DoesNotExist:
             return {}
@@ -204,7 +216,7 @@ class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateUserInfo, self).get_context_data(**kwargs)
-        context['title']='修改信息'
+        context['title'] = '修改信息'
         return context
 
 
@@ -221,15 +233,13 @@ class Show(generic.TemplateView):
         context['object_user'] = get_object_or_404(User, username=self.kwargs['username'])
         return context
 
-    #def get_template_names(self):
-    #
-    #    return 'show-user.html'.format(self._user.get_identity_label())
+        #def get_template_names(self):
+        #
+        #    return 'show-user.html'.format(self._user.get_identity_label())
 
-    #def get_context_object_name(self, obj):
-    #
-    #    return self._user.get_identity_label()
-
-
+        #def get_context_object_name(self, obj):
+        #
+        #    return self._user.get_identity_label()
 
 
 class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
@@ -247,8 +257,9 @@ class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateProfile, self).get_context_data(**kwargs)
-        context['title']='修改账户信息'
+        context['title'] = '修改账户信息'
         return context
+
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_index(request):
@@ -256,8 +267,6 @@ def admin_index(request):
     """
     return r2r('admin-index.html', locals(),
                context_instance=RequestContext(request))
-
-
 
 
 class UpdatePassword(LoginRequiredMixin, generic.FormView):
@@ -278,7 +287,7 @@ class UpdatePassword(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdatePassword, self).get_context_data(**kwargs)
-        context['title']='修改密码'
+        context['title'] = '修改密码'
         return context
 
     def form_valid(self, form):
@@ -286,4 +295,4 @@ class UpdatePassword(LoginRequiredMixin, generic.FormView):
         return super(UpdatePassword, self).form_valid(form)
 
 
-#class Create
+        #class Create

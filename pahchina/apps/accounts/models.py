@@ -135,22 +135,16 @@ class User(AbstractUser):
     def get_identity_model(self):
         """ 返回角色model
         """
-        if self.is_staff:
-            return self
-        elif self.identity==1:
-            return self.patient
-        elif self.identity==2:
-            return self.doctor
-        elif self.identity==3:
-            return self.hospital
-        elif self.identity==4:
-            return self.volunteer
+        if self.identity==1: return self.patient
+        elif self.identity==2: return self.doctor
+        elif self.identity==3: return self.hospital
+        elif self.identity==4: return self.volunteer
         return self
 
     # 地址信息
-    def get_huji_addr(self):
+    def get_apartment(self):
         return self.livingregion_set.get(cate='huji').get_location()
-    def get_juzhu_addr(self):
+    def get_household(self):
         return self.livingregion_set.get(cate='juzhu').get_location()
 
     def set_active(self):
@@ -176,7 +170,6 @@ class User(AbstractUser):
         obj = json.loads(self.mark)
         return obj.get(key, None)
 
-
     def __getattr__(self, item):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
@@ -200,6 +193,7 @@ class User(AbstractUser):
                 self.identity = self.identity_dic[item]
             else:
                 self.identity = 0
+            self.save()
         else:
             super(User, self).__setattr__(item, value)
 
