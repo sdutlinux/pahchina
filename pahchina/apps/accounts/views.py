@@ -22,9 +22,11 @@ from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
 from ..region.forms import UserUpdateRegionForm
+from ..region.models import set_user_region, Region
 
-from .models import User, Personal, Unit, Bank
+from .models import User, Personal, Unit, Bank, IDENTITY_LIST
 from .mails import send_confirm_email
+from .utils import set_user_identity
 import forms
 
 
@@ -55,6 +57,7 @@ def register_confirm_email(request):
     if user_email is None: raise Http404
     target_user = get_object_or_404(User, email=user_email)
     target_user.set_mark('email', True)
+    target_user.set_mark('first_login', True)
     messages.success(request, "用户已激活， 谢谢您的注册， 请登录！")
     return HttpResponseRedirect(reverse_lazy("index"))
 
@@ -76,6 +79,9 @@ def pah_login(request):
                     messages.info(request, mark_safe(_msg))
                     return HttpResponseRedirect(reverse_lazy('index'))
                 login(request, user)
+                if user.get_mark("first_login"):
+                    messages.success(request, "登录成功，这是您的第一次登录， 请填写必要信息，谢谢支持！")
+                    return HttpResponseRedirect(reverse_lazy('first_login'))
                 user.count_login_time()  # 修改登录次数
                 messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
                 redirect_to = request.REQUEST.get('next', False)
@@ -108,19 +114,22 @@ def pah_logout(request):
 def first_login(request):
     """ 用户第一次登录
     """
-    identity_form = forms.IdentityChoiceForm
+    # identity_form = forms.IdentityChoiceForm
     region_form = UserUpdateRegionForm
     if request.method == "POST":
 
         province = request.POST.get("province")
         city = request.POST.get("city")
         area = request.POST.get("area")
-        identity_num = request.POST.get("identity")
-        if province or identity_num is not None:
-            if identity_num in range(0, 6):
-                # self.request.user
-                pass
-
+        identity = request.POST.get("identity")
+        if province or identity is not None:
+            if identity in IDENTITY_LIST:
+                set_user_identity(request.user, identity)
+            if province and city and area in Region.objects.all():
+                set_user_region(request.user, "apartment",
+                                province, city, area,)
+            messages.success(request, "提交信息成功， 欢迎使用！")
+            return HttpResponseRedirect(reverse_lazy('profile'))
     return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
 
 
@@ -129,10 +138,10 @@ class Profile(LoginRequiredMixin, generic.DetailView):
     """
 
     def get_template_names(self):
-        return 'profile-user.html'  #.format(self.request.user.get_identity_label())
+        return 'profile-user.html'
 
-    def get_context_object_name(self, obj):
-        return self.request.user.get_identity_label()
+    # def get_context_object_name(self, obj):
+    #     return self.request.user.get_identity_label()
 
     def get_object(self, queryset=None):
         return self.request.user.get_identity_model()
@@ -232,14 +241,6 @@ class Show(generic.TemplateView):
         context = super(Show, self).get_context_data(**kwargs)
         context['object_user'] = get_object_or_404(User, username=self.kwargs['username'])
         return context
-
-        #def get_template_names(self):
-        #
-        #    return 'show-user.html'.format(self._user.get_identity_label())
-
-        #def get_context_object_name(self, obj):
-        #
-        #    return self._user.get_identity_label()
 
 
 class UpdateProfile(LoginRequiredMixin, generic.UpdateView):

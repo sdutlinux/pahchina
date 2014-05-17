@@ -3,7 +3,7 @@
 
 from django import forms
 
-from .models import LivingRegion
+from .models import LivingRegion, set_user_region
 
 class UserUpdateRegionForm(forms.ModelForm):
     """ 用户更新个人居住信息
@@ -23,11 +23,8 @@ class UserUpdateRegionForm(forms.ModelForm):
         self._cate = cate # 地址信息类型， 户籍地还是居住地
 
     def save(self, commit=True):
-        try:
-            _region = LivingRegion.objects.get(user=self._user, cate=self._cate)
-        except LivingRegion.DoesNotExist:
-            _region =LivingRegion(user=self._user, cate=self._cate)
-        _region.province = self.cleaned_data['province']
-        _region.city = self.cleaned_data['city']
-        _region.area = self.cleaned_data['area']
-        _region.save()
+
+        return set_user_region(self._user, self._cate,
+                        self.cleaned_data['province'],
+                        self.cleaned_data['city'],
+                        self.cleaned_data['area'])

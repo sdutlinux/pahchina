@@ -29,22 +29,6 @@ def on_create(sender, instance, created, **kwargs):
             pass
 
 
-def set_user_identity(user, key):
-    """ 为用户设置角色
-    """
-    _dic = {
-        1: ('patient', Patient),
-        2: ('doctor', Doctor),
-        3: ('hospital', Hospital),
-        4: ('volunteer', Volunteer),
-        # 5: ('druggist')
-    }
-    name, obj = _dic[key]
-    user.__setattr__("is_"+name, True)
-    obj.objects.create(user=user)
-    return True
-
-
 #def patient_doctor_record(sender, instance, created, **kwargs):
 #
 #    if created:

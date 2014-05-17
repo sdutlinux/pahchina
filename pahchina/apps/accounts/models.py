@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 IDENTITY_CHOICES = ((0, '普通用户'), (1, '患者'), (2, '医生'),
                     (3, '医院'), (4, '志愿者'), (5, '药商'),)
-
+IDENTITY_LIST = ('patient', 'doctor', 'hospital', 'volunteer')
 
 class User(AbstractUser):
     """用户类
@@ -55,17 +55,17 @@ class User(AbstractUser):
 
     telephone = models.CharField(verbose_name='联系电话', max_length=13)
 
-    identity = models.SmallIntegerField(verbose_name='身份类型', default=0, choices=IDENTITY_CHOICES,
-                                        max_length=1)
+    identity = models.CharField(verbose_name='身份类型', default="", max_length=100)
 
-    identity_dic = {
-        'is_user': 0,
-        'is_patient': 1,
-        'is_doctor': 2,
-        'is_hospital': 3,
-        'is_volunteer': 4,
-        'is_druggist': 5,
-    }
+
+    # identity_dic = {
+    #     'is_user': 0,
+    #     'is_patient': 1,
+    #     'is_doctor': 2,
+    #     'is_hospital': 3,
+    #     'is_volunteer': 4,
+    #     'is_druggist': 5,
+    # }
 
     def get_avatar_url(self):
         """ 返回头像链接，无则返回默认头像链接
@@ -110,14 +110,13 @@ class User(AbstractUser):
         """
         return reverse('show', kwargs={'username': self.username})
 
-    def get_identity_label(self):
-        """ 返回角色代号
-        """
-        for key, value in self.identity_dic.iteritems():
-            if value == self.identity:
-                #print key, value
-                return key[3:]
-        return 'user'
+    # def get_identity_label(self):
+    #     """ 返回角色代号
+    #     """
+    #     for key, value in self.identity_dic.iteritems():
+    #         if value == self.identity:
+    #             return key[3:]
+    #     return 'user'
 
     def get_identity(self):
         """ 返回身份名称
@@ -135,10 +134,10 @@ class User(AbstractUser):
     def get_identity_model(self):
         """ 返回角色model
         """
-        if self.identity==1: return self.patient
-        elif self.identity==2: return self.doctor
-        elif self.identity==3: return self.hospital
-        elif self.identity==4: return self.volunteer
+        if self.is_patient: return self.patient
+        elif self.is_doctor: return self.doctor
+        elif self.is_hospital: return self.hospital
+        elif self.is_volunteer: return self.volunteer
         return self
 
     # 地址信息
@@ -146,10 +145,6 @@ class User(AbstractUser):
         return self.livingregion_set.get(cate='huji').get_location()
     def get_household(self):
         return self.livingregion_set.get(cate='juzhu').get_location()
-
-    def set_active(self):
-        self.is_active = True
-        self.save()
 
     def get_full_name(self):
         """ 符合中文姓名风格
@@ -174,25 +169,26 @@ class User(AbstractUser):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item in self.identity_dic and item.startswith('is_'):
-            # 判断非属性并且以 `is_`开头
-            if self.identity_dic[item] == self.identity:
+        if item[3] in IDENTITY_LIST and item.startswith('is_'):
+            if item[3:] in self.identity.split("_"):
                 return True
             else:
                 return False
-        else:
-            super(User, self).__getattr__(item)
+        # else:
+        #     super(User, self).__getattr__(item)
 
     def __setattr__(self, item, value):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item in self.identity_dic and item.startswith('is_'):
-            # 判断非属性并且以 `is_`开头
+        if item in IDENTITY_LIST and item.startswith('is_'):
             if value is True:
-                self.identity = self.identity_dic[item]
+                self.identity += item[2:]
             else:
-                self.identity = 0
+                if self.__getattr__(item):
+                    _identity_list = self.identity.split("_")
+                    _identity_list.remove(item[3:])
+                    self.identity = "_".join(_identity_list)
             self.save()
         else:
             super(User, self).__setattr__(item, value)

@@ -24,8 +24,6 @@ class Region(MPTTModel):
     def __unicode__(self):
         return self.name
 
-    #def website_count(self):
-
     class Meta:
         verbose_name='地区'
 
@@ -41,11 +39,7 @@ class LivingRegion(TimeStampedModel):
     area = models.CharField(verbose_name='地区', max_length=30, blank=True, null=True)
 
     cate = models.CharField(verbose_name='居住类型', help_text="选择所在的省市县",
-                            max_length= 10,
-                            choices=(
-                                ('1', '户籍所在地'),
-                                ('2', '常住地'),
-                            ))
+                            max_length= 10, choices=(('apartment', '户籍所在地'),('household', '常住地'),))
 
     class Meta:
         verbose_name = '居住信息'
@@ -61,3 +55,14 @@ class LivingRegion(TimeStampedModel):
 
     def clean_cate(self):
         pass
+
+def set_user_region(user, cate, province, city, area):
+    """ 设置用户住址
+    """
+    try:
+        _region = LivingRegion.objects.get(user=user, cate=cate)
+    except LivingRegion.DoesNotExist:
+        _region =LivingRegion(user=user, cate=cate)
+    _region.province, _region.city, _region.area = province, city, area
+    _region.save()
+    return _region

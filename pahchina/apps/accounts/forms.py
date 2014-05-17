@@ -26,7 +26,7 @@ class BaseRegisterForm(UserCreationForm):
     """
     class Meta:
         model = User
-        fields=('username', 'identity', 'email')
+        fields=('username', 'email')
 
     class Media:
 
@@ -39,11 +39,11 @@ class BaseRegisterForm(UserCreationForm):
             pass
         super(BaseRegisterForm, self).__init__(*args, **kwargs)
 
-    def clear_identity(self):
-        identity = self.cleaned_data.get("identity")
-        for i in identity:
-            if i not in '123456,':
-                raise forms.ValidationError('身份不合法！')
+    # def clear_identity(self):
+    #     identity = self.cleaned_data.get("identity")
+    #     for i in identity:
+    #         if i not in '123456,':
+    #             raise forms.ValidationError('身份不合法！')
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
@@ -65,9 +65,8 @@ class BaseRegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.identity = int(self.cleaned_data["identity"]) # 修改身份
-        if commit:
-            user.save()
+        # user.identity = int(self.cleaned_data["identity"]) # 修改身份
+        if commit: user.save()
         return user
 
 class AdminCreateUserForm(BaseRegisterForm):
