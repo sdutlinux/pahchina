@@ -141,7 +141,7 @@ class User(AbstractUser):
     def set_mark(self, key, value):
         """数据库中的键值对"""
         obj=json.loads(self.mark)
-        if value==False: obj.pop(key)
+        if value=="delete": obj.pop(key)
         else: obj[key]=value
         self.mark=json.dumps(obj)
         self.save()
