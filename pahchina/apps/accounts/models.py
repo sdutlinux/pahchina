@@ -3,6 +3,7 @@
 
 import json
 from django.db import models
+from django.utils.timezone import datetime, now as django_now
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse, reverse_lazy
 
@@ -297,6 +298,22 @@ class Personal(models.Model):
     story = models.TextField(verbose_name='患者故事',
                              blank=True, null=True,
                              help_text='患者自述')
+
+    def get_birthday(self):
+        """  通过身份证号获取生日
+        """
+        try:
+            date = datetime.strptime(self.ID_number[6:14], "%Y%m%d")
+            return date
+        except IndexError:
+            return None
+
+    def get_age(self):
+        """ 通过身份证号获取年龄
+        """
+        if isinstance(self.get_birthday(), datetime):
+            age = django_now().year - self.get_birthday().year
+            return age
 
 
 #单位资料
