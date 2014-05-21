@@ -5,7 +5,6 @@ import json
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.contrib.contenttypes.models import ContentType
 
 IDENTITY_CHOICES = ((0, '普通用户'), (1, '患者'), (2, '医生'),
                     (3, '医院'), (4, '志愿者'), (5, '药商'),)
@@ -57,15 +56,8 @@ class User(AbstractUser):
 
     identity = models.CharField(verbose_name='身份类型', default="", max_length=100)
 
-
-    # identity_dic = {
-    #     'is_user': 0,
-    #     'is_patient': 1,
-    #     'is_doctor': 2,
-    #     'is_hospital': 3,
-    #     'is_volunteer': 4,
-    #     'is_druggist': 5,
-    # }
+    def __unicode__(self):
+        return self.username
 
     def get_avatar_url(self):
         """ 返回头像链接，无则返回默认头像链接
@@ -110,20 +102,19 @@ class User(AbstractUser):
         """
         return reverse('show', kwargs={'username': self.username})
 
-    # def get_identity_label(self):
-    #     """ 返回角色代号
-    #     """
-    #     for key, value in self.identity_dic.iteritems():
-    #         if value == self.identity:
-    #             return key[3:]
-    #     return 'user'
+    def get_apartment(self):
+        """ 返回居住信息"""
+        return self.livingregion_set.get(cate="apartment").get_location()
+
+    def get_household(self):
+        """返回户籍信息"""
+        return self.livingregion_set.get(cate='household').get_location()
 
     def get_identity(self):
         """ 返回身份名称
         eg: 患者，志愿者等
         """
         res = None
-
         for i in IDENTITY_CHOICES:
             if i[0] == self.identity:
                 res = i[1]
@@ -140,26 +131,20 @@ class User(AbstractUser):
         elif self.is_volunteer: return self.volunteer
         return self
 
-    # 地址信息
-    def get_apartment(self):
-        return self.livingregion_set.get(cate='huji').get_location()
-    def get_household(self):
-        return self.livingregion_set.get(cate='juzhu').get_location()
+
 
     def get_full_name(self):
-        """ 符合中文姓名风格
-        """
+        """ 符合中文姓名风格 """
         full_name = '%s%s' % (self.last_name, self.first_name)
         return full_name.strip()
 
     def set_mark(self, key, value):
         """数据库中的键值对"""
         obj=json.loads(self.mark)
-        if value=="delete": obj.pop(key)
+        if value==False: obj.pop(key)
         else: obj[key]=value
         self.mark=json.dumps(obj)
         self.save()
-
     def get_mark(self, key):
         """获取值"""
         obj = json.loads(self.mark)
@@ -169,29 +154,30 @@ class User(AbstractUser):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item[3] in IDENTITY_LIST and item.startswith('is_'):
+        if item.startswith('is_') and item[3:] in IDENTITY_LIST:
             if item[3:] in self.identity.split("_"):
                 return True
-            else:
-                return False
-        # else:
-        #     super(User, self).__getattr__(item)
+            else: return False
+        else:
+            return super(User, self).__getattr__(item)
 
     def __setattr__(self, item, value):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item in IDENTITY_LIST and item.startswith('is_'):
+        if item.startswith('is_') and item[3:] in IDENTITY_LIST:
             if value is True:
                 self.identity += item[2:]
+                print "set true"
             else:
                 if self.__getattr__(item):
                     _identity_list = self.identity.split("_")
                     _identity_list.remove(item[3:])
+                    print "set false"
                     self.identity = "_".join(_identity_list)
             self.save()
         else:
-            super(User, self).__setattr__(item, value)
+            return super(User, self).__setattr__(item, value)
 
 
 # choices

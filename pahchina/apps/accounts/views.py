@@ -16,13 +16,15 @@ from django.core.cache import cache
 from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.utils.safestring import mark_safe
+from django.db import IntegrityError
 
+from utils import set_user_region
 from ..utils import SuperRequiredMixin, LoginRequiredMixin
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
 from ..region.forms import UserUpdateRegionForm
-from ..region.models import set_user_region, Region
+from ..region.models import Region
 
 from .models import User, Personal, Unit, Bank, IDENTITY_LIST
 from .mails import send_confirm_email
@@ -117,18 +119,23 @@ def first_login(request):
     # identity_form = forms.IdentityChoiceForm
     region_form = UserUpdateRegionForm
     if request.method == "POST":
-
         province = request.POST.get("province")
         city = request.POST.get("city")
         area = request.POST.get("area")
         identity = request.POST.get("identity")
-        if province or identity is not None:
-            if identity in IDENTITY_LIST:
-                set_user_identity(request.user, identity)
-            if province and city and area in Region.objects.all():
+        try:
+            if province or identity is not None:
+                if identity in IDENTITY_LIST:
+                    print identity
+                    set_user_identity(request.user, identity)
                 set_user_region(request.user, "apartment",
                                 province, city, area,)
-            messages.success(request, "提交信息成功， 欢迎使用！")
+                messages.success(request, "提交信息成功， 欢迎使用！")
+                request.user.set_mark('email', False)
+                request.user.set_mark('first_login', False)
+                return HttpResponseRedirect(reverse_lazy('profile'))
+        except (KeyError, IntegrityError):
+            messages.warning(request, "请前往个人中心修改地区信息！")
             return HttpResponseRedirect(reverse_lazy('profile'))
     return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
 
@@ -136,20 +143,17 @@ def first_login(request):
 class Profile(LoginRequiredMixin, generic.DetailView):
     """ 用户个人主页
     """
+    context_object_name = "object_user"
 
     def get_template_names(self):
+        print self.get_context_data()
         return 'profile-user.html'
-
-    # def get_context_object_name(self, obj):
-    #     return self.request.user.get_identity_label()
 
     def get_object(self, queryset=None):
         return self.request.user.get_identity_model()
 
 
 class UserInfoView(LoginRequiredMixin, generic.DetailView):
-    #model = Personal
-    #template_name = 'user-personal.html'
 
     _dic = {
         'personal': Personal,
@@ -175,7 +179,6 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
             messages.info(self.request, '您尚未创建该信息！')
 
 
-# class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
 class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
     """ 修改个人信息
     包括个人信息、单位信息、银行信息
@@ -197,10 +200,7 @@ class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         _model = self.get_tu()[1]
-        try:
-            obj = _model.objects.get(user=self.request.user)
-        except _model.DoesNotExist:
-            obj = _model.objects.create(user=self.request.user)
+        obj = _model.objects.get_or_create(user=self.request.user)
         return obj
 
     def get_form_class(self):

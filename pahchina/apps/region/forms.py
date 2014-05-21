@@ -3,7 +3,9 @@
 
 from django import forms
 
-from .models import LivingRegion, set_user_region
+from .models import LivingRegion
+from pahchina.apps.accounts.utils import set_user_region
+
 
 class UserUpdateRegionForm(forms.ModelForm):
     """ 用户更新个人居住信息
@@ -24,7 +26,7 @@ class UserUpdateRegionForm(forms.ModelForm):
 
     def save(self, commit=True):
 
-        return set_user_region(self._user, self._cate,
+        set_user_region(self._user, self._cate,
                         self.cleaned_data['province'],
                         self.cleaned_data['city'],
                         self.cleaned_data['area'])

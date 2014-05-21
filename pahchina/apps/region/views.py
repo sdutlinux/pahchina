@@ -27,22 +27,22 @@ class UserSetRegion(LoginRequiredMixin ,generic.FormView):
     def get_context_data(self, **kwargs):
         context = super(UserSetRegion, self).get_context_data(**kwargs)
         cate = self.kwargs['cate']
-        if cate == 'huji': context['title']='修改户籍地'
-        if cate == 'juzhu': context['title']='修改居住地'
+        if cate == 'household': context['title']='修改户籍地'
+        if cate == 'apartment': context['title']='修改居住地'
         return context
 
     def get_form_kwargs(self):
         # 传递 user, cate 到form
         kwargs = super(UserSetRegion, self).get_form_kwargs()
         # 参数非法则返回404
-        if self.kwargs['cate'] not in ('huji', 'juzhu'): raise Http404
+        if self.kwargs['cate'] not in ('apartment', 'household'): raise Http404
         kwargs.update({'user': self.request.user,
                        'cate': self.kwargs['cate'],})
         return kwargs
 
     def get_initial(self):
         try:
-            obj=LivingRegion.objects.get(user=self.request.user, cate=self.kwargs['cate'])
+            obj = LivingRegion.objects.get(user_id=self.request.user.id, cate=self.kwargs['cate'])
             return obj.__dict__.copy()
         except LivingRegion.DoesNotExist:
             return {}

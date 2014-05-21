@@ -4,7 +4,6 @@
 __author__ = 'zhwei'
 
 from django.db import models
-from django.utils.html import mark_safe
 
 from mptt.models import MPTTModel
 
@@ -45,24 +44,10 @@ class LivingRegion(TimeStampedModel):
         verbose_name = '居住信息'
 
     def __unicode__(self):
-        return self.province + self.city +'市'+ self.area
+        return "{}(user:{})".format(self.cate, self.user)
 
     def get_location(self):
         """ 获取全部信息
         ret: 山东省淄博市张店区
         """
-        return self.province + self.city + self.area
-
-    def clean_cate(self):
-        pass
-
-def set_user_region(user, cate, province, city, area):
-    """ 设置用户住址
-    """
-    try:
-        _region = LivingRegion.objects.get(user=user, cate=cate)
-    except LivingRegion.DoesNotExist:
-        _region =LivingRegion(user=user, cate=cate)
-    _region.province, _region.city, _region.area = province, city, area
-    _region.save()
-    return _region
+        return self.province + self.city + u'市'+ self.area

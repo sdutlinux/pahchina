@@ -10,7 +10,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 # 同步创建相关身份
-from .apps.utils import OnCreate
+# from .apps.utils import OnCreate
 
 from .apps.index import views
 
