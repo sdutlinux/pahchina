@@ -6,6 +6,8 @@ local_settings.py
 .idea/*
 pahchina/media/*
 pahchina/db/*
+migrations
+env/
 
 .installed.cfg
 bin
