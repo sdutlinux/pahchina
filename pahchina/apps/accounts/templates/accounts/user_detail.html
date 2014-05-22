@@ -1,0 +1,45 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+查看用户 {{ object_user.username }}
+{% endblock %}
+
+{% block content %}
+
+<h2>用户{{ object_user.username }}</h2>
+<p>
+    <a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a>
+    <a href="{% url 'admin-update' 'user' user.id %}" class="btn"><i class="icon icon-edit"></i>修改账户信息</a>
+    {% if user.personal %}
+    <a href="{% url 'admin-update' 'personal' user.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改个人信息</a>
+    {% endif %}
+    {% if user.unit %}
+    <a href="{% url 'admin-update' 'unit' user.unit.id %}" class="btn"><i class="icon icon-edit"></i>修改单位信息</a>
+    {% endif %}
+    {% if user.bank %}
+    <a href="{% url 'admin-update' 'bank' user.bank.id %}" class="btn"><i class="icon icon-edit"></i>修改银行信息</a>
+    {% endif %} 
+</p>
+
+<table class="table table-bordered" border="0">
+    {% with user as object_user %}
+    {% include 'includes/user-info-as-table.html' %}
+    {% endwith %}
+    <tr>
+        <th>上次登录</th>
+        <td>{{ object_user.last_login | date:"Y年m月d日h点" }}</td>
+    </tr>
+    <tr>
+        <th>加入日期</th>
+        <td>{{ object_user.date_joined | date:"Y年m月d日h点" }}</td>
+    </tr>
+    <tr>
+        <th>操作</th>
+        <td>
+        <a class="btn" href="{% url 'admin-update' 'user' user.id %}">修改</a>
+        <a class="btn btn-danger" href="{% url 'admin-delete' 'user' user.id %}">删除</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

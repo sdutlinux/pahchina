@@ -1,18 +1,16 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
 {% block title %}个人主页{% endblock %}
+{% block h3title %}我的个人主页{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
-    <h3>我的个人页面</h3>
-    <table class="table table-bordered">
+        <table class="table table-bordered">
 
-        {% with user as object_user %}
-        {% include 'includes/user-info-as-table.html' %}
-        {% endwith %}
-
-        {% include 'includes/patient-info-as-table.html' %}
-
-    </table>
+            {% with user as object_user %}
+            {% include 'includes/user-info-as-table.html' %}
+            {% endwith %}
+            {% include 'includes/patient-info-as-table.html' %}
+        </table>
 
 {% endblock %}

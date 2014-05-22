@@ -5,6 +5,7 @@
 {% block content %}
 
     <h3>我的个人页面</h3>
+    <p><a href="{% url 'update-profile' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
     <table class="table table-bordered">
 
         {% with user as object_user %}

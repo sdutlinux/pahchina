@@ -8,33 +8,10 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render_to_response as r2r, get_object_or_404
 
 from .models import Patient, Drug, Dosage
+import forms
 from .forms import UpdatePatientForm, CreateDosageForm, AdminCreateDosageForm
 from ..utils import SuperRequiredMixin
 
-class DetailPatient(generic.DeleteView):
-    """ 管理员查看患者信息
-    """
-    model = Patient
-    context_object_name = 'patient'
-    template_name = 'detail-patient.html'
-
-class ListPatient(SuperRequiredMixin, generic.ListView):
-    """ 管理员查看患者列表
-    """
-    model = Patient
-    context_object_name = 'patient_list'
-    template_name = 'list-patient.html'
-
-class UpdatePatient(SuperRequiredMixin, generic.UpdateView):
-    """ 管理员更新患者信息
-    """
-    model = Patient
-    form_class = UpdatePatientForm
-    template_name = 'update-patient.html'
-
-
-    def get_success_url(self):
-        return reverse('admin-detail-patient', kwargs=self.kwargs)
 
 
 class Profile(generic.DetailView):
@@ -117,7 +94,7 @@ class CreateDosage(SuperRequiredMixin, generic.FormView):
     """
     model = Dosage
     form_class = CreateDosageForm
-    template_name = 'update.html'
+    template_name = 'admin-update.html'
 
     def get_success_url(self):
         return reverse('admin-detail-patient-dosage', kwargs=self.kwargs)
@@ -136,4 +113,4 @@ class UpdateDosage(SuperRequiredMixin, generic.UpdateView):
     """
     model = Dosage
     success_url = reverse_lazy('admin-list-dosage')
-    template_name = 'update.html'
+    template_name = 'admin-update.html'

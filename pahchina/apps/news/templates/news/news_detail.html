@@ -1,0 +1,64 @@
+{% extends 'base-admin.html' %}
+
+{% block title %}
+查看新闻 {{ news.title }}
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ news.title }}</h2>
+<table class="table bordered" border="0">
+    <tr>
+        <th>标题</th>
+        <td>{{ news.title }}</td>
+    </tr>
+    <tr>
+        <th>作者</th>
+        <td>{{ news.author}}</td>
+    </tr>
+    <tr>
+        <th>分类</th>
+        <td>{{ news.sort }}</td>
+    </tr>
+    <tr>
+        <th>时间</th>
+        <td>{{ news.created_date | date:"Y年m月d日h点" }}</td>
+    </tr>
+    <tr>
+        <th>内容</th>
+        <td>{{ news.content }}</td>
+    </tr>
+    <tr>
+        <th>草稿</th>
+        <td>{{ news.get_draft}}</td>
+    </tr>
+    <tr>
+        <th>推送</th>
+        <td>{{ news.get_push }}</td>
+    </tr>
+    <tr>
+        <th>置顶</th>
+        <td>{{ news.get_top }}</td>
+    </tr>
+    <tr>
+        <th>推广图片</th>
+        <td>
+            {% if news.img %}
+                <img src="{{ news.img.url }}" alt="" style="max-width: 500px;max-height: 500px;"/>
+            {% endif %} 
+        </td>
+    </tr>
+    <tr>
+        <th>作者</th>
+        <td><a href="{% url 'admin-detail' 'user' news.author.id %}">{{ news.author.username }}</a></td>
+    </tr>
+    <tr>
+        <th>操作</th>
+        <td>
+        <a class="btn" href="{% url 'admin-update-news' news.id %}">修改</a>
+        <a class="btn" href="{% url 'admin-delete-news' news.id %}">删除</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

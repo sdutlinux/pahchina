@@ -1,7 +1,12 @@
 *.log
 *.pot
 *.pyc
+log/*
+
 local_settings.py
+migrations
+
+pahchina.xml
 
 .idea/*
 pahchina/media/*

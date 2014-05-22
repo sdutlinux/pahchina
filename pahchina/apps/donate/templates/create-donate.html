@@ -1,10 +1,9 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
-{% block title %}
-捐赠 {{ object_donate.number }}
-{% endblock %}
+{% block title %}捐赠 {{ object_donate.number }}{% endblock %}
+{% block h3title %}捐赠 {{ object_donate.number }}{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
 <form action="" method="post">{% csrf_token %}
 

@@ -20,6 +20,12 @@ DOMAIN=''
 
 SITE_ID = 1
 
+CACHE_BACKEND = 'locmem:///'
+
+# develop
+#CACHE_BACKEND = 'simple:///'
+#CACHE_BACKEND = 'dummy:///'
+
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -112,6 +118,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     'pahchina.apps.website.middleware.SubSiteMiddleWare',
 )
 
@@ -147,8 +154,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
+    "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "pahchina.apps.website.context_processors.site",
+    "pahchina.apps.index.context_processors.index",
 )
 
 #TEMPLATE_CONTEXT_PROCESSORS +=
@@ -167,6 +176,8 @@ INSTALLED_APPS = (
     ## Third-party packages
     'django_forms_bootstrap',
     'mptt',
+    'pagination',
+    'tinymce',
     #'datetimewidget',
 
     ## apps
@@ -179,6 +190,8 @@ INSTALLED_APPS = (
     'pahchina.apps.medical',
     'pahchina.apps.news',
     'pahchina.apps.website',
+    'pahchina.apps.utils',
+    'pahchina.apps.region',
 )
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -211,6 +224,17 @@ LOGGING = {
         },
     }
 }
+
+# tinymce settings
+#TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
+#TINYMCE_DEFAULT_CONFIG = {
+#    'plugins': "table,spellchecker,paste,searchreplace",
+#    'theme': "advanced",
+#    'cleanup_on_startup': True,
+#    'custom_undo_redo_levels': 10,
+#}
+#TINYMCE_SPELLCHECKER = True
+#TINYMCE_COMPRESSOR = True
 
 try:
     from local_settings import *

@@ -1,0 +1,28 @@
+{% extends 'index-with-menu.html' %}
+
+{% block title %}个人主页{% endblock %}
+{% block h3title %}个人主页{% endblock %}
+
+{% block side-content %}
+
+    <p><a href="{% url 'update-profile' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
+    <table class="table table-bordered">
+    {% with user as object_user %}
+    {% include 'includes/user-info-as-table.html' %}
+    {% endwith %}
+    <tr class="success">
+        <td>{{ user.get_identity }}资料</td>
+        <td></td>
+    </tr>
+    {% if user.is_doctor %}
+        {% include 'includes/doctor-info-as-table.html' %}
+    {% elif user.is_patient %}
+        {% include 'includes/patient-info-as-table.html' %}
+    {% elif user.is_hospital %}
+        {% include 'includes/hospital-info-as-table.html' %}
+    {% endif %}
+
+    </table>
+
+
+{% endblock %}

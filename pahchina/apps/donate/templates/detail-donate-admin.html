@@ -28,15 +28,43 @@
     <tr>
         <th>捐赠帐号</th>
         {% if object_donate.user.id %}
-        <td><a href="{% url "admin-detail-user" object_donate.user.id %}">{{ object_donate.user.username }}</a></td>
+        <td><a href="{% url "admin-detail" "user" object_donate.user.id %}">{{ object_donate.user.username }}</a></td>
         {% else %}
         <td>{{ object_donate.user.username }}</td>
         {% endif %}
     </tr>
     </table>
-    <div><a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a></div>
-    <div><a href="{% url "admin-create-itemized-id" object_donate.id %}">使用此捐赠</a></div>
-    <h6 style="text-align: center">捐赠详情</h6>
-    <div><pre>{{ object_donate.details }}</pre></div>
 
+
+
+
+{#    <a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a>#}
+    <a class="btn btn-info" href="{% url "admin-create-itemized-id" object_donate.id %}">使用此捐赠</a>
+    <h6 style="text-align: center">捐赠详情</h6>
+{#    <div><pre>{{ object_donate.details }}</pre></div>#}
+<table class="table border">
+<thead>
+<tr>
+    <th>捐赠单号</th>
+    <th>此次使用</th>
+    <th>使用时间</th>
+    <th>余额</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+    {% for itemized in itemized_list %}
+    <tr>
+        <td><a href="{% url 'admin-detail-itemized' itemized.id %}">{{ itemized.number }}</a></td>
+        <td>{{ itemized.cast }}</td>
+        <td>{{ itemized.create_time }}</td>
+        <td>{{ itemized.residue }}</td>
+        <td>
+        <a href="{% url 'admin-update-itemized' itemized.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-delete-itemized' itemized.id %}"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

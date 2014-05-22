@@ -11,13 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^hospital/profile/update$', views.UpdateHospitalProfile.as_view(), name='update-hospital'),
 
-    url(r'^admin/hospital/list/$', views.ListHospital.as_view(), name='admin-list-hospital'),
-    url(r'^admin/hospital/detail/(?P<pk>\d+)/$', views.DetailHospital.as_view(),
-        name='admin-detail-hospital'),
-    url(r'^admin/hospital/update/(?P<pk>\d+)/$', views.UpdateHospitalProfile.as_view(),
-        name='admin-update-hospital'),
-
-
     url(r'^doctor/update/profile/$', views.DoctorUpdateProfile.as_view(), name='doctor-update-profile'),
 
     url(r'^doctor/patients/$', views.MyPatient.as_view(), name='doctor-list-patient'),
@@ -26,11 +19,7 @@ urlpatterns = patterns('',
     url(r'^hospital/list/doctors/(?P<pk>\d+)/$', views.ListDoctorPatient.as_view(),
         name='hospital-list-doctor-patient'),
 
-    url(r'^admin/doctor/list/$', views.ListDoctor.as_view(), name='admin-list-doctor'),
-    url(r'^admin/doctor/detail/(?P<pk>\d+)/$', views.DetailDoctor.as_view(),
-        name='admin-detail-doctor'),
-    url(r'^admin/doctor/update/(?P<pk>\d+)/$', views.UpdateDoctor.as_view(),
-        name='admin-update-doctor'),
+
     url(r'^admin/list/doctors/(?P<pk>\d+)/$', views.ListDoctorPatient.as_view(),
         name='admin-list-doctor-patient'), # 管理员查看该医生的病人
 

@@ -1,0 +1,14 @@
+{% extends 'index-with-menu.html' %}
+
+{% block title %}单位信息页{% endblock %}
+{% block h3title %}单位信息页{% endblock %}
+
+{% block side-content %}
+
+    <p><a href="{% url 'update-info' 'unit' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
+    <table class="table table-bordered">
+      {% include 'includes/unit-info-as-table.html' %}
+    </table>
+
+
+{% endblock %}

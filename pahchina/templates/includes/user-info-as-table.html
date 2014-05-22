@@ -6,7 +6,8 @@
             <th>照片</th>
             <td>
                 {% if object_user.avatar %}
-                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}"/>
+                <img src="{{ object_user.avatar.url }}" alt="{{ object_user.username }}" class="img-polaroid"
+                        style="max-height: 100px; max-width: 100px;"/>
                 {% endif %}
             </td>
         </tr>
@@ -15,10 +16,54 @@
             <td>{{ object_user.get_full_name }}</td>
         </tr>
         <tr>
+            <th>户籍所在地</th>
+            <td>{{ object_user.get_huji_addr.get_location }}&nbsp;<a href="{% url 'user-region' 'huji' %}">修改</a></td>
+        </tr>
+        <tr>
+            <th>当前居住地</th>
+            <td>{{ object_user.get_juzhu_addr.get_location }}&nbsp;<a href="{% url 'user-region' 'juzhu' %}">修改</a></td>
+        </tr>
+        <tr>
             <th>Email</th>
             <td>{{ object_user.email }}</td>
         </tr>
         <tr>
             <th>身份</th>
             <td>{{ object_user.get_identity }}</td>
+        </tr>
+        <tr>
+            <th>备用邮箱</th>
+            <td>{{ object_user.spare }}</td>
+        </tr>
+        <tr>
+            <th>常用手机</th>
+            <td>{{ object_user.cellphone }}</td>
+        </tr>
+        <tr>
+            <th>备用手机</th>
+            <td>{{ object_user.spare_phone }}</td>
+        </tr>
+        <tr>
+            <th>QQ</th>
+            <td>{{ object_user.qq }}</td>
+        </tr>
+        <tr>
+            <th>积分</th>
+            <td>{{ object_user.score }}</td>
+        </tr>
+        <tr>
+            <th>周登录次数</th>
+            <td>{{ object_user.login_times_week }}</td>
+        </tr>
+        <tr>
+            <th>月登录次数</th>
+            <td>{{ object_user.login_times_mouth }}</td>
+        </tr>
+        <tr>
+            <th>登录次数</th>
+            <td>{{ object_user.login_times }}</td>
+        </tr>
+        <tr>
+            <th>资料完整度</th>
+            <td>{{ object_user.get_info_rate }}</td>
         </tr>

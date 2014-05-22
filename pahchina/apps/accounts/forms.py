@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
-from .models import User, Personal, IDENTITY_CHOICES
+from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
 
 class RegisterForm(UserCreationForm):
     """ 用户注册表单
@@ -22,7 +22,11 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields=('username', 'identity')
+        fields=('username', 'identity', 'email')
+
+    class Media:
+
+        js = ('js/register.js',)
 
     def clear_identity(self):
         identity = self.cleaned_data.get("identity")
@@ -59,19 +63,43 @@ class UpdateUserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
-        self.fields['is_active'].help_text = ''
-        self.fields['is_staff'].label = '是否管理员'
+        self.fields['is_active'].help_text = '该用户是否允许正常登录'
+        self.fields['is_staff'].label = '是否站点管理员'
         self.fields['is_staff'].help_text = ''
 
     class Meta:
         model = User
-        fields=('username', 'last_name', 'first_name', 'email', 'avatar', 'is_active', 'is_staff')
+        fields=('username','email', 'avatar', 'is_active', 'is_staff',
+                'is_superuser', 'spare', 'cellphone', 'spare_phone',
+                'qq','score','remark')
+
 
 class UpdateProfileForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(UpdateProfileForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['email'].widget.attrs['readonly'] = True
+
+    def clean_username(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            return instance.username
+        else:
+            return self.cleaned_data['username']
+
+    def clean_email(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            return instance.email
+        else:
+            return self.cleaned_data['email']
+
     class Meta:
         model = User
-        fields = ('username', 'last_name', 'first_name', 'email', 'avatar')
+        fields = ('username', 'email','last_name', 'first_name',
+                  'avatar','spare', 'cellphone', 'spare_phone',
+                  'qq',)
 
 
 class PasswordResetForm(forms.Form):
@@ -131,72 +159,58 @@ class PasswordResetForm(forms.Form):
             send_mail(subject, email, from_email, [user.email])
 
 
-#class UpdateUserIdentityForm(forms.ModelForm):
-#
-#    identity = forms.ComboField(label='用户身份',
-#                widget=forms.CheckboxSelectMultiple(choices=IDENTITY_CHOICES))
-#
-#    class Meta:
-#        model = User
-#        fields = ('username',)
-#
-#
-#    def save(self, commit=True):
-#
-#        #super(UpdateUserIdentityForm, self).save()
-#
-#        identity = self.cleaned_data["identity"]
-#        print identity
-        #
-        #if '1,' in identity: self.instance.is_patient = True
-        #if '2,' in identity: self.instance.is_doctor = True
-        #if '3,' in identity: self.instance.is_hospital = True
-        #if '4,' in identity: self.instance.is_donor = True
-        #if '5,' in identity: self.instance.is_volunteer = True
-        #if '6,' in identity: self.instance.is_druggist = True
+class VltFirstFillForm(forms.ModelForm):
 
-from django.forms.models import model_to_dict, fields_for_model, modelform_factory
-
-class RoleWithUserForm(forms.ModelForm):
-    """ 带用户的角色创建
-    管理员使用
-    """
-
-    def __init__(self, instance=None, *args, **kwargs):
-        _fields = ('username', 'password',)
-        _initial = kwargs.pop('initial') # pop出initial参数
-        _initial = model_to_dict(instance.user, _fields) if instance is not None else {}
-        super(RoleWithUserForm, self).__init__(initial=_initial, instance=instance, *args, **kwargs)
-        self.fields.update(fields_for_model(User, _fields))
-
-    class Meta:
-        model = User
-        exclude = ('user',)
-
-
-
-    def save(self, *args, **kwargs):
-        u = self.instance.user
-        u.first_name = self.cleaned_data['first_name']
-        u.last_name = self.cleaned_data['last_name']
-        u.email = self.cleaned_data['email']
-        u.save()
-        profile = super(RoleWithUserForm, self).save(*args,**kwargs)
-        return profile
-
-
-class VltFirstFill(forms.ModelForm):
     class Meta:
         model = Personal
+        exclude = ('user',)
+
+    def __init__(self, user=None,*args, **kwargs):
+        super(VltFirstFillForm, self).__init__(*args, **kwargs)
+        self._user = user
+
+    def save(self, commit=True):
+        ret = super(VltFirstFillForm, self).save(commit=False)
+        ret.user = self._user
+        ret.save()
 
 
-class VltFill(forms.ModelForm):
+class VltFillForm(forms.ModelForm):
     class Meta:
         model = Personal
         fields = ('nickname','nationality','belief','height',
-                  'weight','marital_status','bear_status',
-                  'home_phone','domicile','permanent_residence',
-                  'address','education','school','major',
-                  'qualification','specialty','personal_profile',
-                  'story')
+                  'weight','marital_status','bear_status','home_phone')
 
+
+
+class UnitForm(forms.ModelForm):
+
+    class Meta:
+        model = Unit
+        exclude = ('user')
+
+    def __init__(self, user=None,*args, **kwargs):
+        super(UnitForm, self).__init__(*args, **kwargs)
+        self._user = user
+
+    def save(self, commit=True):
+        ret = super(UnitForm, self).save(commit=False)
+        ret.user = self._user
+        ret.save()
+
+
+
+class BankForm(forms.ModelForm):
+
+    class Meta:
+        model = Bank
+        exclude = ('user')
+
+    def __init__(self, user=None,*args, **kwargs):
+        super(BankForm, self).__init__(*args, **kwargs)
+        self._user = user
+
+    def save(self, commit=True):
+        ret = super(BankForm, self).save(commit=False)
+        ret.user = self._user
+        ret.save()

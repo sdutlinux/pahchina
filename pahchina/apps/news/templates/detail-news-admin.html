@@ -1,60 +1,65 @@
 {% extends 'base-admin.html' %}
 
 {% block title %}
-查看新闻 {{ object_news.title }}
+    查看新闻 {{ object_news.title }}
 {% endblock %}
 
 {% block content %}
 
-<h2>{{ object_news.title }}</h2>
-<table class="table bordered" border="0">
-    <tr>
-        <th>照片</th>
-        <th>
-            {% if object_news.user.avatar %}
-                <img src="{{ object_news.user.avatar.user.url }}" alt="{{ object_news.user.username }}" width="100px;"/>
-            {% endif %}
-        </th>
-    </tr>
-    <tr>
-        <th>标题</th>
-        <td>{{ object_news.title }}</td>
-    </tr>
-    <tr>
-        <th>作者</th>
-        <td>{{ object_news.author}}</td>
-    </tr>
-    <tr>
-        <th>分类</th>
-        <td>{{ object_news.sort }}</td>
-    </tr>
-    <tr>
-        <th>时间</th>
-        <td>{{ object_news.created_date | date:"Y年m月d日h点" }}</td>
-    </tr>
-    <tr>
-        <th>内容</th>
-        <td>{{ object_news.content }}</td>
-    </tr>
-    <tr>
-        <th>草稿</th>
-        <td>{{ object_news.get_draft}}</td>
-    </tr>
-    <tr>
-        <th>推送</th>
-        <td>{{ object_news.get_push }}</td>
-    </tr>
-    <tr>
-        <th>置顶</th>
-        <td>{{ object_news.get_top }}</td>
-    </tr>
-    <tr>
-        <th>操作</th>
-        <td>
-        <a class="btn" href="{% url 'admin-update-news' object_news.id %}">修改</a>
-        <a class="btn" href="{% url 'admin-delete-news' object_news.id %}">删除</a>
-        </td>
-    </tr>
-</table>
+    <h2>{{ object_news.title }}</h2>
+    <table class="table bordered" border="0">
+        <tr>
+            <th>照片</th>
+            <th>
+                {% if object_news.user.avatar %}
+                    <img src="{{ object_news.user.avatar.user.url }}" alt="{{ object_news.user.username }}"
+                         width="100px;"/>
+                {% endif %}
+            </th>
+        </tr>
+        <tr>
+            <th>标题</th>
+            <td>{{ object_news.title }}</td>
+        </tr>
+        <tr>
+            <th>作者</th>
+            <td>{{ object_news.author }}</td>
+        </tr>
+        <tr>
+            <th>分类</th>
+            <td>{{ object_news.sort }}</td>
+        </tr>
+        <tr>
+            <th>时间</th>
+            <td>{{ object_news.created_date | date:"Y年m月d日h点" }}</td>
+        </tr>
+        <tr>
+            <th>内容</th>
+            <td>{{ object_news.content | truncatechars:20 }}</td>
+        </tr>
+        <tr>
+            <th>发布时间</th>
+            <td>{{ object_news.published_date |date:"Y年m月d日" }}</td>
+        </tr>
+        <tr>
+            <th>草稿</th>
+            <td>{{ object_news.get_draft }}</td>
+        </tr>
+        <tr>
+            <th>推送</th>
+            <td>{{ object_news.get_push }}</td>
+        </tr>
+        <tr>
+            <th>置顶</th>
+            <td>{{ object_news.get_top }}</td>
+        </tr>
+        <tr>
+            <th>操作</th>
+            <td>
+                <a class="btn" href="{% url 'admin-update-news' object_news.id %}">修改</a>
+                <a class="btn" href="{% url 'admin-delete-news' object_news.id %}">删除</a>
+            </td>
+        </tr>
+    </table>
 
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'index-with-menu.html' %}
+
+{% block title %}银行信息页{% endblock %}
+{% block h3title %}银行信息页{% endblock %}
+
+{% block side-content %}
+
+    <h3>银行信息页面</h3>
+    <p><a href="{% url 'update-info' 'bank' %}" class="btn btn-info"><i class="icon icon-edit"></i>&nbsp;修改</a></p>
+    <table class="table table-bordered">
+      {% include 'includes/bank-info-as-table.html' %}
+    </table>
+
+
+{% endblock %}

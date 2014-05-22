@@ -1,0 +1,11 @@
+<ul class="unstyled">
+     {% for news in news_list %}
+        <li>
+            <a href="{% url 'detail-news' news.id %}">{{ news.title }}</a>
+            <span style="float:right;">
+            {{ news.published_date | date:"Y-m-d" }}
+            </span>
+        </li>
+    {% endfor %}
+</ul>
+

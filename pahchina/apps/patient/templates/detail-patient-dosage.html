@@ -7,7 +7,7 @@
 {% block content %}
     <h2>患者用药详情页面</h2>
     <p>
-        <a class="btn" href="{% url 'admin-detail-patient' patient.id %}">
+        <a class="btn" href="{% url 'admin-detail' 'patient' patient.id %}">
             <i class="icon-arrow-left"></i>&nbsp;
             {{ patient }}</a></p>
 
@@ -17,6 +17,10 @@
                 <p><span class="badge badge-inverse">{{ dosage.datetime|date:'Y年m月d日' }}</span></p>
                 <p><span class="label label-info"><i class="icon-plus-sign"></i>&nbsp;{{ dosage.drug }}</span>
                     服药剂量：{{ dosage.dose }}
+                </p>
+                <p>
+                    <a class="btn" href="{% url 'admin-update' 'dosage' dosage.id %}"><i class="icon-edit"></i>修改</a>
+                    <a class="btn" href="{% url 'admin-delete' 'dosage' dosage.id %}"><i class="icon-remove"></i>删除</a>
                 </p>
             </div>
         {% endfor %}

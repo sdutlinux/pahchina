@@ -12,64 +12,34 @@ from ..utils import SuperUser, SuperRequiredMixin, LoginRequiredMixin
 from ..patient.models import Patient
 
 from .models import Hospital, Doctor, Record, DoctorRecord
-from .forms import UpdateHospitalForm, RecordForm, \
-    DoctorRecordStartForm, DoctorRecordEndForm
-
+#from .forms import UpdateHospitalForm, RecordForm, \
+#    DoctorRecordStartForm, DoctorRecordEndForm
+import forms
 
 class UpdateHospitalProfile(LoginRequiredMixin, generic.UpdateView):
     """ 更新医院信息，管理员和医院通用
     """
     model = Hospital
-    form_class = UpdateHospitalForm
+    form_class = forms.UpdateHospitalForm
+    success_url = reverse_lazy('admin-list-hospital')
+    template_name = 'update-user-profile.html'
 
     def get_object(self, queryset=None):
-        if self.request.user.is_superuser:
-            self.success_url = reverse_lazy('profile-hospital')
-            self.template_name = 'update.html'
-            self.object = super(UpdateHospitalProfile, self).get_object()
-        elif self.request.user.is_hospital:
-            self.success_url = reverse_lazy('admin-list-hospital')
-            self.template_name = 'update-user-profile.html'
-            self.object = self.request.user.hospital
+        self.object = self.request.user.hospital
         return self.object
 
-class ListHospital(SuperRequiredMixin, generic.ListView):
-    """ 列出所有医院
-    """
-    model = Hospital
-    template_name = 'list-hospital-admin.html'
-
-class DetailHospital(SuperRequiredMixin, generic.DetailView):
-    """ 管理员查看医院详细信息
-    """
-    model = Hospital
-    context_object_name = 'hospital'
-    template_name = 'detail-hospital.html'
-
-
-class DetailDoctor(SuperRequiredMixin, generic.DetailView):
-    """ 管理员查看医生详情
-    """
-    model = Doctor
-    context_object_name = 'doctor'
-    template_name = 'detail-doctor.html'
 
 class ListDoctor(LoginRequiredMixin, generic.ListView):
     """ 管理员列出所有医生
     """
     model = Doctor
-
-    def get_template_names(self):
-        if self.request.user.is_superuser:
-            return 'list-doctor-admin.html'
-        elif self.request.user.is_hospital:
-            return 'list-doctor.html'
+    template_name = 'list-doctor.html'
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return super(ListDoctor, self).get_queryset()
-        elif self.request.user.is_hospital:
+        if self.request.user.is_hospital:
             return self.request.user.hospital.doctor_set.all()
+        else:
+            raise Http404
 
 class ListDoctorPatient(LoginRequiredMixin, generic.DetailView):
     """ 查看该医生的病人
@@ -91,27 +61,25 @@ class ListDoctorPatient(LoginRequiredMixin, generic.DetailView):
             context['patient_list'] = self.get_object().get_patients()
         return context
 
-class UpdateDoctor(SuperRequiredMixin, generic.UpdateView):
-    """ 管理员更新医生信息
-    """
-    model = Doctor
-    success_url = reverse_lazy('admin-list-doctor')
-    template_name = 'update.html'
-
-    def get_success_url(self):
-        return reverse('admin-detail-doctor', kwargs=self.kwargs)
-
 class DoctorUpdateProfile(generic.UpdateView):
-    """ 管理员更新医生信息
+    """ 医生更新医生信息
     """
     model = Doctor
-    template_name = 'update.html'
+    form_class = forms.UpdateDoctorForm
+    template_name = 'index-update.html'
 
     def get_object(self, queryset=None):
         return Doctor.objects.get(user=self.request.user)
 
+    def get_context_data(self, **kwargs):
+        context = super(DoctorUpdateProfile, self).get_context_data(**kwargs)
+        context['title'] = '修改医生信息'
+        return context
+
     def get_success_url(self):
         return reverse('profile')
+
+
 
 class MyPatient(LoginRequiredMixin, generic.ListView):
     """ 医生或者医院查看自己的病人
@@ -138,8 +106,8 @@ class MyPatient(LoginRequiredMixin, generic.ListView):
 class CreateRecord(LoginRequiredMixin, generic.FormView):
     """ 管理员或者医生用开给患者创建病历
     """
-    form_class = RecordForm
-    template_name = 'update.html'
+    form_class = forms.RecordForm
+    template_name = 'admin-update.html'
 
     def get_form_kwargs(self):
         kwargs = super(CreateRecord, self).get_form_kwargs()
@@ -147,7 +115,8 @@ class CreateRecord(LoginRequiredMixin, generic.FormView):
         return kwargs
 
     def get_success_url(self):
-        return reverse('admin-detail-patient', kwargs=self.kwargs)
+        self.kwargs['model']='patient'
+        return reverse('admin-detail', kwargs=self.kwargs)
     
     def form_valid(self, form):
         form.save()
@@ -217,11 +186,11 @@ class ListDoctorRecord(LoginRequiredMixin, generic.DetailView):
 class StartDoctorRecord(LoginRequiredMixin, generic.FormView):
     """ 管理员创建患者初始就医记录
     """
-    form_class = DoctorRecordStartForm
+    form_class = forms.DoctorRecordStartForm
 
     def get_template_names(self):
         if self.request.user.is_superuser:
-            return 'update.html'
+            return 'admin-update.html'
         elif self.request.user.is_patient:
             return 'update-user-profile.html'
 
@@ -247,11 +216,11 @@ class EndDoctorRecord(LoginRequiredMixin, generic.UpdateView):
     """ 管理员控制患者就医结束
     """
     model = DoctorRecord
-    form_class = DoctorRecordEndForm
+    form_class = forms.DoctorRecordEndForm
 
     def get_template_names(self):
         if self.request.user.is_superuser:
-            return 'update.html'
+            return 'admin-update.html'
         elif self.request.user.is_patient:
             return 'update-user-profile.html'
 
@@ -296,7 +265,7 @@ class UpdateDoctorRecord(SuperRequiredMixin, generic.UpdateView):
     """ 管理员查看患者就医说明
     """
     model = DoctorRecord
-    template_name = 'update.html'
+    template_name = 'admin-update.html'
 
     def get_success_url(self):
         return reverse('admin-detail-doctor-record', kwargs=self.kwargs)

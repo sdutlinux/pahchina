@@ -1,0 +1,44 @@
+{% extends 'base-admin.html' %}
+
+ {% load pagination_tags %}
+
+{% block title %}省市列表{% endblock %}
+
+{% block content %}
+    <h2>省市列表</h2>
+    <p class="lead">当前地区：{{ region.name }}</p>
+    <p>
+    {% if region.parent %}
+    <a href="{% url 'list-sub-city' region.parent.id %}" class="btn"><i class="icon-arrow-up"></i>上一级</a>&nbsp;
+    {% else %}
+    <a href="{% url 'list-sub-city' '0' %}" class="btn"><i class="icon-align-justify"></i>全部城市</a>&nbsp;
+    {% endif %}
+    <a href="{% url 'admin-create' 'region' %}" class="btn"><i class="icon-plus"></i>添加地区</a></p>
+<table class="table table-hover">
+<thead>
+<tr>
+    <th>名称</th>
+    <th>所属上级</th>
+    <th>操作</th>
+</tr>
+</thead>
+    <tbody>
+
+    {% autopaginate object_list 20 %}
+
+    {% for region in object_list %}
+        <tr>
+            <td><a href="{% url 'list-sub-city' region.id %}">{{ region.name }}</a></td>
+            <td>{{ region.parent.name }}</td>
+            <td>
+                <a href="{% url 'admin-update' 'region' region.id %}"><i class="icon-edit"></i></a>
+                <a href="{% url 'admin-delete' 'region' region.id %}"><i class="icon-remove"></i></a>
+            </td>
+        </tr>    
+    {% endfor %}
+    </tbody>
+</table>
+
+    {% paginate %}
+
+{% endblock %}
