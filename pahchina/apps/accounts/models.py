@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 from django.db import models
+from django.utils.timezone import datetime, now as django_now
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.contrib.contenttypes.models import ContentType
 
 IDENTITY_CHOICES = ((0, '普通用户'), (1, '患者'), (2, '医生'),
                     (3, '医院'), (4, '志愿者'), (5, '药商'),)
-
+IDENTITY_LIST = ('patient', 'doctor', 'hospital', 'volunteer')
 
 class User(AbstractUser):
     """用户类
@@ -17,16 +18,17 @@ class User(AbstractUser):
     """
 
     #基本信息
+    mark = models.TextField(verbose_name="标记信息", default="{}",null=True, blank=True)
+    # 用作标记必要信息，可能会保存成JSON或其他格式
+
     spare = models.EmailField(blank=True, null=True,
                               verbose_name='备用邮箱',
                               help_text='')
     cellphone = models.CharField(verbose_name='常用手机', max_length=12,
-                              verbose_name='常用邮箱',
                               help_text='验证账号，找会密码用')
 
     spare_phone = models.CharField(blank=True, null=True, max_length=12,
                                    verbose_name='备用手机',
-                                   max_length=20,
                                    help_text='')
     qq = models.CharField(verbose_name='QQ号',
                           max_length=20,
@@ -53,17 +55,18 @@ class User(AbstractUser):
 
     telephone = models.CharField(verbose_name='联系电话', max_length=13)
 
-    identity = models.SmallIntegerField(verbose_name='身份类型', default=0, choices=IDENTITY_CHOICES,
-                                        max_length=1)
+    identity = models.CharField(verbose_name='身份类型', default="", max_length=100)
 
-    identity_dic = {
-        'is_user': 0,
-        'is_patient': 1,
-        'is_doctor': 2,
-        'is_hospital': 3,
-        'is_volunteer': 4,
-        'is_druggist': 5,
-    }
+    def __unicode__(self):
+        return self.username
+
+    def get_avatar_url(self):
+        """ 返回头像链接，无则返回默认头像链接
+        """
+        if self.avatar:
+            return self.avatar.url
+        else:
+            return "/static/img/default_avatar.png"
 
     def count_login_time(self):
         from django.utils import timezone
@@ -98,23 +101,21 @@ class User(AbstractUser):
     def get_show_url(self):
         """ 获取展示页面URL
         """
-        return reverse('show', kwargs={'pk': self.id})
+        return reverse('show', kwargs={'username': self.username})
 
-    def get_identity_label(self):
-        """ 返回角色代号
-        """
-        for key, value in self.identity_dic.iteritems():
-            if value == self.identity:
-                #print key, value
-                return key[3:]
-        return 'user'
+    def get_apartment(self):
+        """ 返回居住信息"""
+        return self.livingregion_set.get(cate="apartment").get_location()
+
+    def get_household(self):
+        """返回户籍信息"""
+        return self.livingregion_set.get(cate='household').get_location()
 
     def get_identity(self):
         """ 返回身份名称
         eg: 患者，志愿者等
         """
         res = None
-
         for i in IDENTITY_CHOICES:
             if i[0] == self.identity:
                 res = i[1]
@@ -125,49 +126,59 @@ class User(AbstractUser):
     def get_identity_model(self):
         """ 返回角色model
         """
-        if self.is_staff:
-            return self
-        elif self.identity==1:
-            return self.patient
-        elif self.identity==2:
-            return self.doctor
-        elif self.identity==3:
-            return self.hospital
-        elif self.identity==4:
-            return self.volunteer
+        if self.is_patient: return self.patient
+        elif self.is_doctor: return self.doctor
+        elif self.is_hospital: return self.hospital
+        elif self.is_volunteer: return self.volunteer
         return self
 
+
+
     def get_full_name(self):
-        """ 符合中文姓名风格
-        """
+        """ 符合中文姓名风格 """
         full_name = '%s%s' % (self.last_name, self.first_name)
         return full_name.strip()
+
+    def set_mark(self, key, value):
+        """数据库中的键值对"""
+        obj=json.loads(self.mark)
+        if value=="delete": obj.pop(key)
+        else: obj[key]=value
+        self.mark=json.dumps(obj)
+        self.save()
+    def get_mark(self, key):
+        """获取值"""
+        obj = json.loads(self.mark)
+        return obj.get(key, None)
 
     def __getattr__(self, item):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item in self.identity_dic and item.startswith('is_'):
-            # 判断非属性并且以 `is_`开头
-            if self.identity_dic[item] == self.identity:
+        if item.startswith('is_') and item[3:] in IDENTITY_LIST:
+            if item[3:] in self.identity.split("_"):
                 return True
-            else:
-                return False
+            else: return False
         else:
-            super(User, self).__getattr__(item)
+            return super(User, self).__getattr__(item)
 
     def __setattr__(self, item, value):
         """ 用来判断身份
         item: is_patient, is_doctor, ...
         """
-        if item in self.identity_dic and item.startswith('is_'):
-            # 判断非属性并且以 `is_`开头
+        if item.startswith('is_') and item[3:] in IDENTITY_LIST:
             if value is True:
-                self.identity = self.identity_dic[item]
+                self.identity += item[2:]
+                print "set true"
             else:
-                self.identity = 0
+                if self.__getattr__(item):
+                    _identity_list = self.identity.split("_")
+                    _identity_list.remove(item[3:])
+                    print "set false"
+                    self.identity = "_".join(_identity_list)
+            self.save()
         else:
-            super(User, self).__setattr__(item, value)
+            return super(User, self).__setattr__(item, value)
 
 
 # choices
@@ -178,7 +189,7 @@ SEX_CHOICES = (
 )
 MARITAL_CHOICES = (
     ('SINGLE', '单身'),
-    ('MARRIED', '已婚'),
+    ('MARRIED', '有配偶'),
     ('WIDOWED', '丧偶'),
     ('DIVORCE', '离异'),
 )
@@ -212,7 +223,7 @@ class Personal(models.Model):
                                  max_length=20,
                                  help_text='唯一性，提交后不可更改')
     #志愿者可修改，
-    age = models.IntegerField(verbose_name='年龄',
+    age = models.IntegerField(verbose_name='年龄', default=0,
                               help_text='')
 
     birthday = models.DateField(verbose_name='生日',
@@ -252,15 +263,6 @@ class Personal(models.Model):
                                   max_length=20,
                                   blank=True, null=True)
 
-    domicile = models.CharField(verbose_name='户籍所在地',
-                                max_length=20,
-                                help_text='省，市／县',
-                                blank=True, null=True)
-
-    permanent_residence = models.CharField(verbose_name='常住地',
-                                           max_length=20,
-                                           help_text='省，市／县')
-
     address = models.CharField(verbose_name='通信地址',
                                max_length=20,
                                help_text='用于邮寄杂志或者资料物品等',
@@ -296,6 +298,22 @@ class Personal(models.Model):
     story = models.TextField(verbose_name='患者故事',
                              blank=True, null=True,
                              help_text='患者自述')
+
+    def get_birthday(self):
+        """  通过身份证号获取生日
+        """
+        try:
+            date = datetime.strptime(self.ID_number[6:14], "%Y%m%d")
+            return date
+        except IndexError:
+            return None
+
+    def get_age(self):
+        """ 通过身份证号获取年龄
+        """
+        if isinstance(self.get_birthday(), datetime):
+            age = django_now().year - self.get_birthday().year
+            return age
 
 
 #单位资料

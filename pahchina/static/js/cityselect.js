@@ -18,7 +18,7 @@ required:必选项
 
 		// 默认值
 		settings=$.extend({
-			url:"js/city.min.js",
+			url:"js/city.min-noarea.js",
 			prov:null,
 			city:null,
 			dist:null,

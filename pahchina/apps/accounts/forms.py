@@ -5,34 +5,45 @@ __author__ = 'zhwei'
 
 from django import forms
 from django.template import loader
+from django.core.mail import send_mail
 from django.utils.http import int_to_base36
+from django.utils.safestring import mark_safe
 from django.contrib.sites.models import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD, identify_hasher
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
+from .mails import send_confirm_email
 
-class RegisterForm(UserCreationForm):
+# class IdentityChoiceForm(forms.Form):
+#
+#     identity = forms.ChoiceField(label="身份选择", choices=IDENTITY_CHOICES)
+
+class BaseRegisterForm(UserCreationForm):
     """ 用户注册表单
     重写了save方法，用于注册后修改身份
     """
-    #identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
-    #                             help_text='请正确选择身份')
-
     class Meta:
         model = User
-        fields=('username', 'identity', 'email')
+        fields=('username', 'email')
 
     class Media:
 
         js = ('js/register.js',)
 
-    def clear_identity(self):
-        identity = self.cleaned_data.get("identity")
-        for i in identity:
-            if i not in '123456,':
-                raise forms.ValidationError('身份不合法！')
+    def __init__(self, *args, **kwargs):
+        try:
+            self.request = kwargs.pop("view_request")
+        except (KeyError,AttributeError):
+            pass
+        super(BaseRegisterForm, self).__init__(*args, **kwargs)
+
+    # def clear_identity(self):
+    #     identity = self.cleaned_data.get("identity")
+    #     for i in identity:
+    #         if i not in '123456,':
+    #             raise forms.ValidationError('身份不合法！')
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
@@ -54,10 +65,31 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.identity = int(self.cleaned_data["identity"]) # 修改身份
-        if commit:
-            user.save()
+        # user.identity = int(self.cleaned_data["identity"]) # 修改身份
+        if commit: user.save()
         return user
+
+class AdminCreateUserForm(BaseRegisterForm):
+    """ 用户注册表单
+    重写了save方法，用于注册后修改身份
+    """
+    #identity = forms.ChoiceField(label='注册身份',choices=IDENTITY_CHOICES,
+    #                             help_text='请正确选择身份')
+    # def save(self, commit=True):
+    #     user = super(AdminCreateUserForm, self).save(commit=False)
+    #     return user
+
+class RegisterForm(BaseRegisterForm):
+    """ 用户注册form
+    """
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
+        user.set_mark('email', False)
+        send_confirm_email(user.email, self.request.SITE)
+        return user
+
+
+
 
 class UpdateUserForm(forms.ModelForm):
 
@@ -135,7 +167,6 @@ class PasswordResetForm(forms.Form):
         Generates a one-use only link for resetting password and sends to the
         user.
         """
-        from django.core.mail import send_mail
         for user in self.users_cache:
             if not domain_override:
                 current_site = get_current_site(request)
@@ -163,13 +194,7 @@ class VltFirstFillForm(forms.ModelForm):
 
     class Meta:
         model = Personal
-        fields = ('nickname','nationality','belief','height',
-                  'weight','marital_status','bear_status',
-                  'home_phone','domicile','permanent_residence',
-                  'address','education','school','major',
-                  'qualification','specialty','personal_profile',
-                  'story')
-
+        exclude = ('user', 'age', 'birthday')
 
     def __init__(self, user=None,*args, **kwargs):
         super(VltFirstFillForm, self).__init__(*args, **kwargs)
@@ -202,7 +227,8 @@ class UnitForm(forms.ModelForm):
     def save(self, commit=True):
         ret = super(UnitForm, self).save(commit=False)
         ret.user = self._user
-        ret.save()
+        if commit: ret.save()
+        return ret
 
 
 

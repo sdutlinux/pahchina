@@ -16,6 +16,14 @@
             <td>{{ object_user.get_full_name }}</td>
         </tr>
         <tr>
+            <th>户籍所在地</th>
+            <td>{{ object_user.get_household }}&nbsp;<a href="{% url 'user-region' 'household' %}">修改</a></td>
+        </tr>
+        <tr>
+            <th>当前居住地</th>
+            <td>{{ object_user.get_apartment }}&nbsp;<a href="{% url 'user-region' 'apartment' %}">修改</a></td>
+        </tr>
+        <tr>
             <th>Email</th>
             <td>{{ object_user.email }}</td>
         </tr>

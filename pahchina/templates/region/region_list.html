@@ -1,5 +1,7 @@
 {% extends 'base-admin.html' %}
 
+ {% load pagination_tags %}
+
 {% block title %}省市列表{% endblock %}
 
 {% block content %}
@@ -15,9 +17,11 @@
 </thead>
     <tbody>
 
+    {% autopaginate object_list 20 %}
+
     {% for region in object_list %}
         <tr>
-            <td>{{ region.name }}</td>
+            <td><a href="{% url 'list-sub-city' region.id %}">{{ region.name }}</a></td>
             <td>{{ region.parent.name }}</td>
             <td>
                 <a href="{% url 'admin-update' 'region' region.id %}"><i class="icon-edit"></i></a>
@@ -25,10 +29,9 @@
             </td>
         </tr>    
     {% endfor %}
-    
-
-
     </tbody>
 </table>
+
+    {% paginate %}
 
 {% endblock %}

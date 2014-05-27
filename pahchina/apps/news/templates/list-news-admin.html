@@ -16,9 +16,9 @@
 </tr>
 </thead>
     <tbody>
-    {% for news in news_list %}
+    {% for news in newes_list %}
     <tr>
-        <td><a href="{% url 'admin-detail-user' news.author.id %}">{{ news.author.username }}</a></td>
+        <td><a href="{% url 'admin-detail' 'user' news.author.id %}">{{ news.author.username }}</a></td>
         <td><a href="{% url 'admin-detail-news' news.id %}">{{ news.title }}</a></td>
         <td>{{ news.sort }}</td>
         <td>{{ news.created_date }}</td>

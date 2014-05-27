@@ -1,27 +1,27 @@
 {% extends 'base-index.html' %}
 {% load bootstrap_tags %}
-{% block title %}
-注册用户
-{% endblock %}
+{% block title %}注册用户{% endblock %}
 
 {% block head %}
     <style>
-    .helptext {
-        font-style: italic;
-    }
-    .errorlist {
-        list-style: none;
-        color: #b61318;
-        font-weight: bold;
-    }
-    #id_identity {
-        font-size: 16px;
-    }
+        .helptext {
+            font-style: italic;
+        }
+
+        .errorlist {
+            list-style: none;
+            color: #b61318;
+            font-weight: bold;
+        }
+
+        #id_identity {
+            font-size: 16px;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-
+    <h3>注册</h3>
     <form action="" method="post">{% csrf_token %}
 
         <table class="table table-bordered">
@@ -29,8 +29,8 @@
             <tr>
                 <th></th>
                 <td>
-             <a class="btn" href="{% url 'login' %}">去登录</a>
-             <input class="btn btn-primary" type="submit" value="注册"/>
+                    <input class="btn btn-primary" id="submit_button" type="submit" value="注册"/>
+                    <a class="btn btn-link" href="{% url 'login' %}">去登录</a>
                 </td>
             </tr>
         </table>
@@ -41,4 +41,9 @@
 
 {% block foot %}
     {{ form.media }}
+    <script>
+        $(document).ready(function () {
+
+        })
+    </script>
 {% endblock %}

@@ -2,9 +2,7 @@
 
 {% load bootstrap_tags %}
 
-{% block title %}
-登录
-{% endblock %}
+{% block title %}登录{% endblock %}
 
 {% block head %}
     <style>
@@ -22,15 +20,15 @@
 {% endblock %}
 
 {% block content %}
-
+    <h3>登录</h3>
     <div class="hero-unit">
-    <form action="" method="post">{% csrf_token %}
-    {{ form|as_bootstrap }}
-    <small><a href="{% url 'password-reset' %}">忘记密码？</a></small>
-    <br/>
-    <a class="btn btn-info" href="{% url 'register' %}">注册</a>
-    <input class="btn btn-primary" type="submit" value="登录"/>
-    </form>
+        <form action="" method="post">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        <br/>
+        <input class="btn btn-primary" type="submit" value="登录"/>
+        <a class="btn" href="{% url 'register' %}">注册用户</a>
+        <small style="font-size: 13px;padding-left: 23px;"><a href="{% url 'password-reset' %}">忘记密码？</a></small>
+        </form>
     </div>
 
 {% endblock %}

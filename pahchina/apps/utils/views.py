@@ -10,6 +10,20 @@ from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.shortcuts import get_list_or_404, get_object_or_404
+
+class GetOr404View(object):
+    """ 在Generic View 中使用 get_object_or_404
+    """
+    model = None
+    kwargs = None
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(self.model, id=self.kwargs['pk'])
+
+    def get_queryset(self):
+
+        return get_list_or_404(self.model)
 
 class SuperRequiredMixin(object):
     """ 基类

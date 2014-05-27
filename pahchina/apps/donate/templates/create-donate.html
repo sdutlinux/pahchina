@@ -1,20 +1,54 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
-{% block title %}
-捐赠 {{ object_donate.number }}
+{% block title %}捐赠 {{ object_donate.number }}{% endblock %}
+{% block h3title %}捐赠 {{ object_donate.number }}{% endblock %}
+
+{% block side-content %}
+
+    <form action="" method="post">{% csrf_token %}
+
+        <table class="table border" id="donate_form">
+            {% if target_user %}
+            <tr>
+                <th>受捐用户</th>
+                <td>
+                    <div class="span6">
+                        <div class="media text-left">
+                            <a href="{{ target_user.get_show_url }}"><img src="{{ target_user.get_avatar_url }}" alt="用户头像"
+                                                                 class="media-object img-rounded"
+                                                                 style="float: left;max-width: 60px; max-height: 60px;"></a>
+                            <div class="media-body">
+                                <span>&nbsp;<a href="{{ target_user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ target_user.username }}</a></span><br>
+                                <span>&nbsp;姓名: <a href="{{ target_user.get_show_url }}">&nbsp;{{ object_user.get_full_name }}</a></span><br/>
+                                <span>&nbsp;所在地: &nbsp;{{ target_user.get_household }}</span>
+                            </div>
+                        </div>
+
+            </div>
+                </td>
+            </tr>
+            {% endif %}
+            {{ form.as_table }}
+        </table>
+        <p><input class="btn btn-block btn-primary" type="submit" value="提交"/></p>
+
+        <p>
+            <a class="btn btn-info" href="{% url 'list-donate' %}">我的捐赠</a>
+            <a class="btn" onclick="location.href=document.referrer;">返回</a>
+        </p>
+    </form>
+
+
 {% endblock %}
 
-{% block content %}
+{#{% block foot %}#}
+{#    {% if target_user %}#}
+{#    <script>#}
+{#        newtr = document.createElement('tr');#}
+{#        newtr.innerHTML = "<tr><td><label for='anuser'>受捐用户</label></td><td><a class='next' target='_blank' href='{{ target_user.get_show_url }}'>{{ target_user.username }}</a></td></tr>";#}
+{#        tr = $('tr')[0];#}
+{#        tr.parentNode.insertBefore(newtr, tr);#}
+{#    </script>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
 
-<form action="" method="post">{% csrf_token %}
-
-<table class="table border">
-    {{ form.as_table }}
-</table>
-
-    <a class="btn btn-inverse" onclick="location.href=document.referrer;">返回</a>
-    <input class="btn btn-warning" type="submit" value="提交"/>
-</form>
-
-
-{% endblock %}

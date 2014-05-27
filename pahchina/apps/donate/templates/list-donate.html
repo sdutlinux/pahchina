@@ -1,26 +1,32 @@
-{% extends 'base-index.html' %}
+{% extends 'index-with-menu.html' %}
 
 {% block title %}我的捐赠{% endblock %}
+{% block h3title %}我的捐赠{% endblock %}
 
-{% block content %}
+{% block side-content %}
 
     <h2>我的捐赠</h2>
+    <p><code>红色条目为未到帐的捐赠</code></p>
+    <a class="btn btn-small" href="?order=date">按日期</a>
+    <a class="btn btn-small" href="?order=money">按金额</a>
+    <a class="btn btn-small" href="?order=status">是否到帐</a>
+    <a class="btn btn-small" href="?order=anyone">是否匿名</a>
 <table class="table border">
 <thead>
 <tr>
     <th>捐赠单号</th>
     <th>捐赠金额</th>
     <th>捐赠时间</th>
-    <th>是否匿名</th>
+    <th>状态</th>
 </tr>
 </thead>
     <tbody>
     {% for donate in donate_list %}
-    <tr>
+    <tr {% if not donate.is_true %}class="error"{% endif %} >
         <td><a href="{% url 'detail-donate' donate.id %}">{{ donate.number }}</a></td>
         <td>{{ donate.money }}</td>
         <td>{{ donate.create_time }}</td>
-        <td>{{ donate.get_anyone }}</td>
+        <td><span class="label label-info">{{ donate.get_status }}</span></td>
     </tr>
     {% endfor %}
     </tbody>

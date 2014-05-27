@@ -20,6 +20,13 @@ DOMAIN=''
 
 SITE_ID = 1
 
+
+
+
+# develop
+#CACHE_BACKEND = 'simple:///'
+#CACHE_BACKEND = 'dummy:///'
+
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -112,6 +119,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     'pahchina.apps.website.middleware.SubSiteMiddleWare',
 )
 
@@ -147,8 +155,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
+    "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "pahchina.apps.website.context_processors.site",
+    "pahchina.apps.index.context_processors.index",
 )
 
 #TEMPLATE_CONTEXT_PROCESSORS +=
@@ -167,6 +177,9 @@ INSTALLED_APPS = (
     ## Third-party packages
     'django_forms_bootstrap',
     'mptt',
+    'pagination',
+    # 'tinymce',
+    'ckeditor',
     #'datetimewidget',
 
     ## apps
@@ -211,6 +224,30 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+    }
+}
+
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ckeditor')
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Basic',
+    },
+    'default': {
+        'toolbar': 'Full',
+        'height': 400,
+        'width': '100%',
+    },
+    'low': {
+        'toolbar': 'Full',
+        'height': 190,
+        'width': '100%',
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
     }
 }
 

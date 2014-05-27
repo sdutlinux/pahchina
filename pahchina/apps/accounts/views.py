@@ -12,33 +12,57 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
+from django.core.cache import cache
 from django.contrib.auth.models import Permission, Group
 from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
 from django.utils.safestring import mark_safe
+from django.db import IntegrityError
 
-from ..utils import  SuperRequiredMixin, LoginRequiredMixin
+from utils import set_user_region
+from ..utils import SuperRequiredMixin, LoginRequiredMixin
 from ..patient.models import Patient
 from ..medical.models import Doctor, Hospital
 from ..volunteer.models import Volunteer
+from ..region.forms import UserUpdateRegionForm
+from ..region.models import Region
 
-from .models import User, Personal, Unit, Bank
+from .models import User, Personal, Unit, Bank, IDENTITY_LIST
+from .mails import send_confirm_email
+from .utils import set_user_identity
 import forms
-
 
 
 def pah_register(request):
     """ 网站注册
     注册后同步创建其他身份
     """
-    form = forms.RegisterForm
     if request.method == "POST":
-            form = forms.RegisterForm(request.POST.copy())
-            if form.is_valid():
-                form.save()
-                messages.success(request, '注册成功, 请登录！')
-                return HttpResponseRedirect(reverse('login'))
-
+        form = forms.RegisterForm(request.POST.copy(), view_request=request)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '注册成功, 请前往注册邮箱激活帐号！')
+            return HttpResponseRedirect(reverse('login'))
+    if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
+    form = forms.RegisterForm
     return r2r('register.html', locals(), context_instance=RequestContext(request))
+
+
+def register_confirm_email(request):
+    """验证邮箱"""
+    token = request.GET.get('token')
+    if token == "send_email":
+        send_confirm_email(request.session['user_email'], request.SITE)
+        messages.info(request, "验证邮件已重新发送，请前往邮箱检查，十分钟内有效！")
+        return HttpResponseRedirect(reverse_lazy("index"))
+    user_email = cache.get(token)
+    cache.delete(token)
+    if user_email is None: raise Http404
+    target_user = get_object_or_404(User, email=user_email)
+    target_user.set_mark('email', True)
+    target_user.set_mark('first_login', True)
+    messages.success(request, "用户已激活， 谢谢您的注册， 请登录！")
+    return HttpResponseRedirect(reverse_lazy("index"))
+
 
 def pah_login(request):
     """ 网站登录
@@ -50,8 +74,17 @@ def pah_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
+                if user.get_mark('email') is False:
+                    request.session['user_email'] = user.email
+                    _msg = '''您的邮箱尚未通过验证<a class="btn btn-mini" href="{0}?token=send_email">
+                    &nbsp;发送验证邮件</a>'''.format(reverse_lazy("confirm_mail"))
+                    messages.info(request, mark_safe(_msg))
+                    return HttpResponseRedirect(reverse_lazy('index'))
                 login(request, user)
-                user.count_login_time() # 修改登录次数
+                if user.get_mark("first_login"):
+                    messages.success(request, "登录成功，这是您的第一次登录， 请填写必要信息，谢谢支持！")
+                    return HttpResponseRedirect(reverse_lazy('first_login'))
+                user.count_login_time()  # 修改登录次数
                 messages.success(request, '登录成功，欢迎您：{0}'.format(request.user.username))
                 redirect_to = request.REQUEST.get('next', False)
                 if redirect_to:
@@ -62,12 +95,14 @@ def pah_login(request):
                     else:
                         return HttpResponseRedirect(reverse_lazy('profile'))
             else:
-                messages.error(request, '用户暂停使用，请联系管理员！')
+                messages.error(request, '用户暂停使用，尚未激活！')
         else:
             messages.error(request, '用户名与密码不匹配！')
 
     form = AuthenticationForm
-    return r2r('login.html', locals(), context_instance = RequestContext(request))
+    if request.user.is_authenticated(): return HttpResponseRedirect(reverse_lazy("index"))
+    return r2r('login.html', locals(), context_instance=RequestContext(request))
+
 
 def pah_logout(request):
     """ 网站登出
@@ -77,40 +112,55 @@ def pah_logout(request):
     return HttpResponseRedirect(reverse('login'))
 
 
-#def first_login(request):
-#    """ 用户第一次登录
-#    """
-#    if request.user.is_patient:
-#
-
+@login_required()
+def first_login(request):
+    """ 用户第一次登录
+    """
+    # identity_form = forms.IdentityChoiceForm
+    region_form = UserUpdateRegionForm
+    if request.method == "POST":
+        province = request.POST.get("province")
+        city = request.POST.get("city")
+        area = request.POST.get("area")
+        identity = request.POST.get("identity")
+        try:
+            if province or identity is not None:
+                if identity in IDENTITY_LIST:
+                    print identity
+                    set_user_identity(request.user, identity)
+                set_user_region(request.user, "apartment",
+                                province, city, area,)
+                messages.success(request, "提交信息成功， 欢迎使用！")
+                request.user.set_mark('email', False)
+                request.user.set_mark('first_login', False)
+                return HttpResponseRedirect(reverse_lazy('profile'))
+        except (KeyError, IntegrityError):
+            messages.warning(request, "请前往个人中心修改地区信息！")
+            return HttpResponseRedirect(reverse_lazy('profile'))
+    return r2r('first/choices.html', locals(), context_instance=RequestContext(request))
 
 
 class Profile(LoginRequiredMixin, generic.DetailView):
     """ 用户个人主页
     """
+    context_object_name = "object_user"
 
     def get_template_names(self):
-
-        return 'profile-{}.html'.format(self.request.user.get_identity_label())
-
-    def get_context_object_name(self, obj):
-
-        return self.request.user.get_identity_label()
+        print self.get_context_data()
+        return 'profile-user.html'
 
     def get_object(self, queryset=None):
-
         return self.request.user.get_identity_model()
 
-class UserInfoView(LoginRequiredMixin, generic.DetailView):
 
-    #model = Personal
-    #template_name = 'user-personal.html'
+class UserInfoView(LoginRequiredMixin, generic.DetailView):
 
     _dic = {
         'personal': Personal,
         'unit': Unit,
         'bank': Bank,
     }
+
     def get_obj(self):
         try:
             return self._dic[self.kwargs['model']]
@@ -128,7 +178,8 @@ class UserInfoView(LoginRequiredMixin, generic.DetailView):
         except self.get_obj().DoesNotExist:
             messages.info(self.request, '您尚未创建该信息！')
 
-class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
+
+class UpdateUserInfo(LoginRequiredMixin, generic.UpdateView):
     """ 修改个人信息
     包括个人信息、单位信息、银行信息
     """
@@ -147,20 +198,21 @@ class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
         except KeyError:
             raise Http404
 
+    def get_object(self, queryset=None):
+        _model = self.get_tu()[1]
+        obj = _model.objects.get_or_create(user=self.request.user)
+        return obj
+
     def get_form_class(self):
 
         return self.get_tu()[0]
 
-    def get_initial(self):
+    def get_queryset(self):
         try:
-            obj=self.get_tu()[1].objects.get(user=self.request.user)
+            obj = self.get_tu()[1].objects.get(user=self.request.user)
             return obj.__dict__.copy()
         except self.get_tu()[1].DoesNotExist:
             return {}
-
-    def form_valid(self, form):
-        form.save()
-        return super(UpdateUserInfo, self).form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, '修改成功！')
@@ -173,27 +225,22 @@ class UpdateUserInfo(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateUserInfo, self).get_context_data(**kwargs)
-        context['title']='修改信息'
+        context['title'] = '修改信息'
         return context
 
 
-class Show(generic.DetailView):
+class Show(generic.TemplateView):
     """ 用户个人展示页面
     """
 
-    model = User
+    #model = User
+    context_object_name = 'object_user'
+    template_name = 'show-user.html'
 
-    def get_template_names(self):
-
-        return 'show-{}.html'.format(self.request.user.get_identity_label())
-
-    def get_context_object_name(self, obj):
-
-        return self.request.user.get_identity_label()
-
-    def get_object(self, queryset=None):
-
-        return self.request.user.get_identity_model()
+    def get_context_data(self, **kwargs):
+        context = super(Show, self).get_context_data(**kwargs)
+        context['object_user'] = get_object_or_404(User, username=self.kwargs['username'])
+        return context
 
 
 class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
@@ -211,8 +258,9 @@ class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateProfile, self).get_context_data(**kwargs)
-        context['title']='修改账户信息'
+        context['title'] = '修改账户信息'
         return context
+
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_index(request):
@@ -220,8 +268,6 @@ def admin_index(request):
     """
     return r2r('admin-index.html', locals(),
                context_instance=RequestContext(request))
-
-
 
 
 class UpdatePassword(LoginRequiredMixin, generic.FormView):
@@ -242,9 +288,12 @@ class UpdatePassword(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdatePassword, self).get_context_data(**kwargs)
-        context['title']='修改密码'
+        context['title'] = '修改密码'
         return context
 
     def form_valid(self, form):
         form.save()
         return super(UpdatePassword, self).form_valid(form)
+
+
+        #class Create

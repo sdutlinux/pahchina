@@ -31,20 +31,18 @@
 
     {% endblock %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="/static/js/html5shiv.js"></script>
-    <![endif]-->
+    <!--[if lt IE 9]><script src="/static/js/html5shiv.js"></script><![endif]-->
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/static/ico/favicon.png">
+{#    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">#}
+{#    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">#}
+{#    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">#}
+{#    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">#}
+{#    <link rel="shortcut icon" href="/static/ico/favicon.png">#}
   </head>
 
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -52,16 +50,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="/">PAH后台管理</a>
+          <a class="brand" href="{% url 'admin-index' %}">PAH后台管理</a>
           <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li><a href="{% url 'index' %}"><i class="icon-home"></i>网站首页</a></li>
+            </ul>
             <div class="btn-group pull-right">
-              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>
                 {{ user.get_identity }}&nbsp;{{ user.username }}
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- dropdown menu links -->
-                  <li><a href="{% url 'logout' %}">注销</a></li>
+                  <li><a href="{% url 'update-password' %}">修改密码</a></li>
+                  <li><a href="{% url 'logout' %}"><i class="icon-off"></i>注销</a></li>
               </ul>
             </div>
             <ul class="nav">
@@ -78,41 +80,43 @@
             <div class="span3">
                 <div class="well sidebar-nav">
                     <ul class="nav nav-list">
-                       <li><a href="{% url 'index' %}">网站首页</a></li>
+                       <li><a href="{% url 'admin-index' %}"><i class="icon-th"></i>网站后台</a></li>
                         {% if user.is_superuser %}
                         <li class="nav-header">站点管理</li>
-                        <li><a href="{% url 'admin-create' 'website' %}">添加站点</a></li>
-                        <li><a href="{% url 'admin-list' 'website' %}">管理站点</a></li>
+                        <li><a href="{% url 'admin-create-website' %}"><i class="icon-globe"></i>添加站点</a></li>
+                        <li><a href="{% url 'admin-list' 'website' %}"><i class="icon-globe"></i>管理站点</a></li>
+                        <li><a href="{% url 'staff-list-links' %}"><i class="icon-globe"></i>本站友情链接</a></li>
+                        <li><a href="{% url 'admin-list' 'links' %}"><i class="icon-globe"></i>全部友情链接</a></li>
+                        <li class="nav-header">新闻管理</li>
+                        <li><a href="{% url 'admin-list-news'%}"><i class="icon-calendar"></i>新闻管理</a></li>
+                        <li><a href="{% url 'admin-list' 'sorts' %}"><i class="icon-tag"></i>分类管理</a></li>
+                        <li class="nav-header">捐赠管理</li>
+                        <li><a href="{% url 'admin-list-donate' %}"><i class="icon-leaf"></i>捐赠管理</a></li>
+{#                        <li><a href="{% url 'admin-list-itemized' %}"><i class="icon-folder-open"></i>捐赠使用管理</a></li>#}
                         <li class="nav-header">用户管理</li>
 {#                        <li><a href="#">用户组管理</a></li>#}
-                        <li><a href="{% url 'admin-list' 'user' %}">管理用户</a></li>
-                        <li><a href="{% url 'admin-list' 'patient' %}">管理患者</a></li>
-                        <li><a href="{% url 'admin-list' 'doctor' %}">管理医生</a></li>
-                        <li><a href="{% url 'admin-list' 'hospital' %}">管理医院</a></li>
-                        <li><a href="{% url 'admin-list-volunteer' %}">志愿者管理</a></li>
+                        <li><a href="{% url 'admin-list' 'user' %}"><i class="icon-user"></i>管理用户</a></li>
+                        <li><a href="{% url 'admin-list' 'patient' %}"><i class="icon-plus-sign"></i>管理患者</a></li>
+                        <li><a href="{% url 'admin-list' 'doctor' %}"><i class="icon-plus"></i>管理医生</a></li>
+                        <li><a href="{% url 'admin-list' 'hospital' %}"><i class="icon-remove-sign"></i>管理医院</a></li>
+                        <li><a href="{% url 'admin-list-volunteer' %}"><i class="icon-info-sign"></i>志愿者管理</a></li>
                         <li class="nav-header">医疗管理</li>
-                        <li><a href="{% url 'admin-list' 'hospital' %}">管理医院</a></li>
-                        <li><a href="{% url 'admin-list' 'drug' %}">管理药物</a></li>
-                        <li><a href="{% url 'admin-list' 'dosage' %}">患者用药记录</a></li>
+                        <li><a href="{% url 'admin-list' 'drug' %}"><i class="icon-lock"></i>管理药物</a></li>
+                        <li><a href="{% url 'admin-list' 'dosage' %}"><i class="icon-pencil"></i>患者用药记录</a></li>
                         <li class="nav-header">活动管理</li>
-                        <li><a href="{% url 'admin-list-activity' %}">活动管理</a></li>
-                        <li class="nav-header">新闻管理</li>
-                        <li><a href="{% url 'admin-list' 'news' %}">新闻管理</a></li>
-{#                        <li><a href="#">分类管理</a></li>#}
-                        <li><a href="{% url 'admin-list' 'sorts' %}">分类管理</a></li>
-                        <li class="nav-header">捐赠管理</li>
-                        <li><a href="{% url 'admin-list-donate' %}">捐赠管理</a></li>
-                        <li><a href="{% url 'admin-list-itemized' %}">捐赠使用管理</a></li>
+                        <li><a href="{% url 'admin-list-activity' %}"><i class="icon-calendar"></i>活动管理</a></li>
                         <li class="nav-header">高级功能</li>
-                        <li><a href="{% url 'admin-create' 'permission' %}">添加权限</a></li>
+                        <li><a href="{% url 'list-sub-city' '0' %}"><i class="icon-minus-sign"></i>管理省市</a></li>
+                        <li><a href="{% url 'admin-create' 'permission' %}"><i class="icon-tasks"></i>添加权限</a></li>
                         {% elif user.is_staff %}
                         <li class="nav-header">站点管理</li>
-                        <li><a href="{% url 'staff-detail-mysite' %}">我的站点</a></li>
-                        <li><a href="{% url 'staff-update-mysite' %}">管理我的站点</a></li>
+                        <li><a href="{% url 'staff-detail-mysite' %}"><i class="icon-globe"></i>我的站点</a></li>
+                        <li><a href="{% url 'staff-update-mysite' %}"><i class="icon-cog"></i>管理我的站点</a></li>
+                        <li><a href="{% url 'staff-list-links' %}"><i class="icon-globe"></i>本站友情链接</a></li>
+                        <li><a href="{% url 'staff-list-users' %}"><i class="icon-user"></i>我的站点用户</a></li>
                         {% endif %} {# is superuser #}
-
                         <li class="nav-header">个人信息</li>
-                        <li><a href="{% url 'update-password' %}">修改密码</a></li>
+                        <li><a href="{% url 'update-password' %}"><i class="icon-qrcode"></i>修改密码</a></li>
                     </ul>
                 </div>
             </div>
@@ -121,17 +125,21 @@
                 {% block content %}
                 {% endblock %}
             </div>
+
         </div>
+        <div class="clearfix"><hr/></div>
+        <p align="center">©2014 PAH &nbsp;技术支持：
+            <a href="mailto:zhwei@gotit.asia"><i class="icon-envelope"></i>张卫</a>&nbsp;
+            <a href="mailto:tanglnan1994@gmail.com"><i class="icon-envelope"></i>汤奇峰</a></p>
+
     </div> <!-- /container -->
+
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
     {% block foot %}
-
     {% endblock %}
-
   </body>
 </html>

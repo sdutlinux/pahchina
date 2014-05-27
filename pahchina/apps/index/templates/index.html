@@ -1,15 +1,190 @@
 {% extends 'base-index.html' %}
-
-{% block title %}
-首页
-{% endblock %}
-
+{% block title %}首页{% endblock %}
 
 {% block content %}
 
-<h1>这就是首页</h1>
+    <div class="container">
+        <div class="span8 carousel slide" id="carousel-index-1">
+				<ol class="carousel-indicators">
+					<li data-slide-to="0" data-target="#carousel-index-1"  class="active"></li>
+					<li data-slide-to="1" data-target="#carousel-index-1"></li>
+					<li data-slide-to="2" data-target="#carousel-index-1"></li>
+				</ol>
+				<div class="carousel-inner">
+					<div class="item">
+						<img alt="" src="{{ STATIC_URL }}img/t1.jpg" />
+						<div class="carousel-caption">
+							<p>棒球运动是一种以</p>
+						</div>
+					</div>
+					<div class="item active">
+						<img alt="" src="{{ STATIC_URL }}img/t2.jpg" />
+						<div class="carousel-caption">
+							<p>冲浪是以海浪为动力，的一项水上运动。</p>
+						</div>
+					</div>
+					<div class="item">
+						<img alt="" src="{{ STATIC_URL }}img/t3.jpg" />
+						<div class="carousel-caption">
+							<p>以自行车为工具比赛骑行速度的体育运动。</p>
+						</div>
+					</div>
+				</div>
+            <a data-slide="prev" href="#carousel-index-1" class="left carousel-control">‹</a>
+            <a data-slide="next" href="#carousel-index-1" class="right carousel-control">›</a>
+			</div>
+        {#轮播图#}
+        <div class="offset8">
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>最新通知</h3>
+                </div>
+                <div class="accordion-inner">
+                    {{ SITE.description|safe }}
+                </div>
+            </div>
 
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>紫蝶计划</h3>
+                </div>
+                <div class="accordion-inner">
+                    <p>
+                        一个旨在帮助PAH患者树立自尊、自信、自强、自立的公益计划，通过各种形式的宣传和活动组织，扩大社会对PAH疾病的认知，推动提高PAH病患人群的社会福利。
+                    </p>
+                </div>
+            </div>
+            <div class="span5 accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>热点公告</h3>
+                </div>
+                <div class="accordion-inner">
+                    {{ SITE.notice|safe }}
+                </div>
+            </div>
+        </div><!--.offset8 side bar-->
+        <div class="clearfix"></div>
 
-<h3>{{ site }}</h3>
+{#        <div class="span12 well well-large" style="width: 90%;">#}
+{#            <p style="text-align: center;">广告位 1</p>#}
+{#        </div>#}
+{#        轮播图下方#}
+        <div class="clearfix"></div>
+        <div>
+            <ul class="breadcrumb">
+              <li><strong>热点信息</strong><span class="divider">/</span></li>
+            </ul>
+        </div>
+        <div class="span9 pull-left">
+            <ul class="thumbnails">
+                <li class="span3">
+                    <div class="thumbnail">
+                        <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
+                        <div class="caption">
+                            <h3>路人甲</h3>
+                            <p>Cras justo odio ultricies vehicula ut id elit.</p>
+                            <p><a href="#" class="btn btn-primary">阅读</a>
+                                <a href="#" class="btn">捐赠</a></p>
+                          </div>
+                    </div>
+                </li>
+                <li class="span3">
+                    <div class="thumbnail">
+                        <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
+                        <div class="caption">
+                            <h3>路人乙</h3>
+                            <p>Cras justo odio ultricies vehicula ut id elit.</p>
+                            <p><a href="#" class="btn btn-primary">阅读</a>
+                                <a href="#" class="btn">捐赠</a></p>
+                          </div>
+                    </div>
+                </li>
+                <li class="span3">
+                    <div class="thumbnail">
+                        <img src="{{ STATIC_URL }}img/logo_pic_1.jpg" alt=""/>
+                        <div class="caption">
+                            <h3>路人丙</h3>
+                            <p>Cras justo odio ultricies vehicula ut id elit.</p>
+                            <p><a href="#" class="btn btn-primary">阅读</a>
+                                <a href="#" class="btn">捐赠</a></p>
+                          </div>
+                    </div>
+                </li>
+            </ul>
+        </div> <!-- span9 pull-right -->
+        <div class="span4 accordion-group box">
+            <div class="accordion-heading area box-title">
+                <h3>最新新闻</h3>
+            </div>
+            <div class="accordion-inner">
+                <ul class="unstyled">
+                     {% for news in news_list %}
+                        <li>
+                            [{{ news.sort }}]<a href="{% url 'detail-news' news.id %}">{{ news.title|slice:"8" }}</a>
+                            <span class="published_date">
+                            {{ news.published_date | date:"Y-m-d" }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div> <!--span accordion-group box -->
+        <div class="clearfix"></div>
+        <div class="span12" style="width: 100%">
+            <p style="text-align: center;">
+                <img style="min-width: 95%;max-height: 60px;" src="{{ STATIC_URL }}img/default-ad.jpg" alt="test"/>
+            </p>
+        </div>
+        <div class="clearfix"></div>
+        <ul class="breadcrumb">
+          <li><strong>分类新闻</strong><span class="divider">/</span></li>
+        </ul>
+        {% for sort in sort_is_index %}
+            <div class="{% cycle 'span5' 'span4' 'span4' as rowcolors %} accordion-group box">
+                <div class="accordion-heading area box-title">
+                    <h3>{{ sort.name }}</h3>
+                </div>
+                <div class="accordion-inner">
+                    <ul class="unstyled">
+                        {% for news in sort.news_set.all %}
+                        <li>
+                            <a href="{% url 'detail-news' news.id %}">{{ news.title|slice:"8" }}</a>
+                            <span class="published_date">
+                            {{ news.published_date | date:"Y-m-d" }}
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div> <!--span accordion-group box -->
+            {% if forloop.counter|divisibleby:"3" %}
+            <div class="clearfix"></div>
+            {% endif %} 
+        {% endfor %}
+        <div id="foot-content">
+            <hr/>
+            <ul class="breadcrumb">
+              <li><strong>其他站点</strong><span class="divider">/</span></li>
+              {% for st in websites %}
+                  {% if st.id != SITE.id %}
+                  <li><a href="{{ st.link }}" {% if st.id == 1 %} style="color: red;{% endif %}">{{ st.name }}</a><span class="divider">/</span></li>
+                  {% endif %}
+              {% endfor %}
+            </ul>
+            <ul class="breadcrumb">
+              <li><strong>友情链接</strong><span class="divider">/</span></li>
+              {% for link in SITE.links_set.all %}
+              <li><a href="{{ link.url }}" target="_blank">{{ link.name }}</a><span class="divider">/</span></li>
+              {% endfor %}
 
+            </ul>
+        </div>
+    </div><!-- container -->
+
+{% endblock %}
+
+{% block foot %}
+    <script>
+        $('.carousel').carousel()
+    </script>
 {% endblock %}

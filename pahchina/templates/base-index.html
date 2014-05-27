@@ -2,189 +2,109 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock %} &middot; PAH肺动脉高压联盟</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} &middot; {{ SITE.name }}</title>
     <meta name="description" content="{% block description %}{% endblock %}">
     <meta name="author" content="{% block author %}{% endblock %}">
-
     <!-- Le styles -->
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 60px;
-      }
-
-      /* Custom container */
-      .container {
-        margin: 0 auto;
-        max-width: 1000px;
-      }
-      .container > hr {
-        margin: 60px 0;
-      }
-
-      /* Main marketing message and sign up button */
-      .jumbotron {
-        margin: 80px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 100px;
-        line-height: 1;
-      }
-      .jumbotron .lead {
-        font-size: 24px;
-        line-height: 1.25;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
-
-      /* Supporting marketing content */
-      .marketing {
-        margin: 60px 0;
-      }
-      .marketing p + h4 {
-        margin-top: 28px;
-      }
-
-
-      /* Customize the navbar links to be fill the entire space of the .navbar */
-      .navbar .navbar-inner {
-        padding: 0;
-      }
-      .navbar .nav {
-        margin: 0;
-        display: table;
-        width: 100%;
-      }
-      .navbar .nav li {
-        display: table-cell;
-        width: 1%;
-        float: none;
-      }
-      .navbar .nav li a {
-        font-weight: bold;
-        text-align: center;
-        border-left: 1px solid rgba(255,255,255,.75);
-        border-right: 1px solid rgba(0,0,0,.1);
-      }
-      .navbar .nav li:first-child a {
-        border-left: 0;
-        border-radius: 3px 0 0 3px;
-      }
-      .navbar .nav li:last-child a {
-        border-right: 0;
-        border-radius: 0 3px 3px 0;
-      }
-    </style>
-    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
-
+    <link href="{{ STATIC_URL }}css/site.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL }}ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
+    <!--[if lt IE 9]><script src="{{ STATIC_URL }}js/html5shiv.js"></script><![endif]-->
   {% block head %}
   
   {% endblock %}
   </head>
-
   <body>
-
     <div class="container">
-
       <div class="masthead">
-        <h3 class="muted"><img src="{{ SITE.logo.url }}" alt="站点LOGO"/></h3>
+        <div>
+            <a href="/"><img src="{{ SITE.logo.url }}" class="pull-left" id="site-logo" alt="站点LOGO"/></a>
+            <div class="span4 pull-right">
+            {% if user.is_authenticated %}
+                <div class="media text-left">
+                    <a href="{{ user.get_show_url }}"><img src="{{ user.get_avatar_url }}" alt="用户头像" class="media-object img-rounded"
+                         style="float: left;max-width: 60px; max-height: 60px;"/></a>
+                    <div class="media-body">
+                        <span>&nbsp;<a href="{{ user.get_show_url }}"><i class="icon-user"></i>&nbsp;{{ user.username }}</a></span><br/>
+                        <span>&nbsp;<a href="{% url 'profile' %}"><i class="icon-cog"></i>&nbsp;我的信息</a></span>
+                        {% if user.is_staff %}
+                        <span>&nbsp;<a href="{% url 'admin-index' %}" target="_blank"><i class="icon-wrench"></i>&nbsp;网站后台</a></span>
+                        {% endif %}<br/>
+                        <span>&nbsp;<a href="{% url 'create-donate' %}"><i class="icon-thumbs-up"></i>&nbsp;捐赠</a></span>
+                        <span>&nbsp;<a href="{% url 'logout' %}"><i class="icon-off"></i>&nbsp;注销</a></span>
+                    </div>
+                </div>
+            {% else %}
+                <form class="form-inline" action="{% url 'login' %}" method="POST" id="nav-login">{% csrf_token %}
+                    <br/>
+                  <input name="username" type="text" class="input-mini" placeholder="用户名">
+                  <input name="password" type="password" class="input-mini" placeholder="密码">
+                  <button type="submit" class="btn btn-success btn-mini">登录</button>
+                  <a href="{% url 'register' %}" class="btn btn-mini">注册</a>
+                  <a href="{% url 'create-donate' %}" class="btn btn-mini btn-info">捐赠</a>
+                </form>
+            {% endif %}
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
-              <ul class="nav">
-
-                <li><a href="{% url 'index' %}">首页</a></li>
-                <li><a href="{% url 'create-donate' %}">捐赠</a></li>
-                {% if user.is_staff %}
-                    <li><a href="{% url 'admin-index' %}">后台</a></li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <li><a href="{{ user.get_profile_url }}">个人中心</a></li>
-                    <li><a href="{% url 'logout' %}">注销</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">登录</a></li>
-                    <li><a href="{% url 'register' %}">注册</a></li>
-                {% endif %}
-                <li><a href="#">{{ user.get_identity|default:'Contact' }}</a></li>
-
-              </ul>
+                <ul class="nav">
+                    <li><a href="{% url 'index' %}">首页</a></li>
+                    {% for sort in sort_list %}
+                    <li {% if sort.get_children %}class='dropdown'{% endif %} >
+                        <a {% if sort.get_children %}
+                            class="dropdown-toggle" data-toggle="dropdown" href="#"
+                        {% else %}href="{% url 'index-sorts-news' sort.id %}"{% endif %}>{{ sort.name }}</a>
+                        {% if sort.get_children %}
+                            <ul class="dropdown-menu">
+                                {% for child in sort.get_children %}
+                                    <li><a href="{% url 'index-sorts-news' child.id %}">{{ child.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    <li><a href="http://pahchina.org/">社区</a></li>
+                </ul>
             </div>
           </div>
         </div><!-- /.navbar -->
       </div>
       
-    {% if user.is_authenticated %}
-    
-      <ul class="breadcrumb">
-          <li><a href="{{ user.get_show_url }}">个人展示</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'profile' %}">账户信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'user-info' 'personal' %}">个人信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'user-info' 'unit' %}">单位信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'user-info' 'bank' %}">银行信息</a> <span class="divider">/</span></li>
-
-          {% if user.is_patient %}
-          <li><a href="{% url 'detail-dosage' %}">用药记录</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'create-dosage' %}">创建用药记录</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'patient-list-doctor-record' %}">就医记录</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'patient-start-doctor-record' %}">创建就医记录</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a> <span class="divider">/</span></li>
-
-          {% elif user.is_doctor %}
-          <li><a href="{% url 'doctor-update-profile' %}">修改医生信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'doctor-list-patient' %}">我的病人</a> <span class="divider">/</span></li>
-
-          {% elif user.is_hospital %}
-          <li><a href="{% url 'update-hospital' %}">修改医院信息</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'hospital-list-doctor' %}">本院医生</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'doctor-list-patient' %}">本院病人</a> <span class="divider">/</span></li>
-
-          {% elif user.is_volunteer %}
-          <li><a href="{% url 'detail-dosage' %}">我的活动</a> <span class="divider">/</span></li>
-          {% endif %}
-
-          <li><a href="{% url 'create-donate' %}">捐赠</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'list-donate' %}">我的捐赠</a> <span class="divider">/</span></li>
-          <li><a href="{% url 'update-password' %}">修改密码</a> <span class="divider">/</span></li>
-      </ul>
-
-    {% endif %}
-
     {% include 'includes/messages.html' %}
 
     {% block content %}
 
     {% endblock %}
 
-      <hr>
-      <div class="footer">
-        <p>PAH &copy; 2013</p>
-      </div>
-
     </div> <!-- /container -->
+
+    <footer class="footer">
+        <div class="container">
+        <p>中国PAH关爱联盟 &copy; 2014</p>
+        </div>
+    </footer>
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}js/site.js"></script>
+
     {% block foot %}
     {% endblock %}
-
+    {% if not user.is_authenticated %}
+        <script>
+            var pwd = location.href.split('/').slice(3).join('/');
+            if (pwd != 'accounts/login/'){
+                document.getElementById('nav-login').action += "?next=/" + pwd;
+            }
+        </script>
+    {% endif %}
   </body>
 </html>

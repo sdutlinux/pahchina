@@ -1,0 +1,67 @@
+{% extends 'base-index.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <h3>{% block h3title %}{% endblock %}</h3>
+    <div class="clearfix">
+        <hr/>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                {% if user.is_authenticated %}
+                    <li><a href="{{ user.get_show_url }}">个人展示</a></li>
+                    <li class="nav-header">个人信息</li>
+                    <li><a href="{% url 'profile' %}">账户信息</a></li>
+                    <li><a href="{% url 'user-info' 'personal' %}">个人信息</a></li>
+                    <li><a href="{% url 'user-info' 'unit' %}">单位信息</a></li>
+                    <li><a href="{% url 'user-info' 'bank' %}">银行信息</a></li>
+
+                    {% if user.is_patient %}
+                        <li class="nav-header">病人记录</li>
+                        <li><a href="{% url 'detail-dosage' %}">用药记录</a></li>
+                        <li><a href="{% url 'create-dosage' %}">创建用药记录</a></li>
+                        <li><a href="{% url 'patient-list-doctor-record' %}">就医记录</a></li>
+                        <li><a href="{% url 'patient-start-doctor-record' %}">创建就医记录</a></li>
+                        <li><a href="{% url 'update-patient-profile' %}">修改病情相关</a></li>
+
+                    {% elif user.is_doctor %}
+                        <li class="nav-header">医生</li>
+                        <li><a href="{% url 'doctor-update-profile' %}">修改医生信息</a></li>
+                        <li><a href="{% url 'doctor-list-patient' %}">我的病人</a></li>
+
+                    {% elif user.is_hospital %}
+                        <li class="nav-header">医院</li>
+                        <li><a href="{% url 'update-hospital' %}">修改医院信息</a></li>
+                        <li><a href="{% url 'hospital-list-doctor' %}">本院医生</a></li>
+                        <li><a href="{% url 'doctor-list-patient' %}">本院病人</a></li>
+
+                    {% elif user.is_volunteer %}
+                        <li class="nav-header">活动相关</li>
+                        <li><a href="{% url 'detail-dosage' %}">我的活动</a></li>
+                    {% endif %}
+                    <li class="nav-header">捐赠</li>
+                    <li><a href="{% url 'create-donate' %}">捐赠</a></li>
+                    <li><a href="{% url 'list-donate' %}">我的捐赠</a></li>
+                    <li class="nav-header">账户相关</li>
+                    <li><a href="{% url 'update-password' %}">修改密码</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                    <li><a href="{% url 'register' %}">注册</a></li>
+                {% endif %}
+                </ul>
+            </div>
+            <!--/.well -->
+        </div>
+
+        <!--/span-->
+        <div class="span8">
+            {% block side-content %}
+
+            {% endblock %}
+        </div>
+    </div><!--/row-fluid-->
+{% endblock %}

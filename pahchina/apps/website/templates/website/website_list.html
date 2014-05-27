@@ -22,12 +22,13 @@
         <td>
             <a href="{% url 'admin-update' 'website' site.id %}">{{ site.name }}</a>
         </td>
-        <td>{{ site.domain }}</td>
+        <td><a href="{{ site.link }}" target="_blank">{{ site.domain }}</a></td>
         <td>{{ site.get_level }}</td>
         <td>
-        <a href="{% url 'admin-update' 'website' site.id %}"><i class="icon-edit"></i></a>
+        <a href="{% url 'admin-update' 'website' site.id %}" class="btn btn-mini"><i class="icon-edit"></i>详细</a>
         {% if site.id != 1 %}
-        <a href="{% url 'admin-delete' 'website' site.id %}"><i class="icon-remove"></i></a>
+        <a href="{% url 'set-site-region' site.id %}" class="btn btn-mini"><i class="icon-edit"></i>地区</a>
+        <a href="{% url 'admin-delete' 'website' site.id %}" class="btn btn-mini btn-danger"><i class="icon-remove"></i>删除</a>
         {% endif %}
         </td>
     </tr>

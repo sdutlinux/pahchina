@@ -5,26 +5,36 @@
 {% block content %}
 
     <h2>管理标签</h2>
-<a href="{% url 'admin-create' 'sorts' %}">添加节点</a>
-<table class="table border">
-<thead>
-<tr>
-    <th>标签</th>
-    <th>父节点</th>
-</tr>
-</thead>
-    <tbody>
-    {% for sorts in object_list %}
+<p><a href="{% url 'admin-create' 'sorts' %}" class="btn"><i class="icon-plus"></i>添加分类</a></p>
+{% if object_list %}
+    <table class="table border">
+    <thead>
     <tr>
-        <td>{{ sorts.name }}</td>
-        <td>{{ sorts.parent }}</td>
-        <td>
-        <a href="{% url 'admin-update' 'sorts' sorts.id %}"><i class="icon-edit"></i></a>
-        <a href="{% url 'admin-delete' 'sorts' sorts.id %}"><i class="icon-remove"></i></a>
-        </td>
+        <th>标签</th>
+        <th>父节点</th>
+        <th>菜单显示</th>
+        <th>首页显示</th>
+        <th>Do</th>
     </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    </thead>
+        <tbody>
+        {% for sorts in object_list %}
+        <tr>
+            <td><a href="{% url 'admin-update' 'sorts' sorts.id %}">{{ sorts.name }}</a></td>
+            <td>{{ sorts.parent }}</td>
+            <td>{% if sorts.is_navbar %}<span class="label label-success">是</span>{% endif %}</td>
+            <td>{% if sorts.is_index %}<span class="label label-success">是</span>{% endif %}</td>
+            <td>
+            <a href="{% url 'admin-update' 'sorts' sorts.id %}"><i class="icon-edit"></i></a>
+            <a href="{% url 'admin-delete' 'sorts' sorts.id %}"><i class="icon-remove"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <br/>
+    <p class="lead">尚无分类</p>
+{% endif %}
 
 {% endblock %}

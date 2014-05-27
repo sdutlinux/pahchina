@@ -3,6 +3,7 @@
 
 __author__ = 'zhwei'
 
+import logging
 
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
@@ -18,12 +19,6 @@ class SubSiteMiddleWare:
             request.SITE = Site.objects.get(domain=host)
         except Site.DoesNotExist:
             request.SITE = Site.objects.get(id=1)
-        #if host in ('127.0.0.1', '0.0.0.0', settings.DOMAIN):
-
-        #elif host in [d.domain for d in Site.objects.all()]:
-        #        request.urlconf = settings.SUBSITE_URLCONF
-        #else:
-        #    pass
 
     def process_response(self, request, response):
 

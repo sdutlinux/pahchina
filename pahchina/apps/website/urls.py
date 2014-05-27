@@ -13,19 +13,19 @@ import views
 urlpatterns = patterns('',
 
     url(r'^$', views.SiteIndex.as_view(), name='site-index'),
-    #url(r'(?P<site_id>\d+)/$', views.SiteIndex.as_view(), name='site-index'),
 
+    url(r'^regions/(?P<pk>\d+)/$', views.RegionWebsite.as_view(), name='set-site-region'),
 
+    url(r'^create/$', views.CreateSite.as_view(), name='admin-create-website'),
 
-    #url(r'^admin/create/site$', views.CreateSite.as_view(), name='admin-create-site'),
-    #url(r'^admin/list$', views.ListSites.as_view(), name='admin-list-sites'),
-    #url(r'^admin/detail/(?P<pk>\d+)/$', views.DetailSite.as_view(), name='admin-detail-site'),
-    #url(r'^admin/update/(?P<pk>\d+)/$', views.UpdateSite.as_view(), name='admin-update-site'),
-    url(r'^admin/delete/(?P<pk>\d+)/$', views.DeleteSite.as_view(), name='admin-delete-site'),
-
-
-    url(r'^detail/mysite/$', views.StaffDetailSite.as_view(), name='staff-detail-mysite'),
-    url(r'^update/mysite/$', views.StaffUpdateSite.as_view(), name='staff-update-mysite'),
+    # 站点管理员功能
+    url(r'^detail/site/$', views.StaffDetailSite.as_view(), name='staff-detail-mysite'),
+    url(r'^update/site/$', views.StaffUpdateSite.as_view(), name='staff-update-mysite'),
+    url(r'^my/users/$', views.WebsiteListUsers.as_view(), name='staff-list-users'),
+    ## 站点管理员操作友情链接
+    url(r'^links/list/$', views.ListMyFriLink.as_view(), name='staff-list-links'),
+    url(r'^links/create/$', views.CreateMyFriLink.as_view(), name='staff-create-links'),
+    url(r'^links/delete/(?P<pk>\d+)/$', views.DeleteMyFreLink.as_view(), name='staff-delete-links'),
 
 )
 

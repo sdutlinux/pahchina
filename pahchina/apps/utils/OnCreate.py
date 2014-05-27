@@ -29,7 +29,6 @@ def on_create(sender, instance, created, **kwargs):
             pass
 
 
-
 #def patient_doctor_record(sender, instance, created, **kwargs):
 #
 #    if created:
@@ -38,7 +37,7 @@ def on_create(sender, instance, created, **kwargs):
 #        else:
 #            pass
 
-post_save.connect(on_create, sender=User, weak=False,
-          dispatch_uid='models.on_create')
+# post_save.connect(on_create, sender=User, weak=False,
+#           dispatch_uid='models.on_create')
 #post_save.connect(patient_doctor_record, sender=DoctorRecord, weak=False,
 #          dispatch_uid='models.patient_doctor_record')

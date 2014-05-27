@@ -1,7 +1,12 @@
 *.log
 *.pot
 *.pyc
+log/*
+
 local_settings.py
+migrations
+
+pahchina.xml
 
 .idea/*
 pahchina/media/*
@@ -22,4 +27,5 @@ local_settings.py
 
 re_db.sh
 env1
+env
 fields.md

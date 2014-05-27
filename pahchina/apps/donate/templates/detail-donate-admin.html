@@ -1,42 +1,75 @@
 {% extends 'base-admin.html' %}
 
-{% block title %}
-捐赠详情 {{ object_donate.number }}
-{% endblock %}
+{% block title %}捐赠详情 {{ object_donate.number }}{% endblock %}
 
 
 {% block content %}
 
-<h2>捐赠-{{ object_donate.number }}</h2>
-    <table class="table bordered" border="0">
-    <tr>
-    <th>单号</th>
-    <td>{{ object_donate.number }}</td>
-    </tr>
-    <tr>
-    <th>捐赠时间</th>
-    <td>{{ object_donate.create_time }}</td>
-    </tr>
-    <tr>
-    <th>捐赠金额</th>
-    <td>{{ object_donate.money }}</td>
-    </tr>
-    <tr>
-    <th>用户选择方式</th>
-    <td>{{ object_donate.get_anyone }}</td>
-    </tr>
-    <tr>
-        <th>捐赠帐号</th>
-        {% if object_donate.user.id %}
-        <td><a href="{% url "admin-detail" "user" object_donate.user.id %}">{{ object_donate.user.username }}</a></td>
-        {% else %}
-        <td>{{ object_donate.user.username }}</td>
-        {% endif %}
-    </tr>
-    </table>
-    <div><a href="{% url "admin-list-itemized-id" object_donate.id %}">使用详情</a></div>
-    <div><a href="{% url "admin-create-itemized-id" object_donate.id %}">使用此捐赠</a></div>
-    <h6 style="text-align: center">捐赠详情</h6>
-    <div><pre>{{ object_donate.details }}</pre></div>
+    <h2>捐赠-{{ object_donate.number }}</h2>
 
+    {% include 'includes/in_detail_donate.html' %}
+
+    <p>
+        {% if object_donate.is_true %}
+            {% if object_donate.residue != 0 %}
+            <a href="#UseDnate" role="button" class="btn btn-large btn-info" data-toggle="modal">使用</a>
+            {% else %}
+            <a href="#" class="btn btn-large disabled">使用(已用完)</a>
+            {% endif %}
+            <a href="#MarkDnate" class="btn btn-small btn-danger" role="button" data-toggle="modal">尚未到帐</a>
+        {% else %}
+            <a href="#" class="btn btn-large disabled">使用(未到帐)</a>
+            <a href="?mark=true" class="btn btn-primary">确认到帐</a>
+        {% endif %}
+    <a class="btn btn-small" href="{% url 'admin-update-donate' object_donate.id %}"><i class="icon-edit"></i>修改</a>
+    <a class="btn btn-small btn-danger" href="{% url 'admin-delete' 'donate' object_donate.id %}"><i
+            class="icon-remove"></i>删除</a>
+    </p>
+    {% if object_donate.is_true %}
+        <!-- Modal -->
+        <div id="MarkDnate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="MarkDnateLabel"
+             aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="MarkDnateLabel">修改捐赠状态</h3>
+            </div>
+            <div class="modal-body">
+                <p>将改条捐赠记录修改为<strong>尚未到帐</strong>状态将 <strong>删除所有使用记录</strong>，请慎重操作！</p>
+
+                <p>是否确认修改 ？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a href="?mark=false" class="btn btn-danger">确认修改</a>
+            </div>
+        </div>
+        <div id="UseDnate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="UseDnateLabel"
+             aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="UseDnateLabel">创建使用记录</h3>
+            </div>
+            <div class="modal-body">
+                <form action="{% url "admin-create-itemized-id" object_donate.id %}" method="post">{% csrf_token %}
+                    <table class="table border">
+                        <tr>
+                            <th><label for="id_cast">花费:</label></th>
+                            <td><input id="id_cast" name="cast" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <th><label for="id_detail">使用细节:</label></th>
+                            <td>
+                                <textarea cols="40" id="id_detail" name="detail" rows="10"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                        <input class="btn btn-primary" type="submit" value="提交"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% include 'includes/in_list_itemized.html' %}
 {% endblock %}
