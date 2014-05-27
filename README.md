@@ -4,6 +4,9 @@ PAH中国肺动脉高压联盟--平台网站
 
 *参与项目请参照[项目WIKI](http://git.oschina.net/zhwei/pahchina/wikis/home)*
 
+
+_自动部署`master`分支
+
 ## 依赖
 
 + python2.7
