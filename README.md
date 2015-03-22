@@ -1,6 +1,6 @@
 #pahchina
 
-PAH中国肺动脉高压联盟--平台网站
+公益平台平台网站
 
 *参与项目请参照[项目WIKI](http://git.oschina.net/zhwei/pahchina/wikis/home)*
 
