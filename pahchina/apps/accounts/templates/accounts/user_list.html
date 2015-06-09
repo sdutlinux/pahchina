@@ -25,16 +25,16 @@
 </tr>
 </thead>
     <tbody>
-    {% for user in object_list %}
+    {% for u in object_list %}
     <tr>
-        <td><a href="{% url 'admin-detail' 'user' user.id %}">{{ user.username }}</a></td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.get_full_name }}</td>
-        <td>{{ user.get_identity }}</td>
+        <td><a href="{% url 'admin-detail' 'user' u.id %}">{{ u.username }}</a></td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.get_full_name }}</td>
+        <td>{{ u.get_identity }}</td>
         <td>
-        <a href="{% url 'admin-update' 'user' user.id %}"><i class="icon-edit"></i></a>
-        {% if user.id != 1 %}
-        <a href="{% url 'admin-delete' 'user' user.id %}"><i class="icon-remove"></i></a>
+        <a href="{% url 'admin-update' 'user' u.id %}"><i class="icon-edit"></i></a>
+        {% if u.id != 1 %}
+        <a href="{% url 'admin-delete' 'user' u.id %}"><i class="icon-remove"></i></a>
         {% endif %}
         </td>
     </tr>

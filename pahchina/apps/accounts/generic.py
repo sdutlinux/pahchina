@@ -4,29 +4,16 @@
 __author__ = 'zhwei'
 
 from django.views import generic
-from django.views.generic.edit import ModelFormMixin
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.shortcuts import render_to_response as r2r, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils.decorators import method_decorator
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
-from django.contrib.auth.models import Permission, Group
-from django.contrib.auth.models import Permission, PermissionManager, PermissionsMixin
+from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
+from django.views.generic.edit import ModelFormMixin
+from django.http import HttpResponseRedirect, Http404
 from django.contrib.contenttypes.models import ContentType
-from django.forms.models import modelform_factory
 
-from ..utils import SuperRequiredMixin, create_operate_log
-from ..patient.models import Patient
-from ..medical.models import Doctor, Hospital
-from ..volunteer.models import Volunteer
-from ..accounts.models import User
-from ..accounts import forms as account_form
 from ..news import forms as news_form
+from ..utils import SuperRequiredMixin
+from ..accounts import forms as account_form
 
 
 class GenericOperateMixin(ModelFormMixin):
@@ -40,12 +27,6 @@ class GenericOperateMixin(ModelFormMixin):
     object = None
     # 禁止使用本方法的model
     forbid_models = ('group', 'site', 'redirect', 'session')
-
-    #def operate_name(self, operate):
-    #    name_dict = {'create':'添加', 'update':'修改',
-    #                 'delete':'删除', 'detail':'查看'}
-    #    return name_dict[operate]
-
 
     def get_model(self):
         _model = self.kwargs['model']
@@ -114,7 +95,6 @@ class Create(SuperRequiredMixin, GenericOperateMixin, generic.CreateView):
         messages.success(self.request, '创建成功！')
         return reverse('admin-list', kwargs=self.kwargs)
 
-
     def get_form_class(self):
 
         try:
@@ -177,5 +157,3 @@ class Delete(SuperRequiredMixin, GenericOperateMixin, generic.DeleteView):
         if self.check_permit():
             return HttpResponseRedirect(reverse('admin-list', kwargs={'model': self.kwargs['model']}))
         return super(Delete, self).post(*args, **kwargs)
-
-

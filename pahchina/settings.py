@@ -121,6 +121,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'pahchina.apps.website.middleware.SubSiteMiddleWare',
+    'pahchina.apps.accounts.middleware.GlobalUserMiddleware',
 )
 
 ROOT_URLCONF = 'pahchina.urls'

@@ -25,7 +25,12 @@
         </tr>
         <tr>
             <th>Email</th>
-            <td>{{ object_user.email }}</td>
+            <td>
+                {{ object_user.email }}
+                {% if user.is_superuser %}
+                    <a href="{% url 'user-actions' %}?uid={{ object_user.id }}">Active</a>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>身份</th>

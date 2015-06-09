@@ -132,8 +132,6 @@ class User(AbstractUser):
         elif self.is_volunteer: return self.volunteer
         return self
 
-
-
     def get_full_name(self):
         """ 符合中文姓名风格 """
         full_name = '%s%s' % (self.last_name, self.first_name)
@@ -146,10 +144,15 @@ class User(AbstractUser):
         else: obj[key]=value
         self.mark=json.dumps(obj)
         self.save()
+
     def get_mark(self, key):
         """获取值"""
         obj = json.loads(self.mark)
         return obj.get(key, None)
+
+    def active(self):
+        self.set_mark('email', True)
+        self.set_mark('first_login', True)
 
     def __getattr__(self, item):
         """ 用来判断身份

@@ -126,7 +126,6 @@ def first_login(request):
         try:
             if province or identity is not None:
                 if identity in IDENTITY_LIST:
-                    print identity
                     set_user_identity(request.user, identity)
                 set_user_region(request.user, "apartment",
                                 province, city, area,)
@@ -296,4 +295,15 @@ class UpdatePassword(LoginRequiredMixin, generic.FormView):
         return super(UpdatePassword, self).form_valid(form)
 
 
-        #class Create
+class UserActions(SuperRequiredMixin, generic.View):
+
+    def get(self, request):
+        user_id = request.GET.get('uid', None)
+        if not user_id: return
+        user = User.objects.get(id=user_id)
+        if not user:
+            return
+        user.active()
+        return HttpResponseRedirect(reverse('admin-detail',
+                                            kwargs={'model': 'user', 'pk': user_id}))
+

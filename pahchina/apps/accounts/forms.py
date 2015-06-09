@@ -15,6 +15,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 
 from .models import User, Personal, IDENTITY_CHOICES, Unit, Bank
 from .mails import send_confirm_email
+from .middleware import get_current_user
 
 # class IdentityChoiceForm(forms.Form):
 #
@@ -39,12 +40,6 @@ class BaseRegisterForm(UserCreationForm):
             pass
         super(BaseRegisterForm, self).__init__(*args, **kwargs)
 
-    # def clear_identity(self):
-    #     identity = self.cleaned_data.get("identity")
-    #     for i in identity:
-    #         if i not in '123456,':
-    #             raise forms.ValidationError('身份不合法！')
-
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
         # but it sets a nicer error message than the ORM. See #13147.
@@ -65,7 +60,8 @@ class BaseRegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        # user.identity = int(self.cleaned_data["identity"]) # 修改身份
+        if get_current_user().is_superuser:
+            user.active()
         if commit: user.save()
         return user
 
@@ -196,13 +192,9 @@ class VltFirstFillForm(forms.ModelForm):
         model = Personal
         exclude = ('user', 'age', 'birthday')
 
-    def __init__(self, user=None,*args, **kwargs):
-        super(VltFirstFillForm, self).__init__(*args, **kwargs)
-        self._user = user
-
     def save(self, commit=True):
         ret = super(VltFirstFillForm, self).save(commit=False)
-        ret.user = self._user
+        ret.user = get_current_user()
         ret.save()
 
 
@@ -211,7 +203,6 @@ class VltFillForm(forms.ModelForm):
         model = Personal
         fields = ('nickname','nationality','belief','height',
                   'weight','marital_status','bear_status','home_phone')
-
 
 
 class UnitForm(forms.ModelForm):

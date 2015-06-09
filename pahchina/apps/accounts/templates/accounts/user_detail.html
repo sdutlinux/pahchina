@@ -6,23 +6,23 @@
 
 {% block content %}
 
-<h2>用户{{ object_user.username }}</h2>
+<h2>用户{{ object.username }}</h2>
 <p>
     <a class="btn" onclick="location.href=document.referrer;"><i class="icon-arrow-left"></i></a>
-    <a href="{% url 'admin-update' 'user' user.id %}" class="btn"><i class="icon icon-edit"></i>修改账户信息</a>
-    {% if user.personal %}
-    <a href="{% url 'admin-update' 'personal' user.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改个人信息</a>
+    <a href="{% url 'admin-update' 'user' object.id %}" class="btn"><i class="icon icon-edit"></i>修改账户信息</a>
+    {% if object.personal %}
+    <a href="{% url 'admin-update' 'personal' object.personal.id %}" class="btn"><i class="icon icon-edit"></i>修改个人信息</a>
     {% endif %}
-    {% if user.unit %}
-    <a href="{% url 'admin-update' 'unit' user.unit.id %}" class="btn"><i class="icon icon-edit"></i>修改单位信息</a>
+    {% if object.unit %}
+    <a href="{% url 'admin-update' 'unit' object.unit.id %}" class="btn"><i class="icon icon-edit"></i>修改单位信息</a>
     {% endif %}
-    {% if user.bank %}
-    <a href="{% url 'admin-update' 'bank' user.bank.id %}" class="btn"><i class="icon icon-edit"></i>修改银行信息</a>
+    {% if object.bank %}
+    <a href="{% url 'admin-update' 'bank' object.bank.id %}" class="btn"><i class="icon icon-edit"></i>修改银行信息</a>
     {% endif %} 
 </p>
 
 <table class="table table-bordered" border="0">
-    {% with user as object_user %}
+    {% with object as object_user %}
     {% include 'includes/user-info-as-table.html' %}
     {% endwith %}
     <tr>
@@ -36,8 +36,8 @@
     <tr>
         <th>操作</th>
         <td>
-        <a class="btn" href="{% url 'admin-update' 'user' user.id %}">修改</a>
-        <a class="btn btn-danger" href="{% url 'admin-delete' 'user' user.id %}">删除</a>
+        <a class="btn" href="{% url 'admin-update' 'user' object.id %}">修改</a>
+        <a class="btn btn-danger" href="{% url 'admin-delete' 'user' object.id %}">删除</a>
         </td>
     </tr>
 </table>

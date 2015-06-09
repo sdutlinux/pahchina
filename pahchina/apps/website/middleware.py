@@ -3,9 +3,6 @@
 
 __author__ = 'zhwei'
 
-import logging
-
-from django.conf import settings
 from django.utils.cache import patch_vary_headers
 
 from .models import Website as Site
