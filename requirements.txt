@@ -5,4 +5,4 @@ django-mptt
 django-pagination
 django-tinymce
 fabric
-#django-ckeditor
+django-ckeditor
