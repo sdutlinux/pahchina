@@ -304,6 +304,7 @@ class UserActions(SuperRequiredMixin, generic.View):
         if not user:
             return
         user.active()
+        messages.success(request, '用户邮箱已激活！')
         return HttpResponseRedirect(reverse('admin-detail',
                                             kwargs={'model': 'user', 'pk': user_id}))
 
