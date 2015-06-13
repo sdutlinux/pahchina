@@ -17,7 +17,7 @@
 
     {% for patient in patient_list %}
         <tr>
-            <td><a href="{% url 'show' patient.user.id %}">{{ patient.user.username }}</a></td>
+            <td><a href="{% url 'show' patient.user.username %}">{{ patient.user.username }}</a></td>
             <td>{{ patient.get_sex }}</td>
             <td>{{ patient.get_doctor }}</td>
         </tr>
