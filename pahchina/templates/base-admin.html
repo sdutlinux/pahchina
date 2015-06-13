@@ -103,11 +103,11 @@
                         <li class="nav-header">医疗管理</li>
                         <li><a href="{% url 'admin-list' 'drug' %}"><i class="icon-lock"></i>管理药物</a></li>
                         <li><a href="{% url 'admin-list' 'dosage' %}"><i class="icon-pencil"></i>患者用药记录</a></li>
-                        <li class="nav-header">活动管理</li>
-                        <li><a href="{% url 'admin-list-activity' %}"><i class="icon-calendar"></i>活动管理</a></li>
+{#                        <li class="nav-header">活动管理</li>#}
+{#                        <li><a href="{% url 'admin-list-activity' %}"><i class="icon-calendar"></i>活动管理</a></li>#}
                         <li class="nav-header">高级功能</li>
                         <li><a href="{% url 'list-sub-city' '0' %}"><i class="icon-minus-sign"></i>管理省市</a></li>
-                        <li><a href="{% url 'admin-create' 'permission' %}"><i class="icon-tasks"></i>添加权限</a></li>
+{#                        <li><a href="{% url 'admin-create' 'permission' %}"><i class="icon-tasks"></i>添加权限</a></li>#}
                         {% elif user.is_staff %}
                         <li class="nav-header">站点管理</li>
                         <li><a href="{% url 'staff-detail-mysite' %}"><i class="icon-globe"></i>我的站点</a></li>
